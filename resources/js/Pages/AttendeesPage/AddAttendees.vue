@@ -6,6 +6,8 @@ import TextInput from "@/Components/TextInput.vue";
 import TextInputError from "@/Components/InputError.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import { useForm } from "@inertiajs/vue3";
+import defaultImage from "@/images/default_profile.png";
+import { defineComponent, ref } from "vue";
 
 const form = useForm({
   name: null,
@@ -18,13 +20,28 @@ const form = useForm({
   department: null,
   address: null,
   email: null,
+  avatar: null,
 });
+
+defineComponent({ defaultImage });
 
 const props = defineProps({ states: Object });
 
+const imageUrl = ref(null);
+
+const previewImage = (event) => {
+  form.avatar = event.target.files[0];
+
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    imageUrl.value = e.target.result;
+  };
+  reader.readAsDataURL(form.avatar);
+};
+
 const saveAttendees = () =>
   form.post("/attendees/create", {
-    onSuccess: () =>
+    onSuccess: () => {
       form.reset(
         "name",
         "age",
@@ -35,8 +52,10 @@ const saveAttendees = () =>
         "position",
         "department",
         "address",
-        "email"
-      ),
+        "email",
+        "avatar"
+      );
+    },
   });
 </script>
 
@@ -50,11 +69,41 @@ const saveAttendees = () =>
         </header>
 
         <div class="w-full bg-white rounded-lg shadow-md">
-          <div class="border-b border-gray-200 px-4 py-10 mb-10">
+          <div class="border-b border-gray-200 px-4 pb-10 mb-10">
             <AttendeesTabLayout></AttendeesTabLayout>
 
             <div class="mt-5">
               <form v-on:submit.prevent="saveAttendees">
+                <div class="w-1/3 my-3 flex items-end">
+                  <img
+                    v-if="imageUrl && imageUrl != null"
+                    :src="imageUrl"
+                    alt="preview image"
+                    class="w-20 rounded-md h-20"
+                  />
+                  <img
+                    v-else
+                    :src="defaultImage"
+                    alt="default image"
+                    class="w-20 rounded-md h-20"
+                  />
+                  <div class="ms-5">
+                    <label
+                      for="file-input"
+                      class="mt-3 text-blue-700 underline text-sm font-medium"
+                    >File upload</label>
+                    <input
+                      @input="previewImage"
+                      type="file"
+                      name="import_file"
+                      id="file-input"
+                      class="hidden w-full border border-gray-200 shadow-sm rounded-lg text-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 file:bg-gray-50 file:border-0 file:me-4 file:py-3 file:px-4 dark:file:bg-neutral-700 dark:file:text-neutral-400 mt-3"
+                    />
+                    <TextInputError
+                      :message="form.errors.avatar"
+                    ></TextInputError>
+                  </div>
+                </div>
                 <div class="w-full flex">
                   <div class="w-1/3">
                     <InputLabel :value="'Name'"></InputLabel>

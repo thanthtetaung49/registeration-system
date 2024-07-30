@@ -6,6 +6,13 @@ import DropdownLink from "@/Components/DropdownLink.vue";
 import NavLink from "@/Components/NavLink.vue";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink.vue";
 import { Link } from "@inertiajs/vue3";
+import { onMounted } from "vue";
+
+onMounted(() => {
+  setTimeout(() => {
+    window.HSStaticMethods.autoInit();
+  }, 100);
+});
 
 const showingNavigationDropdown = ref(false);
 </script>
@@ -200,7 +207,8 @@ const showingNavigationDropdown = ref(false);
               route().current('instructor.index') ||
               route().current('category.index') ||
               route().current('roomNumber.index') ||
-              route().current('event.index')
+              route().current('event.index') || 
+              route().current('event.list.index')
             "
           >
             <svg

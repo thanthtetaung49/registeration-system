@@ -1,6 +1,5 @@
 <script setup>
 import { Link } from "@inertiajs/vue3";
-import 'preline';
 </script>
 
 <template>
@@ -24,7 +23,7 @@ import 'preline';
       </Link>
       <Link
         href="/attendees/add"
-        class="hs-tab-active:font-semibold hs-tab-active:border-blue-600 hs-tab-active:text-blue-600 py-4 px-1 inline-flex items-center gap-x-2 border-b-2 border-transparent text-sm whitespace-nowrap hover:text-blue-600 focus:outline-none focus:text-blue-600 disabled:opacity-50 disabled:pointer-events-none"
+        class="py-4 px-1 inline-flex items-center gap-x-2 border-b-2 border-transparent text-sm whitespace-nowrap hover:text-blue-600 focus:outline-none focus:text-blue-600 disabled:opacity-50 disabled:pointer-events-none"
         role="tab"
         :class="{
           'text-blue-500 font-bold': route().current('attendees.add.index'),
@@ -61,6 +60,6 @@ import 'preline';
       </Link>
     </nav>
 
-   
+
   </div>
 </template>

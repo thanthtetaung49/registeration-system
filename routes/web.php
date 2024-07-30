@@ -4,6 +4,7 @@ use App\Http\Controllers\AddAttendeesController;
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\EventListController;
 use App\Http\Controllers\InstructorController;
 use App\Http\Controllers\ListAttendeesController;
 use App\Http\Controllers\ProfileController;
@@ -36,6 +37,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/event', [EventController::class, 'index'])->name('event.index');
     Route::post('/event/create', [EventController::class, 'submitEvent'])->name('event.create');
 
+    // event list
+    Route::get('/event/list', [EventListController::class, 'index'])->name('event.list.index');
+    Route::get('/event/attendees/list/{eventId}', [EventListController::class, 'eventAttendeesList'])->name('event.attendees.list');
+
     // instructors
     Route::get('/instructor', [InstructorController::class, 'index'])->name('instructor.index');
     Route::post('/instructor/create', [InstructorController::class, 'submitInstructor'])->name('instructor.create');
@@ -61,6 +66,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Register attendees
     Route::get('/attendees/register', [RegisterAttendeesController::class, 'index'])->name('attendees.register.index');
+    Route::post('/attendees/event/register', [RegisterAttendeesController::class, 'submitAttendeeEvent'])->name('attendees.register.create');
 
 });
 

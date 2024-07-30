@@ -7,9 +7,6 @@ export default defineConfig({
         laravel({
             input: [
                 'resources/js/app.js',
-                'resources/js/preline.js',
-                'resources/js/lodash.min.js',
-                'resources/js/dropzone-min.js'
             ],
             refresh: true,
         }),

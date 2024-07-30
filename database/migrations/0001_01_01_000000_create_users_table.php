@@ -14,6 +14,7 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
+            $table->string('profile_path')->nullable();
             $table->string('name');
             $table->integer('age');
             $table->integer('sex'); // 0 is male, 1 is female

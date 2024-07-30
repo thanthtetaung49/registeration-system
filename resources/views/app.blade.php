@@ -8,11 +8,10 @@
 
         <!-- Scripts -->
         @routes
-        @vite(['resources/js/app.js', "resources/js/Pages/{$page['component']}.vue", "resources/js/preline.js", "resources/js/dropzone-min.js", "resources/js/lodash.min.js"])
+        @vite(['resources/js/app.js', "resources/js/Pages/{$page['component']}.vue"])
         @inertiaHead
     </head>
     <body class="font-sans antialiased">
         @inertia
-        
     </body>
 </html>

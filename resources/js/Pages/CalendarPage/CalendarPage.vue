@@ -13,11 +13,9 @@ defineComponent({
 const props = defineProps({ events: Object });
 
 const calendarOptions = ref({
-  plugins: [dayGridPlugin, interactionPlugin],
-  initialView: "dayGridMonth",
-  events: [],
-  editable: true,
-  selectable: true,
+    plugins: [dayGridPlugin, interactionPlugin],
+    initialView: "dayGridMonth",
+    events: [],
 });
 
 onMounted(() => {
@@ -25,7 +23,7 @@ onMounted(() => {
   const newEvents = [];
 
   events.forEach((event) => {
-    const objects = {
+      const objects = {
       title: event.event_name,
       start: event.start_date,
       end: addOneDay(event.end_date),

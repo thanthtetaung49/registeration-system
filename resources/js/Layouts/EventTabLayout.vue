@@ -10,6 +10,17 @@ import { Link } from "@inertiajs/vue3";
       role="tablist"
       aria-orientation="horizontal"
     >
+     <Link
+        href="/event/list"
+        class="py-4 px-1 inline-flex items-center gap-x-2 border-b-2 border-transparent text-sm whitespace-nowrap hover:text-blue-600 focus:outline-none focus:text-blue-600 disabled:opacity-50 disabled:pointer-events-none"
+        role="tab"
+        :class="{
+          'text-blue-500 font-bold': route().current('event.list.index'),
+          'text-gray-500 ': !route().current('event.list.index'),
+        }"
+      >
+        Event list
+      </Link>
       <Link
         href="/instructor"
         class="py-4 px-1 inline-flex items-center gap-x-2 border-b-2 border-transparent text-sm whitespace-nowrap hover:text-blue-600 focus:outline-none focus:text-blue-600 disabled:opacity-50 disabled:pointer-events-none"
