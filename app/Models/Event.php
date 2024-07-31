@@ -22,4 +22,8 @@ class Event extends Model
     public function categories () {
         return $this->belongsTo(Category::class);
     }
+
+    public function register_events() {
+        
+    }
 }

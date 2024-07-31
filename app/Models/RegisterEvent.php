@@ -14,4 +14,8 @@ class RegisterEvent extends Model
     public function register_attendees() {
         return $this->belongsTo(User::class, 'users_id', 'id');
     }
+
+    public function events () {
+        return $this->belongsTo(Event::class);
+    }
 }

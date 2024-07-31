@@ -12,9 +12,8 @@ const registerEvents = ref([]);
 const getRegisterAttendees = (eventId) => {
   axios
     .get(`/event/attendees/list/${eventId}`)
-      .then((response) =>
-      {
-        registerEvents.value = response.data;
+    .then((response) => {
+      registerEvents.value = response.data;
     })
     .catch((error) => {
       console.error(error);
@@ -257,7 +256,19 @@ const getRegisterAttendees = (eventId) => {
             <div class="p-4 overflow-y-auto">
               <div class="flex flex-col mt-5">
                 <div class="-m-1.5 overflow-x-auto">
-                  <div class="p-1.5 min-w-full h-[400px] inline-block align-middle">
+                  <div
+                    class="p-1.5 min-w-full h-[400px] inline-block align-middle"
+                  >
+                    <div class="mb-3 flex items-center">
+                        <div class="flex items-center">
+                          <div class="w-3 h-3 bg-blue-100"></div>
+                          <div class="text-sm ms-2">Register</div>
+                        </div>
+                        <div class="flex items-center ms-3">
+                          <div class="w-3 h-3 bg-red-100"></div>
+                          <div class="text-sm ms-2">Not register</div>
+                        </div>
+                    </div>
                     <div class="overflow-hidden">
                       <table class="min-w-full divide-y divide-gray-200">
                         <thead>
@@ -304,6 +315,10 @@ const getRegisterAttendees = (eventId) => {
                           <tr
                             v-for="(attendee, index) in registerEvents"
                             :key="attendee.id"
+                            :class="{
+                              'bg-blue-100': attendee.registration_status == 1,
+                              'bg-red-100': attendee.registration_status == 0,
+                            }"
                           >
                             <td
                               class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800"
