@@ -20,7 +20,7 @@ const saveInstructor = () => form.post('/instructor/create', {
     <form v-on:submit.prevent="saveInstructor">
       <div>
         <InputLabel :value="'Instructor'"></InputLabel>
-        <TextInput v-model="form.name" class="mt-3 w-[30%]"></TextInput>
+        <TextInput v-model="form.name" class="mt-3 w-[30%] text-sm"></TextInput>
         <InputError :message="form.errors.name"></InputError>
       </div>
       <div class="mt-5 w-full flex justify-end">

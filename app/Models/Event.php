@@ -12,11 +12,11 @@ class Event extends Model
     protected $guarded = [];
 
     public function lead_instructors () {
-        return $this->belongsTo(User::class, 'lead_instructors_id', 'id');
+        return $this->belongsTo(Instructor::class, 'lead_instructors_id', 'id');
     }
 
     public function assists_instructors () {
-        return $this->belongsTo(User::class, 'assist_instructors_id', 'id');
+        return $this->belongsTo(Instructor::class, 'assist_instructors_id', 'id');
     }
 
     public function categories () {
@@ -24,6 +24,6 @@ class Event extends Model
     }
 
     public function register_events() {
-        
+
     }
 }

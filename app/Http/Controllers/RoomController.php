@@ -8,7 +8,8 @@ use Inertia\Inertia;
 
 class RoomController extends Controller
 {
-    public function index () {
+    public function index()
+    {
         $rooms = RoomNumber::orderBy('id', 'desc')->paginate(5);
 
         return Inertia::render('EventPage/Room/Room', ['rooms' => $rooms]);
@@ -21,6 +22,30 @@ class RoomController extends Controller
             'room_number' => ['required'],
         ]));
 
+        return to_route('roomNumber.index');
+    }
+
+    public function edit(RoomNumber $room)
+    {
+        return Inertia::render('EventPage/Room/RoomEdit', ['room' => $room]);
+    }
+
+    public function update(RoomNumber $room, Request $request)
+    {
+        $room->update($request->validate([
+            'room_number' => ['required'],
+        ]));
+        return to_route('roomNumber.index');
+    }
+
+    public function view(RoomNumber $room)
+    {
+        return Inertia::render('EventPage/Room/RoomView', ['room' => $room]);
+    }
+
+    public function delete(RoomNumber $room)
+    {
+        $room->delete();
         return to_route('roomNumber.index');
     }
 }

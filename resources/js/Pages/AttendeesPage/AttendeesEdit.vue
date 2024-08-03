@@ -1,38 +1,39 @@
 <script setup>
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import AttendeesTabLayout from "@/Layouts/AttendeesTabLayout.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import TextInput from "@/Components/TextInput.vue";
 import TextInputError from "@/Components/InputError.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import { useForm } from "@inertiajs/vue3";
 import defaultImage from "@/images/default_profile.png";
-import { defineComponent, ref } from "vue";
-
-const form = useForm({
-  name: null,
-  age: null,
-  sex: "",
-  phone_number: null,
-  nrc_number: null,
-  edu_background: null,
-  position: null,
-  department: null,
-  address: null,
-  email: null,
-  avatar: null,
-  attendees_types_id: "",
-});
+import { defineComponent, ref, onMounted } from "vue";
 
 defineComponent({ defaultImage });
 
-const props = defineProps({ states: Object, types: Object });
+const props = defineProps({ user: Object, types: Object });
+const user = props.user;
+
+const form = useForm({
+  name: user.name,
+  age: user.age,
+  sex: user.sex,
+  phone_number: user.phone_number,
+  nrc_number: user.nrc_number,
+  edu_background: user.edu_background,
+  position: user.position,
+  department: user.department,
+  address: user.address,
+  email: user.email,
+  avatar: user.profile_path,
+  attendees_types_id: props.user.attendees_types.id
+    ? props.user.attendees_types.id
+    : null,
+});
 
 const imageUrl = ref(null);
 
 const previewImage = (event) => {
   form.avatar = event.target.files[0];
-
   const reader = new FileReader();
   reader.onload = (e) => {
     imageUrl.value = e.target.result;
@@ -40,25 +41,11 @@ const previewImage = (event) => {
   reader.readAsDataURL(form.avatar);
 };
 
-const saveAttendees = () =>
-  form.post("/attendees/create", {
-    onSuccess: () => {
-      form.reset(
-        "name",
-        "age",
-        "sex",
-        "phone_number",
-        "nrc_number",
-        "edu_background",
-        "position",
-        "department",
-        "address",
-        "email",
-          "avatar",
-        "attendees_types_id"
-      );
-    },
-  });
+onMounted(() => {
+  imageUrl.value = null;
+});
+
+const updateAttendees = () => form.post(`/attendees/update/${user.id}`);
 </script>
 
 <template>
@@ -71,24 +58,23 @@ const saveAttendees = () =>
         </header>
 
         <div class="w-full bg-white rounded-lg shadow-md">
-          <div class="border-b border-gray-200 px-4 pb-10 mb-10">
-            <AttendeesTabLayout></AttendeesTabLayout>
-
+          <div class="border-b border-gray-200 px-4 py-5 mb-10">
             <div class="mt-5">
-              <form v-on:submit.prevent="saveAttendees">
+              <form v-on:submit.prevent="updateAttendees">
                 <div class="w-1/3 my-3 flex items-end">
                   <img
-                    v-if="imageUrl && imageUrl != null"
+                    v-if="imageUrl"
                     :src="imageUrl"
-                    alt="preview image"
-                    class="w-20 rounded-md h-20"
-                  />
-                  <img
-                    v-else
-                    :src="defaultImage"
                     alt="default image"
                     class="w-20 rounded-md h-20"
                   />
+                  <img
+                    v-else-if="user.profile_path"
+                    :src="`http://127.0.0.1:8000/storage/${user.profile_path}`"
+                    alt="preview image"
+                    class="w-20 rounded-md h-20"
+                  />
+
                   <div class="ms-5">
                     <label
                       for="file-input"
@@ -231,18 +217,25 @@ const saveAttendees = () =>
                   <div class="w-1/3 ms-3">
                     <InputLabel :value="'Attendees type'"></InputLabel>
                     <select
-                      v-model="form.sex"
+                      v-model="form.attendees_types_id"
                       class="py-3 px-4 pe-9 block w-full border-gray-200 rounded-lg text-sm focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none mt-3"
                     >
-                      <option value="" selected="">Open this attendees type</option>
+                      <option value="" selected="">
+                        Open this attendees type
+                      </option>
 
-                      <option v-for="type in types" :key="type.id" :value="type.id">{{ type.name }}</option>
+                      <option
+                        v-for="type in types"
+                        :key="type.id"
+                        :value="type.id"
+                      >
+                        {{ type.name }}
+                      </option>
                     </select>
                     <TextInputError
                       :message="form.errors.attendees_types_id"
                     ></TextInputError>
                   </div>
-
                   <div class="w-1/3 ms-3"></div>
                 </div>
 

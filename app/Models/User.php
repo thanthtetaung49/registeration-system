@@ -40,4 +40,14 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function attendees_types()
+    {
+        return $this->belongsTo(AttendeesType::class, 'attendees_types_id', 'id');
+    }
+
+    public function register_events()
+    {
+        return $this->hasMany(RegisterEvent::class, 'users_id', 'id');
+    }
 }

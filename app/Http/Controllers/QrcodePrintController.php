@@ -5,13 +5,16 @@ namespace App\Http\Controllers;
 use App\Models\RegisterEvent;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\View;
 use Mpdf\Mpdf;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use Spatie\Browsershot\Browsershot;
 
 class QrcodePrintController extends Controller
 {
     public function index ($registerEventId) {
-        $nameBadgeData = RegisterEvent::with('register_attendees', 'events')->where('id', $registerEventId)->first();
+        $nameBadgeData = RegisterEvent::with(['register_attendees', 'events', 'attendees_types'])->where('id', $registerEventId)->first();
+        // dd($nameBadgeData->toArray());
 
         $url = url('/qrcode/scan?code=' . $nameBadgeData->qr_code);
 
@@ -22,10 +25,14 @@ class QrcodePrintController extends Controller
             'qrCode' => $qrCode,
         ];
 
-        $html = view('pdf', $data)->render();
-        $mpdf = new Mpdf();
-        $mpdf->WriteHTML($html);
-        return $mpdf->Output('pdf.pdf', 'I');
+        // return view('pdf', $data);
+
+        $htmlContent = View::make('pdf', $data)->render();
+
+        $imagePath = storage_path('app/public/qrCode/' . uniqid() . time() . 'qrCode.png');
+        Browsershot::html($htmlContent)->save($imagePath);
+
+        return response()->download($imagePath);
     }
 
     public function scanQrCode(Request $request) {

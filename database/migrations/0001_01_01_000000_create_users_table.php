@@ -15,6 +15,8 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('profile_path')->nullable();
+            $table->unsignedBigInteger('attendees_types_id')->nullable();
+            $table->foreign('attendees_types_id')->references('id')->on('attendees_types')->cascadeOnDelete();
             $table->string('name');
             $table->integer('age');
             $table->integer('sex'); // 0 is male, 1 is female

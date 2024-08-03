@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AddAttendeesController;
+use App\Http\Controllers\AttendeesTypeController;
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\EventController;
@@ -41,8 +42,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // event
         Route::get('', [EventController::class, 'index'])->name('event.index');
         Route::post('/create', [EventController::class, 'submitEvent'])->name('event.create');
+
         // event list
         Route::get('/list', [EventListController::class, 'index'])->name('event.list.index');
+        Route::get('/list/view/{eventId}', [EventListController::class, 'view'])->name('event.list.view');
+        Route::get('/list/edit/{eventId}', [EventListController::class, 'edit'])->name('event.list.edit');
+        Route::post('/list/update/{event}', [EventListController::class, 'update'])->name('event.list.update');
+        Route::get('/list/delete/{event}', [EventListController::class, 'delete'])->name('event.list.delete');
+        Route::get('/search', [EventListController::class, 'search'])->name('event.search');
+
         Route::get('/attendees/list/{eventId}', [EventListController::class, 'eventAttendeesList'])->name('event.attendees.list');
     });
 
@@ -50,33 +58,57 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::prefix('/instructor')->group(function () {
         Route::get('', [InstructorController::class, 'index'])->name('instructor.index');
         Route::post('/create', [InstructorController::class, 'submitInstructor'])->name('instructor.create');
+        Route::get('/edit/{instructor}', [InstructorController::class, 'edit'])->name('instructor.edit');
+        Route::post('/update/{instructor}', [InstructorController::class, 'update'])->name('instructor.update');
+        Route::get('/view/{instructor}', [InstructorController::class, 'view'])->name('instructor.view');
+        Route::get('/delete/{instructor}', [InstructorController::class, 'delete'])->name('instructor.delete');
     });
 
     // category
     Route::prefix('/category')->group(function () {
         Route::get('', [CategoryController::class, 'index'])->name('category.index');
         Route::post('/create', [CategoryController::class, 'submitCategory'])->name('category.create');
+        Route::get('/edit/{category}', [CategoryController::class, 'edit'])->name('category.edit');
+        Route::post('/update/{category}', [CategoryController::class, 'update'])->name('category.update');
+        Route::get('/view/{category}', [CategoryController::class, 'view'])->name('category.view');
+        Route::get('/delete/{category}', [CategoryController::class, 'delete'])->name('category.delete');
     });
 
     // room
     Route::prefix('/room')->group(function () {
         Route::get('', [RoomController::class, 'index'])->name('roomNumber.index');
         Route::post('/create', [RoomController::class, 'submitRoomNumber'])->name('roomNumber.create');
+        Route::get('/edit/{room}', [RoomController::class, 'edit'])->name('roomNumber.edit');
+        Route::post('/update/{room}', [RoomController::class, 'update'])->name('roomNumber.update');
+        Route::get('/view/{room}', [RoomController::class, 'view'])->name('roomNumber.view');
+        Route::get('/delete/{room}', [RoomController::class, 'delete'])->name('roomNumber.delete');
     });
 
     Route::prefix('/attendees')->group(function () {
-        // list attendees
+        // list
         Route::get('/list', [ListAttendeesController::class, 'index'])->name('attendees.list.index');
+        Route::get('/search', [ListAttendeesController::class, 'search'])->name('attendees.search');
 
-        // add attendees
-        Route::get('/add', [AddAttendeesController::class, 'index'])->name('attendees.add.index');
+        // type
+        Route::get('/type', [AttendeesTypeController::class, 'index'])->name('attendees.type.index');
+        Route::post('/type/create', [AttendeesTypeController::class, 'create'])->name('attendees.type.create');
+        Route::get('/type/edit/{attendeesType}', [AttendeesTypeController::class, 'edit'])->name('attendees.type.edit');
+        Route::post('/type/update/{attendeesType}', [AttendeesTypeController::class, 'update'])->name('attendees.type.update');
+        Route::get('/type/view/{attendeesType}', [AttendeesTypeController::class, 'view'])->name('attendees.type.view');
+        Route::get('/type/delete/{attendeesType}', [AttendeesTypeController::class, 'delete'])->name('attendees.type.delete');
+
+        // add
+        Route::get('/add', [AddAttendeesController::class, 'index'])->name('attendees.index');
         Route::post('/create', [AddAttendeesController::class, 'submitAttendee'])->name('attendees.create');
+        Route::get('/edit/{user}', [AddAttendeesController::class, 'edit'])->name('attendees.edit');
+        Route::post('/update/{id}', [AddAttendeesController::class, 'update'])->name('attendees.update');
+        Route::get('/view/{id}',[AddAttendeesController::class, 'view'])->name('attendees.view');
+        Route::get('/delete/{user}', [AddAttendeesController::class, 'delete'])->name('attendees.delete');
 
-        // upload attendees
+        // upload and  import
         Route::get('/upload', [UploadAttendeesController::class, 'index'])->name('attendees.upload.index');
         Route::post('/import', [UploadAttendeesController::class, 'importAttendee'])->name('attendees.import');
-
-        // Register attendees
+        // register
         Route::get('/register', [RegisterAttendeesController::class, 'index'])->name('attendees.register.index');
         Route::post('/event/register', [RegisterAttendeesController::class, 'submitAttendeeEvent'])->name('attendees.register.create');
     });
@@ -92,10 +124,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/calendar', [CalendarController::class, 'index'])->name('calendar.index');
 
     // pdf print
-    Route::get('qrcode/print/{registerEventId}', [QrcodePrintController::class, 'index'])->name('qrcode.print');
+    Route::get('qrcode/download/{registerEventId}', [QrcodePrintController::class, 'index'])->name('qrcode.print');
 });
 
-// qr code registration
 Route::get('/qrcode/scan', [QrcodePrintController::class, 'scanQrCode']);
 
 Route::middleware('auth')->group(function () {

@@ -8,7 +8,8 @@ use Inertia\Inertia;
 
 class CategoryController extends Controller
 {
-    public function index () {
+    public function index()
+    {
         $categories = Category::orderBy('id', 'desc')->paginate(5);
 
         return Inertia::render('EventPage/Category/Category', ['categories' => $categories]);
@@ -21,6 +22,30 @@ class CategoryController extends Controller
             'category_name' => ['required']
         ]));
 
+        return to_route('category.index');
+    }
+
+    public function edit(Category $category)
+    {
+        return Inertia::render('EventPage/Category/CategoryEdit', ['category' => $category]);
+    }
+
+    public function update(Category $category, Request $request)
+    {
+        $category->update($request->validate([
+            'category_name' => ['required']
+        ]));
+        return to_route('category.index');
+    }
+
+    public function view(Category $category)
+    {
+        return Inertia::render('EventPage/Category/CategoryView', ['category' => $category]);
+    }
+
+    public function delete(Category $category)
+    {
+        $category->delete();
         return to_route('category.index');
     }
 }

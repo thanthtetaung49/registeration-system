@@ -1,28 +1,47 @@
 <script setup>
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import EventTabLayout from "@/Layouts/EventTabLayout.vue";
-import { Link, router } from "@inertiajs/vue3";
+import { Link } from "@inertiajs/vue3";
 import axios from "axios";
 import { ref } from "vue";
+import TextInput from "@/Components/TextInput.vue";
 
 const props = defineProps({ events: Object });
 
 const registerEvents = ref([]);
+const query = ref(null);
+const eventsData = ref(props.events.data);
+const eventLink = ref(props.events.links);
 
 const getRegisterAttendees = (eventId) => {
   axios
     .get(`/event/attendees/list/${eventId}`)
     .then((response) => {
       registerEvents.value = response.data;
+
     })
     .catch((error) => {
       console.error(error);
+    });
+};
+
+const searchEvent = () => {
+  axios
+    .get(`/event/search?query=${query.value}`)
+    .then((response) => {
+      eventsData.value = response.data.data;
+      eventLink.value = response.data.links;
+      console.log(response.data.links);
+    })
+    .catch((error) => {
+      console.log(error);
     });
 };
 </script>
 
 <template>
   <div>
+    <!-- {{ eventsData }} -->
     <AuthenticatedLayout>
       <div class="px-10 py-10">
         <header class="mb-10">
@@ -33,6 +52,33 @@ const getRegisterAttendees = (eventId) => {
         <div class="w-full bg-white rounded-lg shadow-md">
           <div class="border-b border-gray-200 px-4 pb-5 mb-10">
             <EventTabLayout></EventTabLayout>
+
+            <div class="flex justify-end">
+              <div class="relative">
+                <TextInput
+                  v-model="query"
+                  @input="searchEvent"
+                  placeholder="Search attendees..."
+                  class="text-sm"
+                ></TextInput>
+                <div class="absolute right-3 top-1/2 -translate-y-1/2">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    class="size-5"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+                    />
+                  </svg>
+                </div>
+              </div>
+            </div>
 
             <div class="flex flex-col mt-5">
               <div class="-m-1.5 overflow-x-auto">
@@ -99,12 +145,13 @@ const getRegisterAttendees = (eventId) => {
                       </thead>
                       <tbody class="divide-y divide-gray-200">
                         <tr
-                          v-for="(event, index) in events.data"
+                          v-for="(event, index) in eventsData"
                           :key="event.id"
                         >
                           <td
                             class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800"
                           >
+
                             {{ index + 1 }}
                           </td>
                           <td
@@ -151,8 +198,32 @@ const getRegisterAttendees = (eventId) => {
                               aria-haspopup="dialog"
                               aria-expanded="false"
                               aria-controls="hs-scale-animation-modal"
-                              data-hs-overlay="#hs-scale-animation-modal"
+                              data-hs-overlay="#register-attendees-modal"
                               v-on:click="getRegisterAttendees(event.id)"
+                            >
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke-width="1.5"
+                                stroke="currentColor"
+                                class="size-4"
+                              >
+                                <path
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                  d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.94-3.197a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z"
+                                />
+                              </svg>
+                            </button>
+
+                            <Link
+                              :href="`/event/list/view/${event.id}`"
+                              class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border text-gray-600 focus:outline-none focus:text-gray-800 disabled:opacity-50 disabled:pointer-events-none dark:text-gray-500 dark:hover:text-gray-400 dark:focus:text-gray-400 p-2 mr-3 hover:bg-green-700 hover:text-white"
+                              aria-haspopup="dialog"
+                              aria-expanded="false"
+                              aria-controls="hs-scale-animation-modal"
+                              data-hs-overlay="#event-view-modal"
                             >
                               <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -173,13 +244,55 @@ const getRegisterAttendees = (eventId) => {
                                   d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
                                 />
                               </svg>
-                            </button>
-                            <button
-                              type="button"
-                              class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-red-600 hover:text-red-800 focus:outline-none focus:text-red-800 disabled:opacity-50 disabled:pointer-events-none dark:text-red-500 dark:hover:text-red-400 dark:focus:text-red-400"
+                            </Link>
+
+                            <Link
+                              :href="`/event/list/edit/${event.id}`"
+                              class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border text-gray-600 focus:outline-none focus:text-gray-800 disabled:opacity-50 disabled:pointer-events-none dark:text-gray-500 dark:hover:text-gray-400 dark:focus:text-gray-400 p-2 mr-3 hover:bg-gray-700 hover:text-white"
+                              aria-haspopup="dialog"
+                              aria-expanded="false"
+                              aria-controls="hs-scale-animation-modal"
+                              data-hs-overlay="#hs-scale-animation-modal"
                             >
-                              Delete
-                            </button>
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke-width="1.5"
+                                stroke="currentColor"
+                                class="size-4"
+                              >
+                                <path
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                  d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"
+                                />
+                              </svg>
+                            </Link>
+
+                            <Link
+                              :href="`/event/list/delete/${event.id}`"
+                              class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border text-gray-600 focus:outline-none focus:text-gray-800 disabled:opacity-50 disabled:pointer-events-none dark:text-gray-500 dark:hover:text-gray-400 dark:focus:text-gray-400 p-2 mr-3 hover:bg-red-700 hover:text-white"
+                              aria-haspopup="dialog"
+                              aria-expanded="false"
+                              aria-controls="hs-scale-animation-modal"
+                              data-hs-overlay="#hs-scale-animation-modal"
+                            >
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke-width="1.5"
+                                stroke="currentColor"
+                                class="size-4"
+                              >
+                                <path
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                  d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
+                                />
+                              </svg>
+                            </Link>
                           </td>
                         </tr>
                       </tbody>
@@ -193,7 +306,7 @@ const getRegisterAttendees = (eventId) => {
               <div class="mb-10 my-5">
                 <Link
                   :href="link.url"
-                  v-for="(link, index) in links"
+                  v-for="(link, index) in eventLink"
                   :key="index"
                   class="border py-2 px-3 text-sm"
                   :class="{ 'bg-blue-500 text-white': link.active }"
@@ -206,9 +319,9 @@ const getRegisterAttendees = (eventId) => {
         </div>
       </div>
 
-      <!-- modal area -->
+      <!-- attendees view modal area -->
       <div
-        id="hs-scale-animation-modal"
+        id="register-attendees-modal"
         class="hs-overlay hidden size-full fixed top-0 start-0 z-[80] overflow-x-hidden overflow-y-auto pointer-events-none"
         role="dialog"
         tabindex="-1"
@@ -224,7 +337,7 @@ const getRegisterAttendees = (eventId) => {
               class="flex justify-between items-center py-3 px-4 border-b dark:border-neutral-700"
             >
               <h3
-                id="hs-scale-animation-modal-label"
+                id="register-attendees-modal"
                 class="font-bold text-gray-800 dark:text-white"
               >
                 Attendees list
@@ -233,7 +346,7 @@ const getRegisterAttendees = (eventId) => {
                 type="button"
                 class="size-8 inline-flex justify-center items-center gap-x-2 rounded-full border border-transparent bg-gray-100 text-gray-800 hover:bg-gray-200 focus:outline-none focus:bg-gray-200 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-700 dark:hover:bg-neutral-600 dark:text-neutral-400 dark:focus:bg-neutral-600"
                 aria-label="Close"
-                data-hs-overlay="#hs-scale-animation-modal"
+                data-hs-overlay="#register-attendees-modal"
               >
                 <span class="sr-only">Close</span>
                 <svg
@@ -260,14 +373,14 @@ const getRegisterAttendees = (eventId) => {
                     class="p-1.5 min-w-full h-[400px] inline-block align-middle"
                   >
                     <div class="mb-3 flex items-center">
-                        <div class="flex items-center">
-                          <div class="w-3 h-3 bg-blue-100"></div>
-                          <div class="text-sm ms-2">Register</div>
-                        </div>
-                        <div class="flex items-center ms-3">
-                          <div class="w-3 h-3 bg-red-100"></div>
-                          <div class="text-sm ms-2">Not register</div>
-                        </div>
+                      <div class="flex items-center">
+                        <div class="w-3 h-3 bg-blue-100"></div>
+                        <div class="text-sm ms-2">Register</div>
+                      </div>
+                      <div class="flex items-center ms-3">
+                        <div class="w-3 h-3 bg-red-100"></div>
+                        <div class="text-sm ms-2">Not register</div>
+                      </div>
                     </div>
                     <div class="overflow-hidden">
                       <table class="min-w-full divide-y divide-gray-200">
@@ -368,7 +481,7 @@ const getRegisterAttendees = (eventId) => {
               <button
                 type="button"
                 class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
-                data-hs-overlay="#hs-scale-animation-modal"
+                data-hs-overlay="#register-attendees-modal"
               >
                 Close
               </button>

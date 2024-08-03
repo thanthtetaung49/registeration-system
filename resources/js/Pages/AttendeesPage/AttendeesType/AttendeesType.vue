@@ -1,15 +1,27 @@
 <script setup>
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import CategoryForm from "@/Components/EventCategoriesForm.vue";
-import { defineComponent } from "vue";
-import EventTabLayout from "@/Layouts/EventTabLayout.vue";
+import AttendeesTabLayout from "@/Layouts/AttendeesTabLayout.vue";
 import { Link } from "@inertiajs/vue3";
 
-const props = defineProps({
-  categories: Object,
+import InputLabel from "@/Components/InputLabel.vue";
+import TextInput from "@/Components/TextInput.vue";
+import PrimaryButton from "@/Components/PrimaryButton.vue";
+import InputError from "@/Components/InputError.vue";
+import { useForm } from "@inertiajs/vue3";
+
+const form = useForm({
+  name: null,
 });
 
-defineComponent({ CategoryForm });
+const saveAttendeesType = () =>
+  form.post("/attendees/type/create", {
+    onSuccess: () => form.reset("name"),
+  });
+
+const props = defineProps({
+  types: Object,
+});
 </script>
 
 <template>
@@ -23,10 +35,22 @@ defineComponent({ CategoryForm });
 
         <div class="w-full bg-white rounded-lg shadow-md">
           <div class="border-b border-gray-200 px-4">
-            <EventTabLayout></EventTabLayout>
+            <AttendeesTabLayout></AttendeesTabLayout>
 
             <div class="mt-5">
-              <CategoryForm></CategoryForm>
+              <form v-on:submit.prevent="saveAttendeesType">
+                <div>
+                  <InputLabel :value="'Attendees type'"></InputLabel>
+                  <TextInput
+                    v-model="form.name"
+                    class="mt-3 w-[30%] text-sm"
+                  ></TextInput>
+                  <InputError :message="form.errors.name"></InputError>
+                </div>
+                <div class="mt-5 w-full flex justify-end">
+                  <PrimaryButton type="submit" class="">Save</PrimaryButton>
+                </div>
+              </form>
             </div>
 
             <div class="flex flex-col mt-5">
@@ -46,7 +70,7 @@ defineComponent({ CategoryForm });
                             scope="col"
                             class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase"
                           >
-                            Category name
+                            Attendees type
                           </th>
                           <th
                             scope="col"
@@ -63,10 +87,7 @@ defineComponent({ CategoryForm });
                         </tr>
                       </thead>
                       <tbody class="divide-y divide-gray-200">
-                        <tr
-                          v-for="(category, index) in categories.data"
-                          :key="category.id"
-                        >
+                        <tr v-for="(type, index) in types.data" :key="type.id">
                           <td
                             class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800"
                           >
@@ -75,26 +96,23 @@ defineComponent({ CategoryForm });
                           <td
                             class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800"
                           >
-                            {{ category.category_name }}
+                            {{ type.name }}
                           </td>
                           <td
                             class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800"
                           >
-                            {{ category.created_at.split("T")[0] }}
+                            {{ type.created_at.split("T")[0] }}
                           </td>
                           <td
                             class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium"
                           >
-
-
                             <Link
-                              :href="`/category/view/${category.id}`"
+                              :href="`/attendees/type/view/${type.id}`"
                               class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border text-gray-600 focus:outline-none focus:text-gray-800 disabled:opacity-50 disabled:pointer-events-none dark:text-gray-500 dark:hover:text-gray-400 dark:focus:text-gray-400 p-2 mr-3 hover:bg-green-700 hover:text-white"
                               aria-haspopup="dialog"
                               aria-expanded="false"
                               aria-controls="hs-scale-animation-modal"
                               data-hs-overlay="#hs-scale-animation-modal"
-                              v-on:click="getRegisterAttendees(event.id)"
                             >
                               <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -118,7 +136,7 @@ defineComponent({ CategoryForm });
                             </Link>
 
                             <Link
-                              :href="`/category/edit/${category.id}`"
+                              :href="`/attendees/type/edit/${type.id}`"
                               class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border text-gray-600 focus:outline-none focus:text-gray-800 disabled:opacity-50 disabled:pointer-events-none dark:text-gray-500 dark:hover:text-gray-400 dark:focus:text-gray-400 p-2 mr-3 hover:bg-gray-700 hover:text-white"
                               aria-haspopup="dialog"
                               aria-expanded="false"
@@ -143,7 +161,7 @@ defineComponent({ CategoryForm });
                             </Link>
 
                             <Link
-                              :href="`/category/delete/${category.id}`"
+                              :href="`/attendees/type/delete/${type.id}`"
                               class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border text-gray-600 focus:outline-none focus:text-gray-800 disabled:opacity-50 disabled:pointer-events-none dark:text-gray-500 dark:hover:text-gray-400 dark:focus:text-gray-400 p-2 mr-3 hover:bg-red-700 hover:text-white"
                               aria-haspopup="dialog"
                               aria-expanded="false"
@@ -175,12 +193,11 @@ defineComponent({ CategoryForm });
               </div>
             </div>
 
-
             <div class="flex justify-end w-full">
               <div class="mb-10 my-5">
                 <Link
                   :href="link.url"
-                  v-for="(link, index) in categories.links"
+                  v-for="(link, index) in types.links"
                   :key="index"
                   class="border py-2 px-3 text-sm"
                   :class="{ 'bg-blue-500 text-white': link.active }"

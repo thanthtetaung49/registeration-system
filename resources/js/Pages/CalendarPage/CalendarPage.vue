@@ -20,9 +20,25 @@ const calendarOptions = ref({
 
 onMounted(() => {
   const events = props.events;
-  const newEvents = [];
+    const newEvents = [];
 
-  events.forEach((event) => {
+    const date = new Date();
+    const month = date.getMonth();
+    const day = date.getDay();
+    const year = date.getFullYear();
+
+    const hour = date.getHours();
+    const min = date.getMinutes();
+    const sec = date.getSeconds();
+
+    events.forEach((event) =>
+    {
+        const timeString = event.end_date;
+
+        const [dbHour, dbMin, dbSec] = timeString.split(':');
+        console.log(dbHour);
+        // console.log(dbMin);
+        // console.log(dbSec);
       const objects = {
       title: event.event_name,
       start: event.start_date,

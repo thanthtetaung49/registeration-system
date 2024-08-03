@@ -24,6 +24,11 @@ class PrintController extends Controller
     }
 
     public function nameBadgeGenerate(Request $request) {
+        $request->validate([
+            'events_id' => ['required'],
+            'users_id' => ['required'],
+        ]);
+
         $eventsId = $request->events_id;
         $usersId = $request->users_id;
 
@@ -35,7 +40,7 @@ class PrintController extends Controller
         $qrCode = (string) QrCode::size(100)->generate($url);
 
         $attendees = User::where('is_admin', 0)->get();
-        
+
         return Inertia::render('PrintingPage/Print', [
             'nameBadgeData' => $nameBadgeData,
             'qrCode' => $qrCode,
