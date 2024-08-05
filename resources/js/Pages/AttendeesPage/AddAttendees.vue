@@ -231,7 +231,7 @@ const saveAttendees = () =>
                   <div class="w-1/3 ms-3">
                     <InputLabel :value="'Attendees type'"></InputLabel>
                     <select
-                      v-model="form.sex"
+                      v-model="form.attendees_types_id"
                       class="py-3 px-4 pe-9 block w-full border-gray-200 rounded-lg text-sm focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none mt-3"
                     >
                       <option value="" selected="">Open this attendees type</option>

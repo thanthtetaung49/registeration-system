@@ -29,6 +29,7 @@
         "dropzone": "^6.0.0-beta.2",
         "lodash": "^4.17.21",
         "preline": "^2.4.1",
-        "puppeteer": "^22.15.0"
+        "puppeteer": "^22.15.0",
+        "vue-qrcode-reader": "^5.5.7"
     }
 }

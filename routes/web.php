@@ -6,6 +6,7 @@ use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\EventListController;
+use App\Http\Controllers\EventReportController;
 use App\Http\Controllers\InstructorController;
 use App\Http\Controllers\ListAttendeesController;
 use App\Http\Controllers\PrintController;
@@ -14,6 +15,7 @@ use App\Http\Controllers\QrCodeController;
 use App\Http\Controllers\QrcodePrintController;
 use App\Http\Controllers\RegisterAttendeesController;
 use App\Http\Controllers\RoomController;
+use App\Http\Controllers\SecurityController;
 use App\Http\Controllers\UploadAttendeesController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -38,6 +40,11 @@ Route::get('/dashboard', function () {
 
 Route::middleware(['auth', 'verified'])->group(function () {
 
+    // security
+    Route::prefix('/security')->group(function () {
+        Route::get('/home', [SecurityController::class, 'index'])->name('security.index');
+    });
+
     Route::prefix('/event')->group(function () {
         // event
         Route::get('', [EventController::class, 'index'])->name('event.index');
@@ -50,8 +57,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/list/update/{event}', [EventListController::class, 'update'])->name('event.list.update');
         Route::get('/list/delete/{event}', [EventListController::class, 'delete'])->name('event.list.delete');
         Route::get('/search', [EventListController::class, 'search'])->name('event.search');
-
         Route::get('/attendees/list/{eventId}', [EventListController::class, 'eventAttendeesList'])->name('event.attendees.list');
+
+        // event report
+        Route::get('/report', [EventReportController::class, 'index'])->name('event.report.index');
+        Route::get('/report/search', [EventReportController::class, 'search'])->name('event.report.search');
+        Route::get('/report/checkin/excel/export', [EventReportController::class, 'excelExport'])->name('checkin.excel.report');
     });
 
     // instructors
@@ -88,6 +99,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // list
         Route::get('/list', [ListAttendeesController::class, 'index'])->name('attendees.list.index');
         Route::get('/search', [ListAttendeesController::class, 'search'])->name('attendees.search');
+        Route::get('/list/excel/export', [ListAttendeesController::class, 'excelExport'])->name('attendees.export');
+        Route::get('/list/csv/export', [ListAttendeesController::class, 'csvExport'])->name('attendees.export');
 
         // type
         Route::get('/type', [AttendeesTypeController::class, 'index'])->name('attendees.type.index');
@@ -108,6 +121,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // upload and  import
         Route::get('/upload', [UploadAttendeesController::class, 'index'])->name('attendees.upload.index');
         Route::post('/import', [UploadAttendeesController::class, 'importAttendee'])->name('attendees.import');
+        Route::get('/template/export', [UploadAttendeesController::class, 'export'])->name('attendees.export');
         // register
         Route::get('/register', [RegisterAttendeesController::class, 'index'])->name('attendees.register.index');
         Route::post('/event/register', [RegisterAttendeesController::class, 'submitAttendeeEvent'])->name('attendees.register.create');
@@ -116,18 +130,18 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // print
     Route::prefix('/print')->group(function () {
         Route::get('', [PrintController::class, 'index'])->name('print.index');
-        Route::get('/event/{userId}', [PrintController::class, 'printEvent'])->name('print.event');
+        Route::get('/event/{eventId}', [PrintController::class, 'printEvent'])->name('print.event');
         Route::post('', [PrintController::class, 'nameBadgeGenerate'])->name('nameBadge.generate');
     });
 
     // calendar
     Route::get('/calendar', [CalendarController::class, 'index'])->name('calendar.index');
 
-    // pdf print
+    // qrcode download
     Route::get('qrcode/download/{registerEventId}', [QrcodePrintController::class, 'index'])->name('qrcode.print');
 });
 
-Route::get('/qrcode/scan', [QrcodePrintController::class, 'scanQrCode']);
+Route::post('/qrcode/scan', [QrcodePrintController::class, 'scanQrCode']);
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

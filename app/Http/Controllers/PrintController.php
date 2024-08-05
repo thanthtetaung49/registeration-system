@@ -11,19 +11,24 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class PrintController extends Controller
 {
-    public function index () {
-        $attendees = User::where('is_admin', 0)->get();
+    public function index()
+    {
+        $events = Event::get();
 
-        return Inertia::render('PrintingPage/Print', ['attendees' => $attendees]);
+        return Inertia::render('PrintingPage/Print', ['events' => $events]);
     }
 
-    public function printEvent($userId) {
-        $registerEvent = RegisterEvent::with('events')->where('users_id', $userId)->get();
+    public function printEvent($eventId)
+    {
+        $registerEvent = RegisterEvent::with('register_attendees')
+                        ->where('events_id', $eventId)
+                        ->get();
 
         return response()->json($registerEvent);
     }
 
-    public function nameBadgeGenerate(Request $request) {
+    public function nameBadgeGenerate(Request $request)
+    {
         $request->validate([
             'events_id' => ['required'],
             'users_id' => ['required'],
@@ -32,7 +37,7 @@ class PrintController extends Controller
         $eventsId = $request->events_id;
         $usersId = $request->users_id;
 
-        $nameBadgeData = RegisterEvent::with('register_attendees', 'events')->where('events_id', $eventsId)
+        $nameBadgeData = RegisterEvent::with('register_attendees', 'events', 'attendees_types')->where('events_id', $eventsId)
             ->where('users_id', $usersId)
             ->first();
 

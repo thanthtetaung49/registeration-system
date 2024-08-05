@@ -7,6 +7,7 @@ import NavLink from "@/Components/NavLink.vue";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink.vue";
 import { Link } from "@inertiajs/vue3";
 import { onMounted } from "vue";
+import { Head } from "@inertiajs/vue3";
 
 onMounted(() => {
   setTimeout(() => {
@@ -18,6 +19,8 @@ const showingNavigationDropdown = ref(false);
 </script>
 
 <template>
+  <Head title="Online Registration system" />
+
   <div class="h-screen overflow-hidden">
     <div class="min-h-screen bg-gray-100">
       <nav class="bg-white border-b border-gray-100">
@@ -204,11 +207,20 @@ const showingNavigationDropdown = ref(false);
             class="pb-2 block mt-5"
             :href="route('event.list.index')"
             :active="
-              route().current('instructor.index') || route().current('instructor.edit') || route().current('instructor.view') ||
-              route().current('category.index') || route().current('category.edit') || route().current('category.view') ||
-              route().current('roomNumber.index') || route().current('roomNumber.edit') || route().current('roomNumber.view') ||
+              route().current('instructor.index') ||
+              route().current('instructor.edit') ||
+              route().current('instructor.view') ||
+              route().current('category.index') ||
+              route().current('category.edit') ||
+              route().current('category.view') ||
+              route().current('roomNumber.index') ||
+              route().current('roomNumber.edit') ||
+              route().current('roomNumber.view') ||
               route().current('event.index') ||
-              route().current('event.list.index') || route().current('event.list.edit') || route().current('event.list.view')
+              route().current('event.list.index') ||
+              route().current('event.list.edit') ||
+route().current('event.list.view') ||
+              route().current('event.report.index')
             "
           >
             <svg
@@ -232,11 +244,14 @@ const showingNavigationDropdown = ref(false);
             :href="route('attendees.list.index')"
             :active="
               route().current('attendees.list.index') ||
-              route().current('attendees.add.index') || route().current('attendees.edit') || route().current('attendees.view') ||
+              route().current('attendees.add.index') ||
+              route().current('attendees.edit') ||
+              route().current('attendees.view') ||
               route().current('attendees.upload.index') ||
               route().current('attendees.register.index') ||
-              route().current('attendees.type.index') || route().current('attendees.type.edit') || route().current('attendees.type.view')
-
+              route().current('attendees.type.index') ||
+              route().current('attendees.type.edit') ||
+              route().current('attendees.type.view')
             "
           >
             <svg

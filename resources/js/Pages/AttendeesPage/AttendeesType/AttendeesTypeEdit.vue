@@ -5,8 +5,7 @@ import InputLabel from "@/Components/InputLabel.vue";
 import TextInput from "@/Components/TextInput.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import InputError from "@/Components/InputError.vue";
-import { useForm } from "@inertiajs/vue3";
-
+import { Link, useForm } from "@inertiajs/vue3";
 
 const props = defineProps({
   type: Object,
@@ -16,8 +15,8 @@ const form = useForm({
   name: props.type.name,
 });
 
-const updateAttendeesType = () => form.post(`/attendees/type/update/${props.type.id}`);
-
+const updateAttendeesType = () =>
+  form.post(`/attendees/type/update/${props.type.id}`);
 </script>
 
 <template>
@@ -31,7 +30,6 @@ const updateAttendeesType = () => form.post(`/attendees/type/update/${props.type
 
         <div class="w-full bg-white rounded-lg shadow-md">
           <div class="border-b border-gray-200 px-4 py-5">
-
             <div class="mt-5">
               <form v-on:submit.prevent="updateAttendeesType">
                 <div>
@@ -43,6 +41,11 @@ const updateAttendeesType = () => form.post(`/attendees/type/update/${props.type
                   <InputError :message="form.errors.name"></InputError>
                 </div>
                 <div class="mt-5 w-full flex justify-end">
+                  <Link
+                    href="/attendees/type"
+                    class="inline-flex items-center px-4 py-2 bg-red-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-700 focus:bg-red-700 active:bg-red-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150 mr-3"
+                    >Back</Link
+                  >
                   <PrimaryButton type="submit">Save</PrimaryButton>
                 </div>
               </form>

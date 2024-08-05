@@ -420,6 +420,12 @@ const searchEvent = () => {
                               scope="col"
                               class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase"
                             >
+                              Register at
+                            </th>
+                            <th
+                              scope="col"
+                              class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase"
+                            >
                               Created at
                             </th>
                           </tr>
@@ -458,6 +464,17 @@ const searchEvent = () => {
                             >
                               {{ attendee.register_attendees.position }}
                             </td>
+                            <td
+                              class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800"
+                            >
+                            <span  v-if="attendee.registration_status == 1 && attendee.scan_time">
+                                {{
+                                    attendee.scan_time
+                                }}
+                            </span>
+                            <span v-else>-</span>
+                            </td>
+
                             <td
                               class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800"
                             >

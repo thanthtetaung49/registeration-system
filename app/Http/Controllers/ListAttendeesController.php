@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\AttendeesExport;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ListAttendeesController extends Controller
 {
@@ -25,5 +27,20 @@ class ListAttendeesController extends Controller
         ->paginate(5);
 
         return response()->json($users);
+    }
+
+    public function excelExport () {
+        $attendees = $this->exportAttendees();
+        return Excel::download(new AttendeesExport($attendees), 'attendees.xlsx');
+    }
+
+    public function csvExport () {
+        $attendees = $this->exportAttendees();
+        return Excel::download(new AttendeesExport($attendees), 'attendees.csv');
+    }
+
+    private function exportAttendees () {
+        $attendees = User::with('attendees_types')->where('is_admin', 0)->get();
+        return $attendees;
     }
 }

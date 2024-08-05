@@ -17,6 +17,7 @@ class AttendeesImport implements ToModel, WithHeadingRow
     {
         // dd($row);
 
+
         return new User([
             'name' => $row['name'],
             'age' => $row['age'],

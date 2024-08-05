@@ -11,7 +11,7 @@ const props = defineProps({ message: Object });
       tabindex="-1"
       aria-labelledby="hs-solid-color-success-label"
     >
-      alert! You should check in on some of those fields below.
+      {{ props.message }}
     </div>
   </div>
 </template>

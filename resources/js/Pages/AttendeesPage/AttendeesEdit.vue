@@ -4,13 +4,14 @@ import InputLabel from "@/Components/InputLabel.vue";
 import TextInput from "@/Components/TextInput.vue";
 import TextInputError from "@/Components/InputError.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
-import { useForm } from "@inertiajs/vue3";
+import { Link, useForm } from "@inertiajs/vue3";
 import defaultImage from "@/images/default_profile.png";
 import { defineComponent, ref, onMounted } from "vue";
 
 defineComponent({ defaultImage });
 
 const props = defineProps({ user: Object, types: Object });
+
 const user = props.user;
 
 const form = useForm({
@@ -25,10 +26,11 @@ const form = useForm({
   address: user.address,
   email: user.email,
   avatar: user.profile_path,
-  attendees_types_id: props.user.attendees_types.id
-    ? props.user.attendees_types.id
-    : null,
+  attendees_types_id:
+    props.user.attendees_types != null ? props.user.attendees_types.id : "",
 });
+
+console.log(form);
 
 const imageUrl = ref(null);
 
@@ -72,6 +74,12 @@ const updateAttendees = () => form.post(`/attendees/update/${user.id}`);
                     v-else-if="user.profile_path"
                     :src="`http://127.0.0.1:8000/storage/${user.profile_path}`"
                     alt="preview image"
+                    class="w-20 rounded-md h-20"
+                  />
+                  <img
+                    v-else
+                    :src="defaultImage"
+                    alt="default image"
                     class="w-20 rounded-md h-20"
                   />
 
@@ -240,6 +248,11 @@ const updateAttendees = () => form.post(`/attendees/update/${user.id}`);
                 </div>
 
                 <div class="w-full flex justify-end">
+                  <Link
+                    href="/attendees/list"
+                    class="inline-flex items-center px-4 py-2 bg-red-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-700 focus:bg-red-700 active:bg-red-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150 mr-3"
+                    >Back</Link
+                  >
                   <PrimaryButton type="submit">Save</PrimaryButton>
                 </div>
               </form>

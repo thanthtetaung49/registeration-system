@@ -4,8 +4,7 @@ import InputLabel from "@/Components/InputLabel.vue";
 import TextInput from "@/Components/TextInput.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import InputError from "@/Components/InputError.vue";
-import { useForm } from "@inertiajs/vue3";
-
+import { Link, useForm } from "@inertiajs/vue3";
 
 const props = defineProps({
   category: Object,
@@ -14,7 +13,7 @@ const props = defineProps({
 const category = props.category;
 
 const form = useForm({
-    category_name: category.category_name,
+  category_name: category.category_name,
 });
 
 const updateCategories = () => form.post(`/category/update/${category.id}`);
@@ -42,6 +41,11 @@ const updateCategories = () => form.post(`/category/update/${category.id}`);
                   <InputError :message="form.errors.category_name"></InputError>
                 </div>
                 <div class="mt-5 w-full flex justify-end">
+                  <Link
+                    href="/category"
+                    class="inline-flex items-center px-4 py-2 bg-red-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-700 focus:bg-red-700 active:bg-red-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150 mr-3"
+                    >Back</Link
+                  >
                   <PrimaryButton type="submit" class="">Save</PrimaryButton>
                 </div>
               </form>

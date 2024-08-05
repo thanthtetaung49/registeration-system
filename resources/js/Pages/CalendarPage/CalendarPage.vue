@@ -1,6 +1,5 @@
 <script setup>
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import { Head } from "@inertiajs/vue3";
 import FullCalendar from "@fullcalendar/vue3";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
@@ -13,33 +12,35 @@ defineComponent({
 const props = defineProps({ events: Object });
 
 const calendarOptions = ref({
-    plugins: [dayGridPlugin, interactionPlugin],
-    initialView: "dayGridMonth",
-    events: [],
+  plugins: [dayGridPlugin, interactionPlugin],
+  initialView: "dayGridMonth",
+  events: [],
+  eventContent: function (arg) {
+    const date = new Date();
+    const eventEnd = new Date(arg.event._instance.range.end);
+
+    const el = document.createElement("div");
+    el.innerHTML = arg.event.title;
+    el.style.color = "white";
+    el.style.padding = "5px";
+    el.style.borderRadius = "3px";
+
+    if (date > eventEnd) {
+      el.style.backgroundColor = "red";
+    } else {
+      el.style.backgroundColor = "blue";
+    }
+
+    return { domNodes: [el] };
+  },
 });
 
 onMounted(() => {
   const events = props.events;
-    const newEvents = [];
+  const newEvents = [];
 
-    const date = new Date();
-    const month = date.getMonth();
-    const day = date.getDay();
-    const year = date.getFullYear();
-
-    const hour = date.getHours();
-    const min = date.getMinutes();
-    const sec = date.getSeconds();
-
-    events.forEach((event) =>
-    {
-        const timeString = event.end_date;
-
-        const [dbHour, dbMin, dbSec] = timeString.split(':');
-        console.log(dbHour);
-        // console.log(dbMin);
-        // console.log(dbSec);
-      const objects = {
+  events.forEach((event) => {
+    const objects = {
       title: event.event_name,
       start: event.start_date,
       end: addOneDay(event.end_date),
@@ -50,18 +51,14 @@ onMounted(() => {
   calendarOptions.value.events = newEvents;
 });
 
-const addOneDay = (date) =>
-{
-    const newDate = new Date(date);
-    newDate.setDate(newDate.getDate() + 1);
-    return newDate.toISOString().split('T')[0];
-}
-
+const addOneDay = (date) => {
+  const newDate = new Date(date);
+  newDate.setDate(newDate.getDate() + 1);
+  return newDate.toISOString().split("T")[0];
+};
 </script>
 
 <template>
-  <Head title="Dashboard" />
-
   <AuthenticatedLayout>
     <template #header>
       <h2 class="font-semibold text-xl text-gray-800 leading-tight">

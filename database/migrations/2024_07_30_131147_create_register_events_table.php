@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('events_id')->constrained()->cascadeOnDelete();
             $table->string('qr_code');
             $table->integer('registration_status')->default(0);
+            $table->dateTime('scan_time')->nullable();
             $table->timestamps();
         });
     }
