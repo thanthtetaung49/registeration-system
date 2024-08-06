@@ -15,8 +15,7 @@ class AttendeesImport implements ToModel, WithHeadingRow
     */
     public function model(array $row)
     {
-        // dd($row);
-
+        // dd($row['attendees_types_id']);
 
         return new User([
             'name' => $row['name'],
@@ -29,6 +28,7 @@ class AttendeesImport implements ToModel, WithHeadingRow
             'department' => $row['department'],
             'address' => $row['address'],
             'email' => $row['email'],
+            'attendees_types_id' => $row['attendees_types_id']
         ]);
     }
 }

@@ -10,14 +10,20 @@ use Inertia\Inertia;
 
 class RegisterAttendeesController extends Controller
 {
-    public function index () {
-        $users = User::where('is_admin', 0)->get();
+    public function index()
+    {
+        $users = User::where('is_admin', 0)->paginate(5);
         $events = Event::get();
 
-        return Inertia::render('AttendeesPage/RegisterAttendees', ['users' => $users, 'events' => $events]);
+        return Inertia::render('AttendeesPage/RegisterAttendees', [
+            'users' => $users,
+            'events' => $events
+        ]);
     }
 
-    public function submitAttendeeEvent(Request $request) {
+    public function submitAttendeeEvent(Request $request)
+    {
+        // dd($request->all());
         $request->validate([
             'users_id' => ['required'],
             'events_id' => ['required'],
@@ -29,14 +35,14 @@ class RegisterAttendeesController extends Controller
             $letters = chr(rand(65, 90)) . chr(rand(65, 90)) . chr(rand(65, 90));
             $digits = rand(100, 999);
             $code = $letters . $digits;
-            
-            $registerEvents = new RegisterEvent();
-            $registerEvents->users_id = $users_id;
-            $registerEvents->events_id = $request->events_id;
-            $registerEvents->qr_code = $code;
 
-            $registerEvents->save();
+            RegisterEvent::create([
+                'users_id'  => $users_id,
+                'events_id' => $request->events_id,
+                'qr_code'   => $code,
+            ]);
         }
+
 
         return to_route('attendees.register.index');
     }

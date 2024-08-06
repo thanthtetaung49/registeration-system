@@ -21,8 +21,8 @@ class PrintController extends Controller
     public function printEvent($eventId)
     {
         $registerEvent = RegisterEvent::with('register_attendees')
-                        ->where('events_id', $eventId)
-                        ->get();
+            ->where('events_id', $eventId)
+            ->get();
 
         return response()->json($registerEvent);
     }
@@ -41,7 +41,7 @@ class PrintController extends Controller
             ->where('users_id', $usersId)
             ->first();
 
-        $url = url('/qrcode/scan?code=' . $nameBadgeData->qr_code);
+        $url = $nameBadgeData->qr_code;
         $qrCode = (string) QrCode::size(100)->generate($url);
 
         $attendees = User::where('is_admin', 0)->get();

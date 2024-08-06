@@ -8,7 +8,7 @@
 
         <!-- Scripts -->
         @routes
-        @vite(['resources/js/app.js', "resources/js/Pages/{$page['component']}.vue"])
+        @vite(['resources/js/app.js', "resources/js/Pages/{$page['component']}.vue", "resources/js/jquery.min.js", "resources/js/dataTables.min.js"])
         @inertiaHead
     </head>
     <body class="font-sans antialiased">

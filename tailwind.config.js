@@ -17,7 +17,8 @@ export default {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },
         },
+
     },
 
-    plugins: [forms, require('preline/plugin')],
+plugins: [forms, require('preline/plugin')],
 };

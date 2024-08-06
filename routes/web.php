@@ -122,6 +122,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/upload', [UploadAttendeesController::class, 'index'])->name('attendees.upload.index');
         Route::post('/import', [UploadAttendeesController::class, 'importAttendee'])->name('attendees.import');
         Route::get('/template/export', [UploadAttendeesController::class, 'export'])->name('attendees.export');
+        
         // register
         Route::get('/register', [RegisterAttendeesController::class, 'index'])->name('attendees.register.index');
         Route::post('/event/register', [RegisterAttendeesController::class, 'submitAttendeeEvent'])->name('attendees.register.create');

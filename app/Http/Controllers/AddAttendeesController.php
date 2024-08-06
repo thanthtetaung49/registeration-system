@@ -31,30 +31,38 @@ class AddAttendeesController extends Controller
             "position"       => ['required'],
             "department"     => ['required'],
             "address"        => ['required'],
-            "email"          => ['required'],
-            "avatar" => ['image', 'mimes:png,jpeg,jpg,svg'],
+            "email"          => ['required', 'email', 'unique:users,email'],
             "attendees_types_id" => ['required']
         ]);
 
         $file = $request->file('avatar');
-        $filename = uniqid() . time() . $request->file('avatar')->getClientOriginalName();
+        if (!empty($file)) {
+            // dd('file has');
+            $filename = uniqid() . time() . $request->file('avatar')->getClientOriginalName();
+            $file->storeAs('public/profile', $filename);
 
-        User::create([
-            "name"           => $request->name,
-            "age"            => $request->age,
-            "sex"            => $request->sex,
-            "phone_number"   => $request->phone_number,
-            "nrc_number"     => $request->nrc_number,
-            "edu_background" => $request->edu_background,
-            "position"       => $request->position,
-            "department"     => $request->department,
-            "address"        => $request->address,
-            "email"          => $request->email,
-            "profile_path" => 'profile/' . $filename,
+            $imageArray = ["profile_path" => 'profile/' . $filename];
+        } else {
+            $imageArray = ["profile_path" => null];
+        }
+
+        $array = [
+            "name"               => $request->name,
+            "age"                => $request->age,
+            "sex"                => $request->sex,
+            "phone_number"       => $request->phone_number,
+            "nrc_number"         => $request->nrc_number,
+            "edu_background"     => $request->edu_background,
+            "position"           => $request->position,
+            "department"         => $request->department,
+            "address"            => $request->address,
+            "email"              => $request->email,
             "attendees_types_id" => $request->attendees_types_id,
-        ]);
+        ];
 
-        $file->storeAs('public/profile', $filename);
+        $mergeArray = array_merge($array, $imageArray);
+        
+        User::create($mergeArray);
 
         return to_route('attendees.list.index');
     }

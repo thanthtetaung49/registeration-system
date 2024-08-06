@@ -49,6 +49,8 @@ const nameBadgeGenerate = () => {
     onSuccess: () => form.reset("events_id", "users_id"),
   });
 };
+
+
 </script>
 
 <template>
