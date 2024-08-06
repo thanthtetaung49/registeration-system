@@ -140,23 +140,8 @@ const nameBadgeGenerate = () => {
               </div>
 
               <div class="w-[5in] h-[2.5in] border shadow-lg">
-                <div class="mt-[25px]">
-                  <div v-if="nameBadgeData.attendees_types !== null">
-                    <h3 class="text-2xl text-center mt-[20px] text-black">
-                      {{ nameBadgeData.register_attendees.name }}
-                    </h3>
-                    <p class="text-lg text-center uppercase">
-                      {{ nameBadgeData.attendees_types.name }}
-                    </p>
-                  </div>
-                  <div v-else>
-                    <h3 class="text-black text-xl text-center mt-[20px]">
-                      {{ nameBadgeData.register_attendees.name }}
-                    </h3>
-                  </div>
-                </div>
 
-                <div class="flex justify-center w-full mt-[15px]">
+                <div class="flex justify-center items-center h-full w-full mt-[15px]">
                   <div v-html="qrCode"></div>
                 </div>
               </div>

@@ -33,6 +33,17 @@ import { Link } from "@inertiajs/vue3";
         Add attendees type
       </Link>
       <Link
+        href="/attendees/group"
+        class="py-4 px-1 inline-flex items-center gap-x-2 border-b-2 border-transparent text-sm whitespace-nowrap hover:text-blue-600 focus:outline-none focus:text-blue-600 disabled:opacity-50 disabled:pointer-events-none"
+        role="tab"
+        :class="{
+          'text-blue-500 font-bold': route().current('attendees.group.index'),
+          'text-gray-500 ': !route().current('attendees.group.index'),
+        }"
+      >
+        Add attendees group
+      </Link>
+      <Link
         href="/attendees/add"
         class="py-4 px-1 inline-flex items-center gap-x-2 border-b-2 border-transparent text-sm whitespace-nowrap hover:text-blue-600 focus:outline-none focus:text-blue-600 disabled:opacity-50 disabled:pointer-events-none"
         role="tab"

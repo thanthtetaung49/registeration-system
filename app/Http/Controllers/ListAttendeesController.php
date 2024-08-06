@@ -11,7 +11,7 @@ use Maatwebsite\Excel\Facades\Excel;
 class ListAttendeesController extends Controller
 {
     public function index () {
-        $users = User::with('attendees_types')->orderBy('id', 'desc')->where('is_admin', 0)->paginate(5);
+        $users = User::with('attendees_types', 'attendees_groups', 'register_events')->orderBy('id', 'desc')->where('is_admin', 0)->paginate(5);
 
         return Inertia::render('AttendeesPage/ListAttendees', ['users' => $users]);
     }

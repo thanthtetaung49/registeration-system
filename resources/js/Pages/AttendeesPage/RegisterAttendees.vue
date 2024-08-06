@@ -8,7 +8,12 @@ import InputError from "@/Components/InputError.vue";
 import TextInput from "@/Components/TextInput.vue";
 import axios from "axios";
 
-const props = defineProps({ users: Object, events: Object, message: String });
+const props = defineProps({
+  users: Object,
+  events: Object,
+  message: String,
+  groups: Object,
+});
 
 const form = useForm({
   users_id: [],
@@ -16,12 +21,10 @@ const form = useForm({
 });
 
 const users = ref(props.users);
-
 const status = ref(false);
 const checkBoxAll = ref(null);
+const attendees_groups_id = ref("");
 const query = ref(null);
-
-// console.log(users);
 
 const registerEvent = () => {
   const checkBoxes = document.querySelectorAll(".checkBoxes");
@@ -59,36 +62,58 @@ const handleCheckboxChange = (event) => {
 };
 
 const handleSelectAllChackBoxChange = (users) => {
+  const checkBoxes = document.querySelectorAll(".checkBoxes");
+
   if (checkBoxAll.value.checked) {
+    checkBoxes.forEach((checkBox) => {
+      checkBox.checked = true;
+    });
+
     users.data.forEach((user) => {
       form.users_id.push(user.id);
     });
   } else {
+    checkBoxes.forEach((checkBox) => {
+      checkBox.checked = false;
+    });
+
     form.users_id = [];
   }
-
-  // console.log(form.users_id);
 };
 
-// const searchAttendees = () => {
-//   if (!query.value) {
-//     users.value = props.users; // Reset to original users if query is empty
-//     return;
-//   }
-//   axios
-//     .get(`/attendees/search?query=${query.value}`)
-//     .then((response) => {
-//       users.value = response.data; // Update users with the search results
-//     })
-//     .catch((error) => {
-//       console.log(error);
-//     });
-// };
+const handleAttendeeGroupDropdown = () => {
+  const checkBoxes = document.querySelectorAll(".checkBoxes");
+  checkBoxAll.value.checked = false;
 
-// watch(query, () =>
-// {
-//     searchAttendees();
-// })
+  axios
+    .post("/attendees/event/register/filterGroup", {
+      id: attendees_groups_id.value,
+    })
+    .then((response) => {
+      users.value = response.data;
+
+      checkBoxes.forEach((checkBox) => {
+        users.value.data.forEach((user) => {
+          if (checkBox.value == user.id) {
+            console.log(checkBox.value);
+            checkBox.checked = false;
+          }
+        });
+      });
+    })
+    .catch((error) => console.error(error));
+};
+
+const searchUser = () => {
+  axios
+    .post(`/attendees/event/register/search`, {
+      query: query.value,
+    })
+    .then((response) => {
+      users.value = response.data;
+    })
+    .catch((error) => console.error(error));
+};
 </script>
 
 <template>
@@ -113,25 +138,75 @@ const handleSelectAllChackBoxChange = (users) => {
           <div class="border-b border-gray-200 px-4">
             <AttendeesTabLayout></AttendeesTabLayout>
 
-            <div class="mt-5">
-              <form v-on:submit.prevent="registerEvent">
-                <div class="w-full flex items-center mb-5 justify-end">
-                  <div class="w-1/5">
+            <div class="py-3">
+              <div class="w-full flex items-center mt-5">
+                <div class="relative w-1/4">
+                  <label for="hs-table-input-search" class="sr-only"
+                    >Search</label
+                  >
+                  <input
+                    v-model="query"
+                    @input="searchUser"
+                    type="text"
+                    name="hs-table-search"
+                    id="hs-table-input-search"
+                    class="p-3 ps-9 block w-full border-gray-200 shadow-sm rounded-lg text-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+                    placeholder="Search for items"
+                    data-hs-datatable-search=""
+                  />
+                  <div
+                    class="absolute inset-y-0 start-0 flex items-center pointer-events-none ps-3"
+                  >
+                    <svg
+                      class="size-4 text-gray-400 dark:text-neutral-500"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <circle cx="11" cy="11" r="8"></circle>
+                      <path d="m21 21-4.3-4.3"></path>
+                    </svg>
+                  </div>
+                </div>
+                <div class="w-1/4 ms-3">
+                  <select
+                    class="hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-3 ps-4 pe-9 flex gap-x-2 text-nowrap w-full cursor-pointer bg-white border border-gray-200 rounded-lg text-start text-sm focus:outline-none focus:ring-2 focus:ring-blue-200 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-neutral-600"
+                    v-model="attendees_groups_id"
+                    @change="handleAttendeeGroupDropdown"
+                  >
+                    <option value="">Choose</option>
+                    <option
+                      v-for="group in groups"
+                      :key="group.id"
+                      :value="group.id"
+                    >
+                      {{ group.name }}
+                    </option>
+                  </select>
+                </div>
+                <form v-on:submit.prevent="registerEvent" class="w-1/3 ms-3">
+                  <div class="ms-auto flex items-center">
                     <select
                       data-hs-select='{
-                                                    "hasSearch": true,
-                                                    "searchPlaceholder": "Search...",
-                                                    "searchClasses": "block w-full text-sm border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 before:absolute before:inset-0 before:z-[1] dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 py-2 px-3",
-                                                    "searchWrapperClasses": "bg-white p-2 -mx-1 sticky top-0 dark:bg-neutral-900",
-                                                    "placeholder": "Select event...",
-                                                    "toggleTag": "<button type=\"button\" aria-expanded=\"false\"><span class=\"me-2\" data-icon></span><span class=\"text-gray-800 dark:text-neutral-200 \" data-title></span></button>",
-                                                    "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-3 ps-4 pe-9 flex gap-x-2 text-nowrap w-full cursor-pointer bg-white border border-gray-200 rounded-lg text-start text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-neutral-600",
-                                                    "dropdownClasses": "mt-2 max-h-72 pb-1 px-1 space-y-0.5 z-20 w-full bg-white border border-gray-200 rounded-lg overflow-hidden overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500 dark:bg-neutral-900 dark:border-neutral-700",
-                                                    "optionClasses": "py-2 px-4 w-full text-sm text-gray-800 cursor-pointer hover:bg-gray-100 rounded-lg focus:outline-none focus:bg-gray-100 dark:bg-neutral-900 dark:hover:bg-neutral-800 dark:text-neutral-200 dark:focus:bg-neutral-800",
-                                                    "optionTemplate": "<div><div class=\"flex items-center\"><div class=\"me-2\" data-icon></div><div class=\"text-gray-800 dark:text-neutral-200 \" data-title></div></div></div>",
-                                                    "extraMarkup": "<div class=\"absolute top-1/2 end-3 -translate-y-1/2\"><svg class=\"shrink-0 size-3.5 text-gray-500 dark:text-neutral-500 \" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m7 15 5 5 5-5\"/><path d=\"m7 9 5-5 5 5\"/></svg></div>"
-                                                }'
-                      class="hidden w-full"
+                          "hasSearch": true,
+                          "searchPlaceholder": "Search...",
+                                                                    "searchClasses": "block w-full text-sm border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 before:absolute before:inset-0 before:z-[1] dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 py-2 px-3",
+                                                                    "searchWrapperClasses": "bg-white p-2 -mx-1 sticky top-0 dark:bg-neutral-900",
+                                                                    "placeholder": "Select event...",
+                                                                    "toggleTag": "<button type=\"button\" aria-expanded=\"false\"><span class=\"me-2\" data-icon></span><span class=\"text-gray-800 dark:text-neutral-200 \" data-title></span></button>",
+                                                                    "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-3 ps-4 pe-9 flex gap-x-2 text-nowrap w-full cursor-pointer bg-white border border-gray-200 rounded-lg text-start text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-neutral-600 w-[250px]",
+                                                                    "dropdownClasses": "mt-2 max-h-72 pb-1 px-1 space-y-0.5 z-20 w-full bg-white border border-gray-200 rounded-lg overflow-hidden overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500 dark:bg-neutral-900 dark:border-neutral-700",
+                                                                    "optionClasses": "py-2 px-4 w-full text-sm text-gray-800 cursor-pointer hover:bg-gray-100 rounded-lg focus:outline-none focus:bg-gray-100 dark:bg-neutral-900 dark:hover:bg-neutral-800 dark:text-neutral-200 dark:focus:bg-neutral-800",
+                                                                    "optionTemplate": "<div><div class=\"flex items-center\"><div class=\"me-2\" data-icon></div><div class=\"text-gray-800 dark:text-neutral-200 \" data-title></div></div></div>",
+                                                                    "extraMarkup": "<div class=\"absolute top-1/2 end-3 -translate-y-1/2\"><svg class=\"shrink-0 size-3.5 text-gray-500 dark:text-neutral-500 \" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m7 15 5 5 5-5\"/><path d=\"m7 9 5-5 5 5\"/></svg></div>"
+                        }'
+                      class="hidden"
                       v-model="form.events_id"
                     >
                       <option value="">Choose events</option>
@@ -143,63 +218,19 @@ const handleSelectAllChackBoxChange = (users) => {
                         {{ event.event_name }}
                       </option>
                     </select>
-                    <InputError :message="form.errors.events_id"></InputError>
-                  </div>
 
-                  <PrimaryButton type="submit" class="ms-3">Save</PrimaryButton>
-                  <!-- <div class="ms-3 w-full mb-5">
-                  </div> -->
-                </div>
-              </form>
-
-              <div
-                class="flex flex-col"
-                data-hs-datatable='{
-  "pageLength": 10,
-  "pagingOptions": {
-    "pageBtnClasses": "min-w-[40px] flex justify-center items-center text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 py-2.5 text-sm rounded-full disabled:opacity-50 disabled:pointer-events-none"
-  },
-  "selecting": true,
-  "rowSelectingOptions": {
-    "selectAllSelector": "#hs-table-checkbox-all"
-  }
-}'
-              >
-                <div class="py-3">
-                  <div class="relative max-w-xs">
-                    <label for="hs-table-input-search" class="sr-only"
-                      >Search</label
-                    >
-                    <input
-                      type="text"
-                      name="hs-table-search"
-                      id="hs-table-input-search"
-                      class="py-2 px-3 ps-9 block w-full border-gray-200 shadow-sm rounded-lg text-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
-                      placeholder="Search for items"
-                      data-hs-datatable-search=""
-                    />
-                    <div
-                      class="absolute inset-y-0 start-0 flex items-center pointer-events-none ps-3"
-                    >
-                      <svg
-                        class="size-4 text-gray-400 dark:text-neutral-500"
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
+                    <div class="ms-auto w-full">
+                      <PrimaryButton type="submit" class="ms-3"
+                        >Save</PrimaryButton
                       >
-                        <circle cx="11" cy="11" r="8"></circle>
-                        <path d="m21 21-4.3-4.3"></path>
-                      </svg>
                     </div>
                   </div>
-                </div>
+                </form>
+              </div>
+            </div>
 
+            <div class="mt-5">
+              <div class="flex flex-col">
                 <div class="overflow-x-auto">
                   <div class="min-w-full inline-block align-middle">
                     <div class="overflow-hidden">
@@ -234,59 +265,6 @@ const handleSelectAllChackBoxChange = (users) => {
                                 class="py-1 px-2.5 inline-flex items-center border border-transparent text-sm text-gray-500 rounded-md hover:border-gray-200"
                               >
                                 Name
-                                <svg
-                                  class="size-3.5 ms-1 -me-0.5 text-gray-400"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  width="24"
-                                  height="24"
-                                  viewBox="0 0 24 24"
-                                  fill="none"
-                                  stroke="currentColor"
-                                  stroke-width="2"
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                >
-                                  <path
-                                    class="hs-datatable-ordering-asc:text-blue-600"
-                                    d="m7 15 5 5 5-5"
-                                  ></path>
-                                  <path
-                                    class="hs-datatable-ordering-desc:text-blue-600"
-                                    d="m7 9 5-5 5 5"
-                                  ></path>
-                                </svg>
-                              </div>
-                            </th>
-
-                            <th
-                              scope="col"
-                              class="py-1 group text-start font-normal focus:outline-none"
-                            >
-                              <div
-                                class="py-1 px-2.5 inline-flex items-center border border-transparent text-sm text-gray-500 rounded-md hover:border-gray-200"
-                              >
-                                Age
-                                <svg
-                                  class="size-3.5 ms-1 -me-0.5 text-gray-400"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  width="24"
-                                  height="24"
-                                  viewBox="0 0 24 24"
-                                  fill="none"
-                                  stroke="currentColor"
-                                  stroke-width="2"
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                >
-                                  <path
-                                    class="hs-datatable-ordering-asc:text-blue-600"
-                                    d="m7 15 5 5 5-5"
-                                  ></path>
-                                  <path
-                                    class="hs-datatable-ordering-desc:text-blue-600"
-                                    d="m7 9 5-5 5 5"
-                                  ></path>
-                                </svg>
                               </div>
                             </th>
 
@@ -298,27 +276,6 @@ const handleSelectAllChackBoxChange = (users) => {
                                 class="py-1 px-2.5 inline-flex items-center border border-transparent text-sm text-gray-500 rounded-md hover:border-gray-200"
                               >
                                 Phone number
-                                <svg
-                                  class="size-3.5 ms-1 -me-0.5 text-gray-400"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  width="24"
-                                  height="24"
-                                  viewBox="0 0 24 24"
-                                  fill="none"
-                                  stroke="currentColor"
-                                  stroke-width="2"
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                >
-                                  <path
-                                    class="hs-datatable-ordering-asc:text-blue-600"
-                                    d="m7 15 5 5 5-5"
-                                  ></path>
-                                  <path
-                                    class="hs-datatable-ordering-desc:text-blue-600"
-                                    d="m7 9 5-5 5 5"
-                                  ></path>
-                                </svg>
                               </div>
                             </th>
 
@@ -330,27 +287,6 @@ const handleSelectAllChackBoxChange = (users) => {
                                 class="py-1 px-2.5 inline-flex items-center border border-transparent text-sm text-gray-500 rounded-md hover:border-gray-200"
                               >
                                 Email
-                                <svg
-                                  class="size-3.5 ms-1 -me-0.5 text-gray-400"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  width="24"
-                                  height="24"
-                                  viewBox="0 0 24 24"
-                                  fill="none"
-                                  stroke="currentColor"
-                                  stroke-width="2"
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                >
-                                  <path
-                                    class="hs-datatable-ordering-asc:text-blue-600"
-                                    d="m7 15 5 5 5-5"
-                                  ></path>
-                                  <path
-                                    class="hs-datatable-ordering-desc:text-blue-600"
-                                    d="m7 9 5-5 5 5"
-                                  ></path>
-                                </svg>
                               </div>
                             </th>
 
@@ -361,130 +297,13 @@ const handleSelectAllChackBoxChange = (users) => {
                               <div
                                 class="py-1 px-2.5 inline-flex items-center border border-transparent text-sm text-gray-500 rounded-md hover:border-gray-200"
                               >
-                                NRC number
-                                <svg
-                                  class="size-3.5 ms-1 -me-0.5 text-gray-400"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  width="24"
-                                  height="24"
-                                  viewBox="0 0 24 24"
-                                  fill="none"
-                                  stroke="currentColor"
-                                  stroke-width="2"
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                >
-                                  <path
-                                    class="hs-datatable-ordering-asc:text-blue-600"
-                                    d="m7 15 5 5 5-5"
-                                  ></path>
-                                  <path
-                                    class="hs-datatable-ordering-desc:text-blue-600"
-                                    d="m7 9 5-5 5 5"
-                                  ></path>
-                                </svg>
-                              </div>
-                            </th>
-
-                            <th
-                              scope="col"
-                              class="py-1 group text-start font-normal focus:outline-none"
-                            >
-                              <div
-                                class="py-1 px-2.5 inline-flex items-center border border-transparent text-sm text-gray-500 rounded-md hover:border-gray-200"
-                              >
-                                Department
-                                <svg
-                                  class="size-3.5 ms-1 -me-0.5 text-gray-400"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  width="24"
-                                  height="24"
-                                  viewBox="0 0 24 24"
-                                  fill="none"
-                                  stroke="currentColor"
-                                  stroke-width="2"
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                >
-                                  <path
-                                    class="hs-datatable-ordering-asc:text-blue-600"
-                                    d="m7 15 5 5 5-5"
-                                  ></path>
-                                  <path
-                                    class="hs-datatable-ordering-desc:text-blue-600"
-                                    d="m7 9 5-5 5 5"
-                                  ></path>
-                                </svg>
-                              </div>
-                            </th>
-
-                            <th
-                              scope="col"
-                              class="py-1 group text-start font-normal focus:outline-none"
-                            >
-                              <div
-                                class="py-1 px-2.5 inline-flex items-center border border-transparent text-sm text-gray-500 rounded-md hover:border-gray-200"
-                              >
-                                Positions
-                                <svg
-                                  class="size-3.5 ms-1 -me-0.5 text-gray-400"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  width="24"
-                                  height="24"
-                                  viewBox="0 0 24 24"
-                                  fill="none"
-                                  stroke="currentColor"
-                                  stroke-width="2"
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                >
-                                  <path
-                                    class="hs-datatable-ordering-asc:text-blue-600"
-                                    d="m7 15 5 5 5-5"
-                                  ></path>
-                                  <path
-                                    class="hs-datatable-ordering-desc:text-blue-600"
-                                    d="m7 9 5-5 5 5"
-                                  ></path>
-                                </svg>
-                              </div>
-                            </th>
-
-                            <th
-                              scope="col"
-                              class="py-1 group text-start font-normal focus:outline-none"
-                            >
-                              <div
-                                class="py-1 px-2.5 inline-flex items-center border border-transparent text-sm text-gray-500 rounded-md hover:border-gray-200"
-                              >
-                                Address
-                                <svg
-                                  class="size-3.5 ms-1 -me-0.5 text-gray-400"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  width="24"
-                                  height="24"
-                                  viewBox="0 0 24 24"
-                                  fill="none"
-                                  stroke="currentColor"
-                                  stroke-width="2"
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                >
-                                  <path
-                                    class="hs-datatable-ordering-asc:text-blue-600"
-                                    d="m7 15 5 5 5-5"
-                                  ></path>
-                                  <path
-                                    class="hs-datatable-ordering-desc:text-blue-600"
-                                    d="m7 9 5-5 5 5"
-                                  ></path>
-                                </svg>
+                                created_at
                               </div>
                             </th>
                           </tr>
                         </thead>
 
-                        <tbody class="divide-y divide-gray-200">
+                        <tbody class="divide-y divide-gray-200" id="tableBody">
                           <tr v-for="user in users.data" :key="user.id">
                             <td class="py-3 ps-3">
                               <div class="flex items-center h-5">
@@ -511,11 +330,6 @@ const handleSelectAllChackBoxChange = (users) => {
                             <td
                               class="p-3 whitespace-nowrap text-sm font-medium text-gray-800"
                             >
-                              {{ user.age }}
-                            </td>
-                            <td
-                              class="p-3 whitespace-nowrap text-sm font-medium text-gray-800"
-                            >
                               {{ user.phone_number }}
                             </td>
                             <td
@@ -523,25 +337,11 @@ const handleSelectAllChackBoxChange = (users) => {
                             >
                               {{ user.email }}
                             </td>
+
                             <td
                               class="p-3 whitespace-nowrap text-sm font-medium text-gray-800"
                             >
-                              {{ user.nrc_number }}
-                            </td>
-                            <td
-                              class="p-3 whitespace-nowrap text-sm font-medium text-gray-800"
-                            >
-                              {{ user.department }}
-                            </td>
-                            <td
-                              class="p-3 whitespace-nowrap text-sm font-medium text-gray-800"
-                            >
-                              {{ user.position }}
-                            </td>
-                            <td
-                              class="p-3 whitespace-nowrap text-sm font-medium text-gray-800"
-                            >
-                              {{ user.address }}
+                              {{ user.created_at.split("T")[0] }}
                             </td>
                           </tr>
                         </tbody>

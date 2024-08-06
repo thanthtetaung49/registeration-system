@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AttendeesGroup;
 use App\Models\AttendeesType;
 use App\Models\State;
 use App\Models\User;
@@ -15,12 +16,18 @@ class AddAttendeesController extends Controller
     {
         $states = State::get();
         $types = AttendeesType::get();
+        $groups = AttendeesGroup::get();
 
-        return Inertia::render('AttendeesPage/AddAttendees', ['states' => $states, 'types' => $types]);
+        return Inertia::render('AttendeesPage/AddAttendees', [
+            'states' => $states,
+            'types' => $types,
+            'groups' => $groups,
+        ]);
     }
 
     public function submitAttendee(Request $request)
     {
+        // dd($request->all());
         $request->validate([
             "name"           => ['required'],
             "age"            => ['required'],
@@ -32,7 +39,8 @@ class AddAttendeesController extends Controller
             "department"     => ['required'],
             "address"        => ['required'],
             "email"          => ['required', 'email', 'unique:users,email'],
-            "attendees_types_id" => ['required']
+            "attendees_types_id" => ['required'],
+            "attendees_groups_id" => ['required']
         ]);
 
         $file = $request->file('avatar');
@@ -58,10 +66,11 @@ class AddAttendeesController extends Controller
             "address"            => $request->address,
             "email"              => $request->email,
             "attendees_types_id" => $request->attendees_types_id,
+            "attendees_groups_id" => $request->attendees_groups_id,
         ];
 
         $mergeArray = array_merge($array, $imageArray);
-        
+
         User::create($mergeArray);
 
         return to_route('attendees.list.index');
@@ -69,10 +78,15 @@ class AddAttendeesController extends Controller
 
     public function edit($id)
     {
+        $user = User::with('attendees_types', 'attendees_groups')->where('id', $id)->first();
         $types = AttendeesType::get();
-        $user = User::with('attendees_types')->where('id', $id)->first();
+        $groups = AttendeesGroup::get();
 
-        return Inertia::render('AttendeesPage/AttendeesEdit', ['user' => $user, 'types' => $types]);
+        return Inertia::render('AttendeesPage/AttendeesEdit', [
+            'user' => $user,
+            'types' => $types,
+            'groups' => $groups,
+        ]);
     }
 
     public function update($id, Request $request)
@@ -90,7 +104,8 @@ class AddAttendeesController extends Controller
             "department"     => ['required'],
             "address"        => ['required'],
             "email"          => ['required'],
-            "attendees_types_id" => ['required']
+            "attendees_types_id" => ['required'],
+            "attendees_groups_id" => ['required']
         ]);
 
         $oldFilename = $user->profile_path;
@@ -127,7 +142,8 @@ class AddAttendeesController extends Controller
             "department"     => $request->department,
             "address"        => $request->address,
             "email"          => $request->email,
-            "attendees_types_id" => $request->attendees_types_id
+            "attendees_types_id" => $request->attendees_types_id,
+            "attendees_groups_id" => $request->attendees_groups_id,
         ]);
 
         return to_route('attendees.list.index');
@@ -135,10 +151,15 @@ class AddAttendeesController extends Controller
 
     public function view($id)
     {
-        $user = User::with('attendees_types')->where('id', $id)->first();
+        $user = User::with('attendees_types', 'attendees_groups')->where('id', $id)->first();
         $types = AttendeesType::get();
+        $groups = AttendeesGroup::get();
 
-        return Inertia::render('AttendeesPage/AttendeesView', ['user' => $user , 'types' => $types]);
+        return Inertia::render('AttendeesPage/AttendeesView', [
+            'user' => $user ,
+            'types' => $types,
+            'groups' => $groups,
+        ]);
     }
 
     public function delete(User $user)

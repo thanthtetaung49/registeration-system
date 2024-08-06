@@ -7,6 +7,8 @@ export default defineConfig({
         laravel({
             input: [
                 'resources/js/app.js',
+                'resources/js/jquery.min.js',
+                'resources/js/dataTables.min.js',
             ],
             refresh: true,
         }),

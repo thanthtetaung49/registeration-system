@@ -12,7 +12,7 @@ import { Link } from "@inertiajs/vue3";
 
 defineComponent({ defaultImage });
 
-const props = defineProps({ user: Object, types: Object });
+const props = defineProps({ user: Object, types: Object, groups: Object });
 const user = props.user;
 
 const form = useForm({
@@ -27,9 +27,12 @@ const form = useForm({
   address: user.address,
   email: user.email,
   avatar: user.profile_path,
-  attendees_types_id: props.user.attendees_types !== null
-    ? props.user.attendees_types.id
-    : null,
+  attendees_types_id:
+    props.user.attendees_types !== null ? props.user.attendees_types.id : null,
+  attendees_groups_id:
+    props.user.attendees_groups !== null
+      ? props.user.attendees_groups_id
+      : null,
 });
 
 const updateAttendees = () => form.post(`/attendees/update/${user.id}`);
@@ -202,16 +205,36 @@ const updateAttendees = () => form.post(`/attendees/update/${user.id}`);
                     </select>
                   </div>
 
-                  <div class="w-1/3 ms-3"></div>
+                  <div class="w-1/3 ms-3">
+                    <InputLabel :value="'Attendees group'"></InputLabel>
+                    <select
+                      v-model="form.attendees_groups_id"
+                      class="py-3 px-4 pe-9 block w-full border-gray-200 rounded-lg text-sm focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none mt-3" disabled
+                    >
+                      <option value="" selected="">
+                        Open this attendees group
+                      </option>
+
+                      <option
+                        v-for="group in groups"
+                        :key="group.id"
+                        :value="group.id"
+                      >
+                        {{ group.name }}
+                      </option>
+                    </select>
+                    <TextInputError
+                      :message="form.errors.attendees_groups_id"
+                    ></TextInputError>
+                  </div>
                 </div>
 
                 <div class="w-full flex justify-end">
-                     <Link
+                  <Link
                     href="/attendees/list"
                     class="inline-flex items-center px-4 py-2 bg-red-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-700 focus:bg-red-700 active:bg-red-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150"
                     >Back</Link
                   >
-                 
                 </div>
               </form>
             </div>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AttendeesGroup;
 use App\Models\Event;
 use App\Models\RegisterEvent;
 use App\Models\User;
@@ -12,12 +13,14 @@ class RegisterAttendeesController extends Controller
 {
     public function index()
     {
-        $users = User::where('is_admin', 0)->paginate(5);
+        $users = User::with('register_events')->where('is_admin', 0)->paginate(5);
         $events = Event::get();
+        $groups = AttendeesGroup::get();
 
         return Inertia::render('AttendeesPage/RegisterAttendees', [
             'users' => $users,
-            'events' => $events
+            'events' => $events,
+            'groups' => $groups
         ]);
     }
 
@@ -45,5 +48,27 @@ class RegisterAttendeesController extends Controller
 
 
         return to_route('attendees.register.index');
+    }
+
+    public function filterGroup (Request $request) {
+        $id = $request->id;
+        $users = User::with('register_events')->where('attendees_groups_id', $id)
+                ->where('is_admin', 0)
+                ->paginate(5);
+        return response()->json($users);
+    }
+
+    public function search (Request $request) {
+        $search = $request['query'];
+
+        $users = User::when($search, function ($query) use ($search) {
+            $query->where('name', 'like', '%' . $search . '%')
+                ->orWhere('phone_number', 'like', '%' . $search. '%')
+                ->orWhere('email', 'like', '%' . $search . '%');
+        })
+            ->where('is_admin', 0)
+            ->paginate(5);
+
+        return response()->json($users);
     }
 }

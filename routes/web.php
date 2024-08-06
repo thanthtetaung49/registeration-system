@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AddAttendeesController;
+use App\Http\Controllers\AttendeesGroupController;
 use App\Http\Controllers\AttendeesTypeController;
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\CategoryController;
@@ -34,9 +35,9 @@ Route::get('/', function () {
     return Inertia::render('Auth/Login');
 });
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+// Route::get('/dashboard', function () {
+//     return Inertia::render('Dashboard');
+// })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware(['auth', 'verified'])->group(function () {
 
@@ -110,6 +111,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/type/view/{attendeesType}', [AttendeesTypeController::class, 'view'])->name('attendees.type.view');
         Route::get('/type/delete/{attendeesType}', [AttendeesTypeController::class, 'delete'])->name('attendees.type.delete');
 
+        // attendees group
+        Route::get('/group', [AttendeesGroupController::class, 'index'])->name('attendees.group.index');
+        Route::post('/group/create', [AttendeesGroupController::class, 'create'])->name('attendees.group.create');
+        Route::get('/group/edit/{attendeesGroup}', [AttendeesGroupController::class, 'edit'])->name('attendees.group.edit');
+        Route::post('/group/update/{attendeesGroup}', [AttendeesGroupController::class, 'update'])->name('attendees.group.update');
+        Route::get('/group/view/{attendeesGroup}', [AttendeesGroupController::class, 'view'])->name('attendees.group.view');
+        Route::get('/group/delete/{attendeesGroup}', [AttendeesGroupController::class, 'delete'])->name('attendees.group.delete');
+
         // add
         Route::get('/add', [AddAttendeesController::class, 'index'])->name('attendees.index');
         Route::post('/create', [AddAttendeesController::class, 'submitAttendee'])->name('attendees.create');
@@ -122,10 +131,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/upload', [UploadAttendeesController::class, 'index'])->name('attendees.upload.index');
         Route::post('/import', [UploadAttendeesController::class, 'importAttendee'])->name('attendees.import');
         Route::get('/template/export', [UploadAttendeesController::class, 'export'])->name('attendees.export');
-        
+
         // register
         Route::get('/register', [RegisterAttendeesController::class, 'index'])->name('attendees.register.index');
         Route::post('/event/register', [RegisterAttendeesController::class, 'submitAttendeeEvent'])->name('attendees.register.create');
+        Route::post('/event/register/filterGroup', [RegisterAttendeesController::class, 'filterGroup'])->name('attendees.register.filter.group');
+        Route::post('/event/register/search', [RegisterAttendeesController::class, 'search'])->name('attendees.register.search');
     });
 
     // print

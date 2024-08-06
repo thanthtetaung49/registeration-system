@@ -251,7 +251,10 @@ route().current('event.list.view') ||
               route().current('attendees.register.index') ||
               route().current('attendees.type.index') ||
               route().current('attendees.type.edit') ||
-              route().current('attendees.type.view')
+              route().current('attendees.type.view') ||
+              route().current('attendees.group.index') ||
+              route().current('attendees.group.edit') ||
+              route().current('attendees.group.view')
             "
           >
             <svg

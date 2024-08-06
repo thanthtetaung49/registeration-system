@@ -193,6 +193,12 @@ const csvExport = () =>
                             >
                               Attendees type
                             </th>
+                             <th
+                              scope="col"
+                              class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase"
+                            >
+                              Attendees group
+                            </th>
                             <th
                               scope="col"
                               class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase"
@@ -271,7 +277,22 @@ const csvExport = () =>
                               <span
                                 v-else
                                 class="text-red-900 px-3 py-1 rounded-md bg-red-100 inline-block"
-                                >Not added attendees type</span
+                                >-</span
+                              >
+                            </td>
+                             <td
+                              class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800"
+                            >
+                              <span
+                                v-if="user.attendees_groups"
+                                class="text-green-900 px-3 py-1 rounded-md bg-green-100 inline-block"
+                              >
+                                {{ user.attendees_groups.name }}
+                              </span>
+                              <span
+                                v-else
+                                class="text-red-900 px-3 py-1 rounded-md bg-red-100 inline-block"
+                                >-</span
                               >
                             </td>
                             <td

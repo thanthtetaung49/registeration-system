@@ -33,7 +33,7 @@ class QrcodePrintController extends Controller
 
         $htmlContent = View::make('pdf', $data)->render();
 
-        $imagePath = storage_path('app/public/qrCode/' . $registerAttendeesId .  '_qrCode.png');
+        $imagePath = storage_path('app/public/qrCode/' . $registerAttendeesId . $nameBadgeData->register_attendees->name .  '_qrCode.png');
         Browsershot::html($htmlContent)->save($imagePath);
 
         return response()->download($imagePath);

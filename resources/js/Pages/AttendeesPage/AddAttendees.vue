@@ -7,7 +7,7 @@ import TextInputError from "@/Components/InputError.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import { useForm } from "@inertiajs/vue3";
 import defaultImage from "@/images/default_profile.png";
-import { defineComponent, ref } from "vue";
+import { defineComponent, onMounted, ref } from "vue";
 
 const form = useForm({
   name: null,
@@ -22,11 +22,12 @@ const form = useForm({
   email: null,
   avatar: null,
   attendees_types_id: "",
+  attendees_groups_id: "",
 });
 
 defineComponent({ defaultImage });
 
-const props = defineProps({ states: Object, types: Object });
+const props = defineProps({ states: Object, types: Object, groups: Object });
 
 const imageUrl = ref(null);
 
@@ -54,11 +55,52 @@ const saveAttendees = () =>
         "department",
         "address",
         "email",
-          "avatar",
-        "attendees_types_id"
+        "avatar",
+        "attendees_types_id",
+        "attendees_groups_id"
       );
     },
   });
+
+onMounted(() => {
+  document.addEventListener("keypress", handleKeyDown);
+});
+
+const handleKeyDown = (event) => {
+  const key = event.key.toLowerCase();
+
+  const mapElementsToData = (elements) => {
+    return elements.map((element) => ({
+      name: element.name,
+      id: element.id,
+    }));
+  };
+
+  const attendeesData = mapElementsToData(props.types);
+  const attendeesGroupData = mapElementsToData(props.groups);
+
+  const findIndexByKey = (data, key) => {
+    const firstLetters = data.map((item) => item.name.charAt(0));
+    return firstLetters.indexOf(key);
+  };
+
+  const indexType = findIndexByKey(attendeesData, key);
+  const indexGroup = findIndexByKey(attendeesGroupData, key);
+
+  if (indexType !== -1) {
+    form.attendees_types_id = attendeesData[indexType].id;
+  }
+
+  if (indexGroup !== -1) {
+    form.attendees_groups_id = attendeesGroupData[indexGroup].id;
+  }
+
+  if (key === "m") {
+    form.sex = "0";
+  } else if (key === "f") {
+    form.sex = "1";
+  }
+};
 </script>
 
 <template>
@@ -234,16 +276,45 @@ const saveAttendees = () =>
                       v-model="form.attendees_types_id"
                       class="py-3 px-4 pe-9 block w-full border-gray-200 rounded-lg text-sm focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none mt-3"
                     >
-                      <option value="" selected="">Open this attendees type</option>
+                      <option value="" selected="">
+                        Open this attendees type
+                      </option>
 
-                      <option v-for="type in types" :key="type.id" :value="type.id">{{ type.name }}</option>
+                      <option
+                        v-for="type in types"
+                        :key="type.id"
+                        :value="type.id"
+                      >
+                        {{ type.name }}
+                      </option>
                     </select>
                     <TextInputError
                       :message="form.errors.attendees_types_id"
                     ></TextInputError>
                   </div>
 
-                  <div class="w-1/3 ms-3"></div>
+                  <div class="w-1/3 ms-3">
+                    <InputLabel :value="'Attendees group'"></InputLabel>
+                    <select
+                      v-model="form.attendees_groups_id"
+                      class="py-3 px-4 pe-9 block w-full border-gray-200 rounded-lg text-sm focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none mt-3"
+                    >
+                      <option value="" selected="">
+                        Open this attendees group
+                      </option>
+
+                      <option
+                        v-for="group in groups"
+                        :key="group.id"
+                        :value="group.id"
+                      >
+                        {{ group.name }}
+                      </option>
+                    </select>
+                    <TextInputError
+                      :message="form.errors.attendees_groups_id"
+                    ></TextInputError>
+                  </div>
                 </div>
 
                 <div class="w-full flex justify-end">

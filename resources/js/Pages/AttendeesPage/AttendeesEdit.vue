@@ -10,7 +10,7 @@ import { defineComponent, ref, onMounted } from "vue";
 
 defineComponent({ defaultImage });
 
-const props = defineProps({ user: Object, types: Object });
+const props = defineProps({ user: Object, types: Object, groups: Object });
 
 const user = props.user;
 
@@ -28,6 +28,8 @@ const form = useForm({
   avatar: user.profile_path,
   attendees_types_id:
     props.user.attendees_types != null ? props.user.attendees_types.id : "",
+  attendees_groups_id:
+    props.user.attendees_groups != null ? props.user.attendees_groups.id : "",
 });
 
 console.log(form);
@@ -244,7 +246,29 @@ const updateAttendees = () => form.post(`/attendees/update/${user.id}`);
                       :message="form.errors.attendees_types_id"
                     ></TextInputError>
                   </div>
-                  <div class="w-1/3 ms-3"></div>
+                  <div class="w-1/3 ms-3">
+                    <InputLabel :value="'Attendees group'"></InputLabel>
+                    <select
+                      v-model="form.attendees_groups_id"
+                      class="py-3 px-4 pe-9 block w-full border-gray-200 rounded-lg text-sm focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none mt-3"
+                      
+                    >
+                      <option value="" selected="">
+                        Open this attendees group
+                      </option>
+
+                      <option
+                        v-for="group in groups"
+                        :key="group.id"
+                        :value="group.id"
+                      >
+                        {{ group.name }}
+                      </option>
+                    </select>
+                    <TextInputError
+                      :message="form.errors.attendees_groups_id"
+                    ></TextInputError>
+                  </div>
                 </div>
 
                 <div class="w-full flex justify-end">

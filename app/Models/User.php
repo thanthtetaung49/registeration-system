@@ -50,4 +50,8 @@ class User extends Authenticatable
     {
         return $this->hasMany(RegisterEvent::class, 'users_id', 'id');
     }
+
+    public function attendees_groups () {
+        return $this->belongsTo(AttendeesGroup::class, 'attendees_groups_id', 'id');
+    }
 }

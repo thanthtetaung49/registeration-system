@@ -28,6 +28,7 @@ return new class extends Migration
             $table->string('address');
             $table->string('email')->unique();
             $table->integer('is_admin')->default(0); // 0 is attendees , 1 is admin
+            $table->foreignId('attendees_groups_id')->nullable()->constrained()->cascadeOnDelete();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password')->nullable();
             $table->rememberToken();
