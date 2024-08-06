@@ -52,9 +52,16 @@ class RegisterAttendeesController extends Controller
 
     public function filterGroup (Request $request) {
         $id = $request->id;
-        $users = User::with('register_events')->where('attendees_groups_id', $id)
+
+        if (empty($id)) {
+            $users = User::with('register_events')
                 ->where('is_admin', 0)
                 ->paginate(5);
+        } else {
+            $users = User::with('register_events')->where('attendees_groups_id', $id)
+                    ->where('is_admin', 0)
+                    ->paginate(5);
+        }
         return response()->json($users);
     }
 

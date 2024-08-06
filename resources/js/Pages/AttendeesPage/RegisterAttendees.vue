@@ -180,7 +180,7 @@ const searchUser = () => {
                     v-model="attendees_groups_id"
                     @change="handleAttendeeGroupDropdown"
                   >
-                    <option value="">Choose</option>
+                    <option value="">Choose attendees group</option>
                     <option
                       v-for="group in groups"
                       :key="group.id"
