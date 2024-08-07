@@ -30,13 +30,10 @@ class AddAttendeesController extends Controller
         // dd($request->all());
         $request->validate([
             "name"           => ['required'],
-            "age"            => ['required'],
             "sex"            => ['required'],
             "phone_number"   => ['required'],
-            "nrc_number"     => ['required'],
             "edu_background" => ['required'],
             "position"       => ['required'],
-            "department"     => ['required'],
             "address"        => ['required'],
             "email"          => ['required', 'email', 'unique:users,email'],
             "attendees_types_id" => ['required'],
@@ -86,6 +83,7 @@ class AddAttendeesController extends Controller
             'user' => $user,
             'types' => $types,
             'groups' => $groups,
+            'baseUrl' => env('APP_URL'),
         ]);
     }
 
@@ -95,13 +93,10 @@ class AddAttendeesController extends Controller
 
         $request->validate([
             "name"           => ['required'],
-            "age"            => ['required'],
             "sex"            => ['required'],
             "phone_number"   => ['required'],
-            "nrc_number"     => ['required'],
             "edu_background" => ['required'],
             "position"       => ['required'],
-            "department"     => ['required'],
             "address"        => ['required'],
             "email"          => ['required'],
             "attendees_types_id" => ['required'],
@@ -159,6 +154,7 @@ class AddAttendeesController extends Controller
             'user' => $user ,
             'types' => $types,
             'groups' => $groups,
+            'baseUrl' => env('APP_URL'),
         ]);
     }
 

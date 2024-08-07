@@ -10,13 +10,15 @@ use Illuminate\Support\Facades\Validator;
 
 class AttendeesTypeController extends Controller
 {
-    public function index () {
+    public function index()
+    {
         $types = AttendeesType::orderBy('id', 'desc')->paginate(5);
 
         return Inertia::render('AttendeesPage/AttendeesType/AttendeesType', ['types' => $types]);
     }
 
-    public function create (Request $request) {
+    public function create(Request $request)
+    {
         AttendeesType::create($request->validate([
             'name' => ['required']
         ]));
@@ -24,12 +26,14 @@ class AttendeesTypeController extends Controller
         return to_route('attendees.type.index');
     }
 
-    public function edit (AttendeesType $attendeesType) {
+    public function edit(AttendeesType $attendeesType)
+    {
 
         return Inertia::render('AttendeesPage/AttendeesType/AttendeesTypeEdit', ['type' => $attendeesType]);
     }
 
-    public function update (AttendeesType $attendeesType, Request $request) {
+    public function update(AttendeesType $attendeesType, Request $request)
+    {
 
         $attendeesType->update($request->validate([
             'name' => ['required']
@@ -38,12 +42,14 @@ class AttendeesTypeController extends Controller
         return to_route('attendees.type.index');
     }
 
-    public function view (AttendeesType $attendeesType) {
+    public function view(AttendeesType $attendeesType)
+    {
 
         return Inertia::render('AttendeesPage/AttendeesType/AttendeesTypeView', ['type' => $attendeesType]);
     }
 
-    public function delete (AttendeesType $attendeesType) {
+    public function delete(AttendeesType $attendeesType)
+    {
         $attendeesType->delete();
 
         // return to_route('attendees.type.index');

@@ -44,7 +44,8 @@ class InstructorController extends Controller
         return Inertia::render('EventPage/Instructor/InstructorView', ['instructor' => $instructor]);
     }
 
-    public function delete (Instructor $instructor) {
+    public function delete(Instructor $instructor)
+    {
         $instructor->delete();
         return to_route('instructor.index');
     }

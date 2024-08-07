@@ -1,9 +1,9 @@
 <script setup>
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import EventTabLayout from "@/Layouts/EventTabLayout.vue";
-import { Link } from "@inertiajs/vue3";
+import { Link, router } from "@inertiajs/vue3";
 import axios from "axios";
-import { ref } from "vue";
+import { nextTick, ref, onMounted } from "vue";
 import TextInput from "@/Components/TextInput.vue";
 
 const props = defineProps({ events: Object });
@@ -12,13 +12,15 @@ const registerEvents = ref([]);
 const query = ref(null);
 const eventsData = ref(props.events.data);
 const eventLink = ref(props.events.links);
+const input = ref(null);
+
+console.log(input);
 
 const getRegisterAttendees = (eventId) => {
   axios
     .get(`/event/attendees/list/${eventId}`)
     .then((response) => {
       registerEvents.value = response.data;
-
     })
     .catch((error) => {
       console.error(error);
@@ -26,22 +28,26 @@ const getRegisterAttendees = (eventId) => {
 };
 
 const searchEvent = () => {
-  axios
-    .get(`/event/search?query=${query.value}`)
-    .then((response) => {
-      eventsData.value = response.data.data;
-      eventLink.value = response.data.links;
-      console.log(response.data.links);
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+  router.visit(`/event/search?query=${query.value}`, {
+    method: "get",
+    onSuccess: (page) => {
+      eventsData.value = page.props.events.data;
+        eventLink.value = page.props.events.links;
+
+    },
+  });
 };
+
+onMounted(() =>
+{
+    input.value.focus();
+})
+
+// defineExpose({ focus: () => input.value.focus() });
 </script>
 
 <template>
   <div>
-    <!-- {{ eventsData }} -->
     <AuthenticatedLayout>
       <div class="px-10 py-10">
         <header class="mb-10">
@@ -56,8 +62,9 @@ const searchEvent = () => {
             <div class="flex justify-end">
               <div class="relative">
                 <TextInput
-                  v-model="query"
-                  @input="searchEvent"
+                  ref="input"
+                  v-model.lazy="query"
+                  @keydown.enter="searchEvent"
                   placeholder="Search attendees..."
                   class="text-sm"
                 ></TextInput>
@@ -151,7 +158,6 @@ const searchEvent = () => {
                           <td
                             class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800"
                           >
-
                             {{ index + 1 }}
                           </td>
                           <td
@@ -467,12 +473,15 @@ const searchEvent = () => {
                             <td
                               class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800"
                             >
-                            <span  v-if="attendee.registration_status == 1 && attendee.scan_time">
-                                {{
-                                    attendee.scan_time
-                                }}
-                            </span>
-                            <span v-else>-</span>
+                              <span
+                                v-if="
+                                  attendee.registration_status == 1 &&
+                                  attendee.scan_time
+                                "
+                              >
+                                {{ attendee.scan_time }}
+                              </span>
+                              <span v-else>-</span>
                             </td>
 
                             <td

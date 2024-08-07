@@ -28,7 +28,7 @@
             width: 100%;
             margin-left: 40%;
             height: 100px;
-            margin-top: 15px;
+            margin-top: 70px;
             /* margin-bottom: 20px; */
         }
     </style>

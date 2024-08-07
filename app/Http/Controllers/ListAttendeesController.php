@@ -10,37 +10,49 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class ListAttendeesController extends Controller
 {
-    public function index () {
+    public function index()
+    {
         $users = User::with('attendees_types', 'attendees_groups', 'register_events')->orderBy('id', 'desc')->where('is_admin', 0)->paginate(5);
 
         return Inertia::render('AttendeesPage/ListAttendees', ['users' => $users]);
     }
 
-    public function search (Request $request) {
+    public function search(Request $request)
+    {
         $search = $request->query('query');
 
-        $users = User::when($search, function ($query) use ($search) {
-            return $query->where('name', 'LIKE', '%' . $search . '%');
-        })
-        ->where('is_admin', 0)
-        ->orderBy('id', 'desc')
-        ->paginate(5);
+        if ($search == 'null') {
+            $users = User::with('attendees_types', 'attendees_groups', 'register_events')
+                ->orderBy('id', 'desc')
+                ->where('is_admin', 0)
+                ->paginate(5);
+        } else {
+            $users = User::when($search, function ($query) use ($search) {
+                return $query->where('name', 'LIKE', '%' . $search . '%');
+            })
+                ->where('is_admin', 0)
+                ->orderBy('id', 'desc')
+                ->paginate(5);
+        }
 
-        return response()->json($users);
+        return Inertia::render('AttendeesPage/ListAttendees', ['users' => $users]);
     }
 
-    public function excelExport () {
+    public function excelExport()
+    {
         $attendees = $this->exportAttendees();
         return Excel::download(new AttendeesExport($attendees), 'attendees.xlsx');
     }
 
-    public function csvExport () {
+    public function csvExport()
+    {
         $attendees = $this->exportAttendees();
         return Excel::download(new AttendeesExport($attendees), 'attendees.csv');
     }
 
-    private function exportAttendees () {
-        $attendees = User::with('attendees_types')->where('is_admin', 0)->get();
+    private function exportAttendees()
+    {
+        $attendees = User::with('attendees_types', 'register_events')->where('is_admin', 0)->get();
         return $attendees;
     }
 }

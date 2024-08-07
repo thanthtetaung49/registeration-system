@@ -62,45 +62,45 @@ const saveAttendees = () =>
     },
   });
 
-onMounted(() => {
-  document.addEventListener("keypress", handleKeyDown);
-});
+// onMounted(() => {
+//   document.addEventListener("keypress", handleKeyDown);
+// });
 
-const handleKeyDown = (event) => {
-  const key = event.key.toLowerCase();
+// const handleKeyDown = (event) => {
+//   const key = event.key.toLowerCase();
 
-  const mapElementsToData = (elements) => {
-    return elements.map((element) => ({
-      name: element.name,
-      id: element.id,
-    }));
-  };
+//   const mapElementsToData = (elements) => {
+//     return elements.map((element) => ({
+//       name: element.name,
+//       id: element.id,
+//     }));
+//   };
 
-  const attendeesData = mapElementsToData(props.types);
-  const attendeesGroupData = mapElementsToData(props.groups);
+//   const attendeesData = mapElementsToData(props.types);
+//   const attendeesGroupData = mapElementsToData(props.groups);
 
-  const findIndexByKey = (data, key) => {
-    const firstLetters = data.map((item) => item.name.charAt(0));
-    return firstLetters.indexOf(key);
-  };
+//   const findIndexByKey = (data, key) => {
+//     const firstLetters = data.map((item) => item.name.charAt(0));
+//     return firstLetters.indexOf(key);
+//   };
 
-  const indexType = findIndexByKey(attendeesData, key);
-  const indexGroup = findIndexByKey(attendeesGroupData, key);
+//   const indexType = findIndexByKey(attendeesData, key);
+//   const indexGroup = findIndexByKey(attendeesGroupData, key);
 
-  if (indexType !== -1) {
-    form.attendees_types_id = attendeesData[indexType].id;
-  }
+//   if (indexType !== -1) {
+//     form.attendees_types_id = attendeesData[indexType].id;
+//   }
 
-  if (indexGroup !== -1) {
-    form.attendees_groups_id = attendeesGroupData[indexGroup].id;
-  }
+//   if (indexGroup !== -1) {
+//     form.attendees_groups_id = attendeesGroupData[indexGroup].id;
+//   }
 
-  if (key === "m") {
-    form.sex = "0";
-  } else if (key === "f") {
-    form.sex = "1";
-  }
-};
+//   if (key === "m") {
+//     form.sex = "0";
+//   } else if (key === "f") {
+//     form.sex = "1";
+//   }
+// };
 </script>
 
 <template>

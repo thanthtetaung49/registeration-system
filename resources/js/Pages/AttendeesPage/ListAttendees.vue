@@ -1,38 +1,38 @@
 <script setup>
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import AttendeesTabLayout from "@/Layouts/AttendeesTabLayout.vue";
-import { Link } from "@inertiajs/vue3";
+import { Link, router } from "@inertiajs/vue3";
 import TextInput from "@/Components/TextInput.vue";
-import { ref } from "vue";
-import axios from "axios";
+import { onMounted, ref } from "vue";
 
 const props = defineProps({ users: Object });
 const userData = ref(props.users.data);
 const userLink = ref(props.users.links);
 const query = ref(null);
+const input = ref(null);
+
+onMounted(() =>
+{
+    input.value.focus();
+})
 
 const searchAttendees = () => {
-  axios
-    .get(`/attendees/search?query=${query.value}`)
-    .then((response) => {
-      userData.value = response.data.data;
-      userLink.value = response.data.links;
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+  router.visit(`/attendees/search?query=${query.value}`, {
+    method: "get",
+    onSuccess: (page) => {
+      userData.value = page.props.users.data;
+      userLink.value = page.props.users.links;
+    },
+  });
 };
 
-const excelExport = () =>
-{
-    window.location.href = '/attendees/list/excel/export'
-}
+const excelExport = () => {
+  window.location.href = "/attendees/list/excel/export";
+};
 
-const csvExport = () =>
-{
-    window.location.href = '/attendees/list/csv/export'
-}
-
+const csvExport = () => {
+  window.location.href = "/attendees/list/csv/export";
+};
 </script>
 
 <template>
@@ -95,8 +95,9 @@ const csvExport = () =>
 
               <div class="relative">
                 <TextInput
+                  ref="input"
                   v-model="query"
-                  @input="searchAttendees"
+                  @keydown.enter="searchAttendees"
                   placeholder="Search attendees..."
                   class="text-sm"
                 ></TextInput>
@@ -193,7 +194,7 @@ const csvExport = () =>
                             >
                               Attendees type
                             </th>
-                             <th
+                            <th
                               scope="col"
                               class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase"
                             >
@@ -280,7 +281,7 @@ const csvExport = () =>
                                 >-</span
                               >
                             </td>
-                             <td
+                            <td
                               class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800"
                             >
                               <span

@@ -84,13 +84,19 @@ class EventListController extends Controller
     {
         $search = $request->query('query');
 
-        $events = Event::with('lead_instructors', 'assists_instructors', 'categories')
-        ->when($search, function ($query) use ($search) {
-            return $query->where('event_name', 'LIKE', '%' . $search . '%');
-        })
-            ->orderBy('id', 'desc')
-            ->paginate(5);
+        if ($search === "null") {
+            $events = Event::with('lead_instructors', 'assists_instructors', 'categories')->orderBy('id', 'desc')->paginate(5);
+        } else {
+            $events = Event::with('lead_instructors', 'assists_instructors', 'categories')
+                ->when($search, function ($query) use ($search) {
+                    return $query->where('event_name', 'LIKE', '%' . $search . '%');
+                })
+                ->orderBy('id', 'desc')
+                ->paginate(5);
+        }
 
-        return response()->json($events);
+        return Inertia::render('EventPage/Event/EventList', [
+            'events' => $events,
+        ]);
     }
 }

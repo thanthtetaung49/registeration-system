@@ -12,7 +12,7 @@ import { Link } from "@inertiajs/vue3";
 
 defineComponent({ defaultImage });
 
-const props = defineProps({ user: Object, types: Object, groups: Object });
+const props = defineProps({ user: Object, types: Object, groups: Object , baseUrl:String});
 const user = props.user;
 
 const form = useForm({
@@ -54,7 +54,7 @@ const updateAttendees = () => form.post(`/attendees/update/${user.id}`);
                 <div class="w-1/3 my-3 flex items-end">
                   <img
                     v-if="user.profile_path"
-                    :src="`http://127.0.0.1:8000/storage/${user.profile_path}`"
+                    :src="`${baseUrl}/storage/${user.profile_path}`"
                     alt="preview image"
                     class="w-20 rounded-md h-20"
                   />

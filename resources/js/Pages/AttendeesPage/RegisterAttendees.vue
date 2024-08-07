@@ -2,29 +2,30 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import AttendeesTabLayout from "@/Layouts/AttendeesTabLayout.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
-import { Link, useForm } from "@inertiajs/vue3";
-import { ref, watch } from "vue";
+import { Link, router, useForm } from "@inertiajs/vue3";
+import { onMounted, ref } from "vue";
 import InputError from "@/Components/InputError.vue";
-import TextInput from "@/Components/TextInput.vue";
-import axios from "axios";
 
 const props = defineProps({
   users: Object,
   events: Object,
   message: String,
   groups: Object,
-});
-
-const form = useForm({
-  users_id: [],
-  events_id: "",
+  groupId: String,
+  eventsId: String,
 });
 
 const users = ref(props.users);
 const status = ref(false);
 const checkBoxAll = ref(null);
-const attendees_groups_id = ref("");
 const query = ref(null);
+const input = ref(null);
+
+const form = useForm({
+  users_id: [],
+  events_id: props.eventsId ? props.eventsId : "",
+  attendees_groups_id: props.groupId ? props.groupId : "",
+});
 
 const registerEvent = () => {
   const checkBoxes = document.querySelectorAll(".checkBoxes");
@@ -81,44 +82,46 @@ const handleSelectAllChackBoxChange = (users) => {
   }
 };
 
-const handleAttendeeGroupDropdown = () => {
-  const checkBoxes = document.querySelectorAll(".checkBoxes");
-  checkBoxAll.value.checked = false;
-
-  axios
-    .post("/attendees/event/register/filterGroup", {
-      id: attendees_groups_id.value,
-    })
-    .then((response) => {
-      users.value = response.data;
-
-      checkBoxes.forEach((checkBox) => {
-        users.value.data.forEach((user) => {
-          if (checkBox.value == user.id) {
-            console.log(checkBox.value);
-            checkBox.checked = false;
-          }
-        });
-      });
-    })
-    .catch((error) => console.error(error));
+const filter = () => {
+  router.get("/attendees/event/register/filter", {
+    data: {
+      attendeesGroupId: form.attendees_groups_id,
+      eventsId: form.events_id,
+    },
+    method: "get",
+    onSuccess: (page) => {
+      users.value = page.props.users;
+      console.log(page.props);
+    },
+  });
 };
+
+const excelExport = () => {
+    window.location.href = `/attendees/event/registerAttendees/Export`;
+}
 
 const searchUser = () => {
-  axios
-    .post(`/attendees/event/register/search`, {
+  router.visit(`/attendees/event/register/search`, {
+    method: "get",
+    data: {
       query: query.value,
-    })
-    .then((response) => {
-      users.value = response.data;
-    })
-    .catch((error) => console.error(error));
+    },
+    onSuccess: (page) => {
+      users.value = page.props.users;
+      console.log(users.value);
+    },
+  });
 };
+
+onMounted(() => {
+  input.value.focus();
+});
 </script>
 
 <template>
   <div>
     <AuthenticatedLayout>
+      <!-- {{ users.links }} -->
       <div class="px-10 py-5">
         <Transition name="slide-fade">
           <div
@@ -134,78 +137,88 @@ const searchUser = () => {
           <div class="w-10 h-1 bg-blue-800"></div>
         </header>
 
-        <div class="w-full bg-white rounded-lg shadow-md mb-5">
+        <div class="w-full bg-white shadow-md mb-20">
           <div class="border-b border-gray-200 px-4">
             <AttendeesTabLayout></AttendeesTabLayout>
 
-            <div class="py-3">
-              <div class="w-full flex items-center mt-5">
-                <div class="relative w-1/4">
-                  <label for="hs-table-input-search" class="sr-only"
-                    >Search</label
+            <div class="flex w-full justify-end">
+              <div class="relative w-1/4 ms-3">
+                <label for="hs-table-input-search" class="sr-only"
+                  >Search</label
+                >
+                <input
+                  ref="input"
+                  v-model="query"
+                  @keydown.enter="searchUser"
+                  type="text"
+                  name="hs-table-search"
+                  id="hs-table-input-search"
+                  class="p-3 ps-9 block w-full border-gray-200 shadow-sm rounded-lg text-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+                  placeholder="Search for items"
+                  data-hs-datatable-search=""
+                />
+                <div
+                  class="absolute inset-y-0 start-0 flex items-center pointer-events-none ps-3"
+                >
+                  <svg
+                    class="size-4 text-gray-400 dark:text-neutral-500"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
                   >
-                  <input
-                    v-model="query"
-                    @input="searchUser"
-                    type="text"
-                    name="hs-table-search"
-                    id="hs-table-input-search"
-                    class="p-3 ps-9 block w-full border-gray-200 shadow-sm rounded-lg text-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
-                    placeholder="Search for items"
-                    data-hs-datatable-search=""
-                  />
-                  <div
-                    class="absolute inset-y-0 start-0 flex items-center pointer-events-none ps-3"
-                  >
-                    <svg
-                      class="size-4 text-gray-400 dark:text-neutral-500"
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <path d="m21 21-4.3-4.3"></path>
+                  </svg>
+                </div>
+              </div>
+            </div>
+
+            <div class="">
+              <InputError
+                :message="form.errors.attendees_groups_id"
+              ></InputError>
+              <InputError :message="form.errors.events_id"></InputError>
+              <InputError :message="form.errors.users_id"></InputError>
+
+              <form v-on:submit.prevent="registerEvent">
+                <div class="w-full flex items-center mt-5">
+                  <div class="w-1/3 ms-3">
+                    <select
+                      class="hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-3 ps-4 pe-9 flex gap-x-2 text-nowrap w-full cursor-pointer bg-white border border-gray-200 rounded-lg text-start text-sm focus:outline-none focus:ring-2 focus:ring-blue-200 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-neutral-600"
+                      v-model="form.attendees_groups_id"
                     >
-                      <circle cx="11" cy="11" r="8"></circle>
-                      <path d="m21 21-4.3-4.3"></path>
-                    </svg>
+                      <option value="">Choose attendees group</option>
+                      <option
+                        v-for="group in groups"
+                        :key="group.id"
+                        :value="group.id"
+                      >
+                        {{ group.name }}
+                      </option>
+                    </select>
                   </div>
-                </div>
-                <div class="w-1/4 ms-3">
-                  <select
-                    class="hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-3 ps-4 pe-9 flex gap-x-2 text-nowrap w-full cursor-pointer bg-white border border-gray-200 rounded-lg text-start text-sm focus:outline-none focus:ring-2 focus:ring-blue-200 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-neutral-600"
-                    v-model="attendees_groups_id"
-                    @change="handleAttendeeGroupDropdown"
-                  >
-                    <option value="">Choose attendees group</option>
-                    <option
-                      v-for="group in groups"
-                      :key="group.id"
-                      :value="group.id"
-                    >
-                      {{ group.name }}
-                    </option>
-                  </select>
-                </div>
-                <form v-on:submit.prevent="registerEvent" class="w-1/3 ms-3">
-                  <div class="ms-auto flex items-center">
+
+                  <div class="w-1/3 ms-3">
                     <select
                       data-hs-select='{
-                          "hasSearch": true,
-                          "searchPlaceholder": "Search...",
-                                                                    "searchClasses": "block w-full text-sm border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 before:absolute before:inset-0 before:z-[1] dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 py-2 px-3",
-                                                                    "searchWrapperClasses": "bg-white p-2 -mx-1 sticky top-0 dark:bg-neutral-900",
-                                                                    "placeholder": "Select event...",
-                                                                    "toggleTag": "<button type=\"button\" aria-expanded=\"false\"><span class=\"me-2\" data-icon></span><span class=\"text-gray-800 dark:text-neutral-200 \" data-title></span></button>",
-                                                                    "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-3 ps-4 pe-9 flex gap-x-2 text-nowrap w-full cursor-pointer bg-white border border-gray-200 rounded-lg text-start text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-neutral-600 w-[250px]",
-                                                                    "dropdownClasses": "mt-2 max-h-72 pb-1 px-1 space-y-0.5 z-20 w-full bg-white border border-gray-200 rounded-lg overflow-hidden overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500 dark:bg-neutral-900 dark:border-neutral-700",
-                                                                    "optionClasses": "py-2 px-4 w-full text-sm text-gray-800 cursor-pointer hover:bg-gray-100 rounded-lg focus:outline-none focus:bg-gray-100 dark:bg-neutral-900 dark:hover:bg-neutral-800 dark:text-neutral-200 dark:focus:bg-neutral-800",
-                                                                    "optionTemplate": "<div><div class=\"flex items-center\"><div class=\"me-2\" data-icon></div><div class=\"text-gray-800 dark:text-neutral-200 \" data-title></div></div></div>",
-                                                                    "extraMarkup": "<div class=\"absolute top-1/2 end-3 -translate-y-1/2\"><svg class=\"shrink-0 size-3.5 text-gray-500 dark:text-neutral-500 \" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m7 15 5 5 5-5\"/><path d=\"m7 9 5-5 5 5\"/></svg></div>"
-                        }'
+                              "hasSearch": true,
+                              "searchPlaceholder": "Search...",
+                                                                        "searchClasses": "block w-full text-sm border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 before:absolute before:inset-0 before:z-[1] dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 py-2 px-3",
+                                                                        "searchWrapperClasses": "bg-white p-2 -mx-1 sticky top-0 dark:bg-neutral-900",
+                                                                        "placeholder": "Select event...",
+                                                                        "toggleTag": "<button type=\"button\" aria-expanded=\"false\"><span class=\"me-2\" data-icon></span><span class=\"text-gray-800 dark:text-neutral-200 \" data-title></span></button>",
+                                                                        "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-3 ps-4 pe-9 flex gap-x-2 text-nowrap w-full cursor-pointer bg-white border border-gray-200 rounded-lg text-start text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-neutral-600 w-[250px]",
+                                                                        "dropdownClasses": "mt-2 max-h-72 pb-1 px-1 space-y-0.5 z-20 w-full bg-white border border-gray-200 rounded-lg overflow-hidden overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500 dark:bg-neutral-900 dark:border-neutral-700",
+                                                                        "optionClasses": "py-2 px-4 w-full text-sm text-gray-800 cursor-pointer hover:bg-gray-100 rounded-lg focus:outline-none focus:bg-gray-100 dark:bg-neutral-900 dark:hover:bg-neutral-800 dark:text-neutral-200 dark:focus:bg-neutral-800",
+                                                                        "optionTemplate": "<div><div class=\"flex items-center\"><div class=\"me-2\" data-icon></div><div class=\"text-gray-800 dark:text-neutral-200 \" data-title></div></div></div>",
+                                                                        "extraMarkup": "<div class=\"absolute top-1/2 end-3 -translate-y-1/2\"><svg class=\"shrink-0 size-3.5 text-gray-500 dark:text-neutral-500 \" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m7 15 5 5 5-5\"/><path d=\"m7 9 5-5 5 5\"/></svg></div>"
+                            }'
                       class="hidden"
                       v-model="form.events_id"
                     >
@@ -218,18 +231,63 @@ const searchUser = () => {
                         {{ event.event_name }}
                       </option>
                     </select>
-
-                    <div class="ms-auto w-full">
-                      <PrimaryButton type="submit" class="ms-3"
-                        >Save</PrimaryButton
-                      >
-                    </div>
                   </div>
-                </form>
-              </div>
+
+                  <div class="w-1/3 ms-5">
+                    <button
+                      type="button"
+                      class="border p-2 rounded-md text-sm bg-blue-600 text-white"
+                      v-on:click="filter"
+                    >
+                      Filter
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke-width="1.5"
+                        stroke="currentColor"
+                        class="size-5 inline"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75"
+                        />
+                      </svg>
+                    </button>
+
+                    <button
+                      type="button"
+                      v-on:click="excelExport"
+                      class="inline-flex items-center px-4 py-2 bg-green-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-green-700 focus:bg-green-700 active:bg-green-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150 ms-3"
+                    >
+                      Excel
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke-width="1.5"
+                        stroke="currentColor"
+                        class="size-5 ms-2"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"
+                        />
+                      </svg>
+                    </button>
+
+                    <PrimaryButton type="submit" class="ms-3"
+                      >Save</PrimaryButton
+                    >
+                  </div>
+                </div>
+                <div class="w-full flex justify-end mt-5"></div>
+              </form>
             </div>
 
-            <div class="mt-5">
+            <div class="">
               <div class="flex flex-col">
                 <div class="overflow-x-auto">
                   <div class="min-w-full inline-block align-middle">
@@ -353,7 +411,7 @@ const searchUser = () => {
                 <div class="flex justify-end w-full">
                   <div class="mb-7 my-5">
                     <Link
-                      :href="link.url"
+                      :href="`${link.url}&data[attendeesGroupId]=${form.attendees_groups_id}&data[eventsId]=${form.events_id}`"
                       v-for="(link, index) in users.links"
                       :key="index"
                       class="border py-2 px-3 text-sm"

@@ -1,7 +1,7 @@
 <script setup>
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import EventTabLayout from "@/Layouts/EventTabLayout.vue";
-import { Link } from "@inertiajs/vue3";
+import { Link, router } from "@inertiajs/vue3";
 import axios from "axios";
 import { ref } from "vue";
 import TextInput from "@/Components/TextInput.vue";
@@ -10,7 +10,16 @@ const props = defineProps({ registerEvents: Object });
 const registerEvents = ref(props.registerEvents);
 const query = ref(null);
 
-const searchEvent = () => {
+const searchEvent = () =>
+{
+    router.visit(`/event/report/search?query=${query.value}`, {
+        method: 'get',
+        onSuccess: (page) =>
+        {
+            registerEvents.value = page.props.registerEvents;
+            console.log(registerEvents);
+        }
+    })
   axios
     .get(`/event/report/search?query=${query.value}`)
     .then((response) => {
@@ -66,7 +75,7 @@ const excelExport = () =>
               <div class="relative">
                 <TextInput
                   v-model="query"
-                  @input="searchEvent"
+                  @keydown.enter="searchEvent"
                   placeholder="Search attendees..."
                   class="text-sm"
                 ></TextInput>

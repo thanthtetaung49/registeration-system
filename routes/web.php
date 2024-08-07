@@ -35,6 +35,10 @@ Route::get('/', function () {
     return Inertia::render('Auth/Login');
 });
 
+Route::get('/info', function () {
+    phpinfo();
+});
+
 // Route::get('/dashboard', function () {
 //     return Inertia::render('Dashboard');
 // })->middleware(['auth', 'verified'])->name('dashboard');
@@ -100,8 +104,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // list
         Route::get('/list', [ListAttendeesController::class, 'index'])->name('attendees.list.index');
         Route::get('/search', [ListAttendeesController::class, 'search'])->name('attendees.search');
-        Route::get('/list/excel/export', [ListAttendeesController::class, 'excelExport'])->name('attendees.export');
-        Route::get('/list/csv/export', [ListAttendeesController::class, 'csvExport'])->name('attendees.export');
+        Route::get('/list/excel/export', [ListAttendeesController::class, 'excelExport'])->name('attendees.excel.export');
+        Route::get('/list/csv/export', [ListAttendeesController::class, 'csvExport'])->name('attendees.csv.export');
 
         // type
         Route::get('/type', [AttendeesTypeController::class, 'index'])->name('attendees.type.index');
@@ -130,13 +134,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // upload and  import
         Route::get('/upload', [UploadAttendeesController::class, 'index'])->name('attendees.upload.index');
         Route::post('/import', [UploadAttendeesController::class, 'importAttendee'])->name('attendees.import');
-        Route::get('/template/export', [UploadAttendeesController::class, 'export'])->name('attendees.export');
+        Route::get('/template/export', [UploadAttendeesController::class, 'export'])->name('attendees.template.export');
 
         // register
         Route::get('/register', [RegisterAttendeesController::class, 'index'])->name('attendees.register.index');
         Route::post('/event/register', [RegisterAttendeesController::class, 'submitAttendeeEvent'])->name('attendees.register.create');
-        Route::post('/event/register/filterGroup', [RegisterAttendeesController::class, 'filterGroup'])->name('attendees.register.filter.group');
-        Route::post('/event/register/search', [RegisterAttendeesController::class, 'search'])->name('attendees.register.search');
+        Route::get('/event/register/filter', [RegisterAttendeesController::class, 'filterAttendees'])->name('attendees.register.filter');
+        Route::get('/event/register/search', [RegisterAttendeesController::class, 'search'])->name('attendees.register.search');
+        Route::get('/event/registerAttendees/Export', [RegisterAttendeesController::class, 'export'])->name('attendees.register.export');
     });
 
     // print

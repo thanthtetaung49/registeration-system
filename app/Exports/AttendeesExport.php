@@ -26,6 +26,7 @@ class AttendeesExport implements FromCollection, WithMapping, WithHeadings, With
     }
 
     public function map($row): array {
+        // dd($row->toArray());
         static $rowNumber = 0;
 
         $rowNumber++;

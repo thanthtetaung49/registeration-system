@@ -33,7 +33,8 @@ class AttendeesGroupController extends Controller
         ]);
     }
 
-    public function  edit (AttendeesGroup $attendeesGroup) {
+    public function  edit(AttendeesGroup $attendeesGroup)
+    {
         return Inertia::render('AttendeesPage/AttendeesGroup/AttendeesGroupEdit', [
             'group' => $attendeesGroup
         ]);
@@ -48,7 +49,8 @@ class AttendeesGroupController extends Controller
         return to_route('attendees.group.index');
     }
 
-    public function delete (AttendeesGroup $attendeesGroup) {
+    public function delete(AttendeesGroup $attendeesGroup)
+    {
         $attendeesGroup->delete();
 
         return to_route('attendees.group.index');

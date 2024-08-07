@@ -8,6 +8,8 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
 use Mpdf\Mpdf;
+use Mpdf\Tag\Option;
+use PhpOffice\PhpSpreadsheet\Writer\Pdf\Dompdf;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Spatie\Browsershot\Browsershot;
 
@@ -16,7 +18,6 @@ class QrcodePrintController extends Controller
     public function index($registerEventId)
     {
         $nameBadgeData = RegisterEvent::with(['register_attendees', 'events', 'attendees_types'])->where('id', $registerEventId)->first();
-        // dd($nameBadgeData->toArray());
 
         $url = $nameBadgeData->qr_code;
 
@@ -27,16 +28,27 @@ class QrcodePrintController extends Controller
             'qrCode' => $qrCode,
         ];
 
-        $registerAttendeesId = $nameBadgeData->register_attendees->id;
-
         // return view('pdf', $data);
 
-        $htmlContent = View::make('pdf', $data)->render();
+        $registerAttendeesId = $nameBadgeData->register_attendees->id;
+        $mpdf = new Mpdf([
+            'format' => [210, 100],  // Size in millimeters: [width, height]
+            'orientation' => 'P'  // Portrait orientation
+        ]);
 
-        $imagePath = storage_path('app/public/qrCode/' . $registerAttendeesId . '_' .$nameBadgeData->register_attendees->name .  '_qrCode.png');
-        Browsershot::html($htmlContent)->save($imagePath);
+        $html = View::make('pdf', $data)->render();
+        $mpdf->WriteHTML($html);
 
-        return response()->download($imagePath);
+        $filename = $registerAttendeesId . '_' . $nameBadgeData->register_attendees->name . '_qrCode.pdf';
+
+        $mpdf->Output($filename, \Mpdf\Output\Destination::DOWNLOAD);
+
+        // $htmlContent = View::make('pdf', $data)->render();
+
+        // $imagePath = storage_path('app/public/qrCode/' . $registerAttendeesId . '_' .$nameBadgeData->register_attendees->name .  '_qrCode.png');
+        // Browsershot::html($htmlContent)->save($imagePath);
+
+        // return response()->download($imagePath);
     }
 
     public function scanQrCode(Request $request)

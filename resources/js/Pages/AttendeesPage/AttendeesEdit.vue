@@ -10,7 +10,7 @@ import { defineComponent, ref, onMounted } from "vue";
 
 defineComponent({ defaultImage });
 
-const props = defineProps({ user: Object, types: Object, groups: Object });
+const props = defineProps({ user: Object, types: Object, groups: Object , baseUrl: Object});
 
 const user = props.user;
 
@@ -74,7 +74,7 @@ const updateAttendees = () => form.post(`/attendees/update/${user.id}`);
                   />
                   <img
                     v-else-if="user.profile_path"
-                    :src="`http://127.0.0.1:8000/storage/${user.profile_path}`"
+                    :src="`${baseUrl}/storage/${user.profile_path}`"
                     alt="preview image"
                     class="w-20 rounded-md h-20"
                   />
@@ -251,7 +251,7 @@ const updateAttendees = () => form.post(`/attendees/update/${user.id}`);
                     <select
                       v-model="form.attendees_groups_id"
                       class="py-3 px-4 pe-9 block w-full border-gray-200 rounded-lg text-sm focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none mt-3"
-                      
+
                     >
                       <option value="" selected="">
                         Open this attendees group

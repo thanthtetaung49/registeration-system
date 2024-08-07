@@ -18,13 +18,13 @@ return new class extends Migration
             $table->unsignedBigInteger('attendees_types_id')->nullable();
             $table->foreign('attendees_types_id')->references('id')->on('attendees_types')->cascadeOnDelete();
             $table->string('name');
-            $table->integer('age');
+            $table->integer('age')->nullable();
             $table->integer('sex'); // 0 is male, 1 is female
             $table->string('phone_number');
-            $table->string('nrc_number');
+            $table->string('nrc_number')->nullable();
             $table->string('edu_background');
             $table->string('position');
-            $table->string('department');
+            $table->string('department')->nullable();
             $table->string('address');
             $table->string('email')->unique();
             $table->integer('is_admin')->default(0); // 0 is attendees , 1 is admin
@@ -37,7 +37,7 @@ return new class extends Migration
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
             $table->string('email')->primary();
-            $table->string('token');    
+            $table->string('token');
             $table->timestamp('created_at')->nullable();
         });
 

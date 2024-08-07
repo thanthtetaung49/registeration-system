@@ -220,7 +220,7 @@ const showingNavigationDropdown = ref(false);
               route().current('event.list.index') ||
               route().current('event.list.edit') ||
 route().current('event.list.view') ||
-              route().current('event.report.index')
+              route().current('event.report.index') || route().current('event.report.index')
             "
           >
             <svg
