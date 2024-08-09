@@ -12,7 +12,7 @@ class AttendeesTypeController extends Controller
 {
     public function index()
     {
-        $types = AttendeesType::orderBy('id', 'desc')->paginate(5);
+        $types = AttendeesType::orderBy('id', 'desc')->paginate(20);
 
         return Inertia::render('AttendeesPage/AttendeesType/AttendeesType', ['types' => $types]);
     }

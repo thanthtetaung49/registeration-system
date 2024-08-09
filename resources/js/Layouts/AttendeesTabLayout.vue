@@ -80,6 +80,20 @@ import { Link } from "@inertiajs/vue3";
       >
         Register attendees
       </Link>
+
+       <Link
+        href="/attendees/unregister"
+        class="hs-tab-active:font-semibold hs-tab-active:border-blue-600 hs-tab-active:text-blue-600 py-4 px-1 inline-flex items-center gap-x-2 border-b-2 border-transparent text-sm whitespace-nowrap hover:text-blue-600 focus:outline-none focus:text-blue-600 disabled:opacity-50 disabled:pointer-events-none"
+        role="tab"
+        :class="{
+          'text-blue-500 font-bold': route().current(
+            'attendees.unregister.index'
+          ),
+          'text-gray-500 ': !route().current('attendees.unregister.index'),
+        }"
+      >
+        Unregister attendees
+      </Link>
     </nav>
 
 

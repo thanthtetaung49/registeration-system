@@ -17,6 +17,7 @@ use App\Http\Controllers\QrcodePrintController;
 use App\Http\Controllers\RegisterAttendeesController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\SecurityController;
+use App\Http\Controllers\UnregisterAttendeesController;
 use App\Http\Controllers\UploadAttendeesController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -139,9 +140,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // register
         Route::get('/register', [RegisterAttendeesController::class, 'index'])->name('attendees.register.index');
         Route::post('/event/register', [RegisterAttendeesController::class, 'submitAttendeeEvent'])->name('attendees.register.create');
-        Route::get('/event/register/filter', [RegisterAttendeesController::class, 'filterAttendees'])->name('attendees.register.filter');
-        Route::get('/event/register/search', [RegisterAttendeesController::class, 'search'])->name('attendees.register.search');
+        Route::get('/event/register/filter', [RegisterAttendeesController::class, 'filterAttendees'])->name('attendees.filter');
+        Route::get('/event/register/search', [RegisterAttendeesController::class, 'search'])->name('attendees.search');
         Route::get('/event/registerAttendees/Export', [RegisterAttendeesController::class, 'export'])->name('attendees.register.export');
+
+        // unregister
+        Route::get('/unregister', [UnregisterAttendeesController::class, 'index'])->name('attendees.unregister.index');
+        Route::post('/event/unregister', [UnregisterAttendeesController::class, 'unregisterEvent'])->name('attendees.unregister.delete');
+        Route::get('/event/unregister/filter', [UnregisterAttendeesController::class, 'filterAttendees'])->name('unregister.filter');
+        Route::get('/event/unregister/search', [UnregisterAttendeesController::class, 'search'])->name('unregister.search');
     });
 
     // print

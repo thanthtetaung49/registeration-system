@@ -68,7 +68,7 @@ import { Link } from "@inertiajs/vue3";
       <Link
         href="/event/report"
         class="hs-tab-active:font-semibold hs-tab-active:bordsubmitCategoryer-blue-600 hs-tab-active:text-blue-600 py-4 px-1 inline-flex items-center gap-x-2 border-b-2 border-transparent text-sm whitespace-nowrap  hover:text-blue-600 focus:outline-none focus:text-blue-600 disabled:opacity-50 disabled:pointer-events-none"
-        role="tab"
+        role="tab"  
         :class="{
           'text-blue-500 font-bold': route().current('event.report.index'),
           'text-gray-500 ': !route().current('event.report.index'),

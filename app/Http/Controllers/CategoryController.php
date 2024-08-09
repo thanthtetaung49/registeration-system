@@ -10,7 +10,7 @@ class CategoryController extends Controller
 {
     public function index()
     {
-        $categories = Category::orderBy('id', 'desc')->paginate(5);
+        $categories = Category::orderBy('id', 'desc')->paginate(20);
 
         return Inertia::render('EventPage/Category/Category', ['categories' => $categories]);
     }

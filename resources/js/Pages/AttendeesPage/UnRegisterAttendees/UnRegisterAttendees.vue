@@ -27,10 +27,10 @@ const form = useForm({
     attendees_groups_id: props.groupId ? props.groupId : "",
 });
 
-const registerEvent = () => {
+const unregisterEvent = () => {
     const checkBoxes = document.querySelectorAll(".checkBoxes");
 
-    form.post("/attendees/event/register", {
+    form.post("/attendees/event/unregister", {
         onSuccess: () => {
             status.value = true;
             setInterval(() => {
@@ -39,7 +39,7 @@ const registerEvent = () => {
 
             form.users_id = [];
             form.events_id = "";
-            window.location.href = "/attendees/event/register";
+            window.location.href = "/attendees/unregister";
         },
     });
 
@@ -61,8 +61,6 @@ const handleCheckboxChange = (event) => {
             form.users_id.splice(index, 1);
         }
     }
-
-    console.log(form.users_id);
 };
 
 const handleSelectAllChackBoxChange = (users) => {
@@ -86,7 +84,7 @@ const handleSelectAllChackBoxChange = (users) => {
 };
 
 const filter = () => {
-    router.get("/attendees/event/register/filter", {
+    router.get("/attendees/event/unregister/filter", {
         data: {
             attendeesGroupId: form.attendees_groups_id,
             eventsId: form.events_id,
@@ -99,12 +97,8 @@ const filter = () => {
     });
 };
 
-const excelExport = () => {
-    window.location.href = `/attendees/event/registerAttendees/Export`;
-};
-
 const searchUser = () => {
-    router.visit(`/attendees/event/register/search`, {
+    router.visit(`/attendees/event/unregister/search`, {
         method: "get",
         data: {
             query: query.value,
@@ -128,9 +122,9 @@ onMounted(() => {
                 <Transition name="slide-fade">
                     <div
                         v-if="status"
-                        class="text-xs bg-green-500 block fixed right-10 top-20 z-10 text-white px-3 py-4 rounded-md"
+                        class="text-xs bg-red-500 block fixed right-10 top-20 z-10 text-white px-3 py-4 rounded-md"
                     >
-                        Event registration is successfully.
+                        Event registration delete successfully.
                     </div>
                 </Transition>
 
@@ -194,7 +188,7 @@ onMounted(() => {
                                 :message="form.errors.users_id"
                             ></InputError>
 
-                            <form v-on:submit.prevent="registerEvent">
+                            <form v-on:submit.prevent="unregisterEvent">
                                 <div class="w-full flex items-center mt-5">
                                     <div class="w-1/3 ms-3">
                                         <select
@@ -248,7 +242,7 @@ onMounted(() => {
                                     <div class="w-1/3 ms-5">
                                         <button
                                             type="button"
-                                            class="border p-2 rounded-md text-sm bg-blue-600 text-white"
+                                            class="border py-2 px-4 rounded-md text-xs uppercase bg-blue-600 text-white"
                                             v-on:click="filter"
                                         >
                                             Filter
@@ -268,32 +262,10 @@ onMounted(() => {
                                             </svg>
                                         </button>
 
-                                        <button
-                                            type="button"
-                                            v-on:click="excelExport"
-                                            class="inline-flex items-center px-4 py-2 bg-green-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-green-700 focus:bg-green-700 active:bg-green-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150 ms-3"
-                                        >
-                                            Excel
-                                            <svg
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                fill="none"
-                                                viewBox="0 0 24 24"
-                                                stroke-width="1.5"
-                                                stroke="currentColor"
-                                                class="size-5 ms-2"
-                                            >
-                                                <path
-                                                    stroke-linecap="round"
-                                                    stroke-linejoin="round"
-                                                    d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"
-                                                />
-                                            </svg>
-                                        </button>
-
                                         <PrimaryButton
                                             type="submit"
                                             class="ms-3"
-                                            >Save</PrimaryButton
+                                            >Unregister</PrimaryButton
                                         >
                                     </div>
                                 </div>
@@ -394,16 +366,27 @@ onMounted(() => {
                                                         :key="user.id"
                                                     >
                                                         <td class="py-3 ps-3">
-                                                            <input
-                                                                :value="user.id"
-                                                                :id="`hs-table-checkbox-${user.id}`"
-                                                                type="checkbox"
-                                                                class="border-gray-300 checkBoxes rounded text-blue-600 focus:ring-blue-500"
-                                                                data-hs-datatable-row-selecting-individual=""
-                                                                @change="
-                                                                    handleCheckboxChange
-                                                                "
-                                                            />
+                                                            <div
+                                                                class="flex items-center h-5"
+                                                            >
+                                                                <input
+                                                                    :value="
+                                                                        user.id
+                                                                    "
+                                                                    :id="`hs-table-checkbox-${user.id}`"
+                                                                    type="checkbox"
+                                                                    class="border-gray-300 checkBoxes rounded text-blue-600 focus:ring-blue-500"
+                                                                    data-hs-datatable-row-selecting-individual=""
+                                                                    @change="
+                                                                        handleCheckboxChange
+                                                                    "
+                                                                />
+                                                                <label
+                                                                    for="`hs-table-checkbox-${user.id}`"
+                                                                    class="sr-only"
+                                                                    >Checkbox</label
+                                                                >
+                                                            </div>
                                                         </td>
                                                         <td
                                                             class="p-3 whitespace-nowrap text-sm font-medium text-gray-800"

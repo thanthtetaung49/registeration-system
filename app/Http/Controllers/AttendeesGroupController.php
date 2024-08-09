@@ -10,7 +10,7 @@ class AttendeesGroupController extends Controller
 {
     public function index()
     {
-        $attendeesGroup = AttendeesGroup::orderBy('id', 'desc')->paginate(5);
+        $attendeesGroup = AttendeesGroup::orderBy('id', 'desc')->paginate(20);
 
         return Inertia::render('AttendeesPage/AttendeesGroup/AttendeesGroup', [
             'groups' => $attendeesGroup

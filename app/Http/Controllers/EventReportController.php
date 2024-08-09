@@ -14,7 +14,7 @@ class EventReportController extends Controller
     {
         $registerEvents = RegisterEvent::with(['register_attendees', 'attendees_types', 'events'])
             ->orderBy('id', 'desc')
-            ->paginate(5);
+            ->paginate(20);
 
         return Inertia::render('EventPage/EventReport/EventReport', ['registerEvents' => $registerEvents]);
     }
@@ -24,7 +24,7 @@ class EventReportController extends Controller
         $search = $request->query('query');
 
         if ($search == 'null') {
-            $registerEvents = RegisterEvent::with(['register_attendees', 'attendees_types', 'events'])->orderBy('id', 'desc')->paginate(5);
+            $registerEvents = RegisterEvent::with(['register_attendees', 'attendees_types', 'events'])->orderBy('id', 'desc')->paginate(20);
         } else {
             $registerEvents = RegisterEvent::with('register_attendees', 'attendees_types', 'events')
                 ->whereHas('register_attendees', function ($query) use ($search) {
@@ -36,7 +36,7 @@ class EventReportController extends Controller
                 ->orWhereHas('events', function ($query) use ($search) {
                     $query->where('events.event_name', 'like', '%' . $search . '%');
                 })
-                ->paginate(5);
+                ->paginate(20);
         }
 
         return Inertia::render('EventPage/EventReport/EventReport', ['registerEvents' => $registerEvents]);

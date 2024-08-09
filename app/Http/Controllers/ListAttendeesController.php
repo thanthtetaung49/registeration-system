@@ -12,7 +12,7 @@ class ListAttendeesController extends Controller
 {
     public function index()
     {
-        $users = User::with('attendees_types', 'attendees_groups', 'register_events')->orderBy('id', 'desc')->where('is_admin', 0)->paginate(5);
+        $users = User::with('attendees_types', 'attendees_groups', 'register_events')->orderBy('id', 'desc')->where('is_admin', 0)->paginate(20);
 
         return Inertia::render('AttendeesPage/ListAttendees', ['users' => $users]);
     }
@@ -25,14 +25,14 @@ class ListAttendeesController extends Controller
             $users = User::with('attendees_types', 'attendees_groups', 'register_events')
                 ->orderBy('id', 'desc')
                 ->where('is_admin', 0)
-                ->paginate(5);
+                ->paginate(20);
         } else {
             $users = User::when($search, function ($query) use ($search) {
                 return $query->where('name', 'LIKE', '%' . $search . '%');
             })
                 ->where('is_admin', 0)
                 ->orderBy('id', 'desc')
-                ->paginate(5);
+                ->paginate(20);
         }
 
         return Inertia::render('AttendeesPage/ListAttendees', ['users' => $users]);

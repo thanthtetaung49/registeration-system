@@ -10,7 +10,7 @@ class InstructorController extends Controller
 {
     public function index()
     {
-        $instructors = Instructor::orderBy('id', 'desc')->paginate(5);
+        $instructors = Instructor::orderBy('id', 'desc')->paginate(20);
 
         return Inertia::render('EventPage/Instructor/Instructor', ['instructors' => $instructors]);
     }

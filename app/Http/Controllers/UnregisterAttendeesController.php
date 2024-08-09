@@ -2,58 +2,61 @@
 
 namespace App\Http\Controllers;
 
-use App\Exports\RegisterAttendeesExport;
 use App\Models\AttendeesGroup;
 use App\Models\Event;
 use App\Models\RegisterEvent;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-use Maatwebsite\Excel\Facades\Excel;
 
-class RegisterAttendeesController extends Controller
+class UnregisterAttendeesController extends Controller
 {
     public function index()
     {
         $users = User::with('register_events')
             ->whereNotNull('attendees_groups_id')
             ->where('is_admin', 0)
-            ->whereDoesntHave('register_events')
+            ->whereHas('register_events')
             ->paginate(20);
 
         $events = Event::get();
         $groups = AttendeesGroup::get();
 
-        return Inertia::render('AttendeesPage/RegisterAttendees', [
+        return Inertia::render('AttendeesPage/UnRegisterAttendees/UnRegisterAttendees', [
             'users' => $users,
             'events' => $events,
             'groups' => $groups,
         ]);
     }
 
-    public function submitAttendeeEvent(Request $request)
+    public function unregisterEvent(Request $request)
     {
+        $usersId = $request->users_id;
+
         $request->validate([
             'events_id' => ['required'],
             'users_id' => ['required'],
-            'attendees_groups_id' => ['required']
+            'attendees_groups_id' => ['required'],
         ]);
 
-        $usersId = $request->users_id;
-
         foreach ($usersId as $id) {
-            $letters = chr(rand(65, 90)) . chr(rand(65, 90)) . chr(rand(65, 90));
-            $digits = rand(100, 999);
-            $code = $letters . $digits;
-
-            RegisterEvent::create([
-                'users_id'  => $id,
-                'events_id' => $request->events_id,
-                'qr_code'   => $code,
-            ]);
+            RegisterEvent::where('users_id', $id)->delete();
         }
 
-        return to_route('attendees.register.index');
+        $users = User::with('register_events')
+            ->whereNotNull('attendees_groups_id')
+            ->where('is_admin', 0)
+            ->whereHas('register_events')
+            ->paginate(20);
+
+        $events = Event::get();
+        $groups = AttendeesGroup::get();
+
+        return Inertia::render('AttendeesPage/UnRegisterAttendees/UnRegisterAttendees', [
+            'users' => $users,
+            'events' => $events,
+            'groups' => $groups,
+        ]);
     }
 
     public function search(Request $request)
@@ -66,7 +69,7 @@ class RegisterAttendeesController extends Controller
             $users = User::with('register_events')
                 ->whereNotNull('attendees_groups_id')
                 ->where('is_admin', 0)
-                ->whereDoesntHave('register_events')
+                ->whereHas('register_events')
                 ->paginate(20);
         } else {
             $users = User::with('register_events')
@@ -77,12 +80,14 @@ class RegisterAttendeesController extends Controller
                         ->orWhere('email', 'like', '%' . $search . '%');
                 })
                 ->whereNotNull('attendees_groups_id')
-                ->whereDoesntHave('register_events')
-                ->paginate(20);
+                ->whereHas('register_events')
+                ->get();
         }
 
-        return Inertia::render('AttendeesPage/RegisterAttendees', [
-            'users' => $users,
+        dd($users->toArray());
+
+        return Inertia::render('AttendeesPage/UnRegisterAttendees/UnRegisterAttendees', [
+            'users'  => $users,
             'events' => $events,
             'groups' => $groups,
         ]);
@@ -93,28 +98,19 @@ class RegisterAttendeesController extends Controller
         $users = User::select('users.name', 'users.phone_number', 'users.email', 'users.created_at', 'users.id as id')
             ->leftJoin('register_events', 'users.id', 'register_events.users_id')
             ->where('attendees_groups_id', $request['data']['attendeesGroupId'])
-            ->whereNull('register_events.id') // not registered
+            ->whereNotNull('register_events.id')
+            ->distinct()
             ->paginate(20);
 
         $events = Event::get();
         $groups = AttendeesGroup::get();
 
-        return Inertia::render('AttendeesPage/RegisterAttendees', [
+        return Inertia::render('AttendeesPage/UnRegisterAttendees/UnRegisterAttendees', [
             'users' => $users,
             'events' => $events,
             'groups' => $groups,
             'groupId' => $request['data']['attendeesGroupId'],
             'eventsId' => $request['data']['eventsId'],
         ]);
-    }
-
-    public function export()
-    {
-        $users = User::with(['register_events' => function ($query) {
-            $query->with('events')->whereNotNull('id');
-        }])
-            ->get();
-
-        return Excel::download(new RegisterAttendeesExport($users), 'registerAttendeesReport.xlsx');
     }
 }

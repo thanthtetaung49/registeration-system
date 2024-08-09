@@ -14,7 +14,7 @@ class EventListController extends Controller
 {
     public function index()
     {
-        $events = Event::with('lead_instructors', 'assists_instructors', 'categories')->orderBy('id', 'desc')->paginate(5);
+        $events = Event::with('lead_instructors', 'assists_instructors', 'categories')->orderBy('id', 'desc')->paginate(20);
 
         return Inertia::render('EventPage/Event/EventList', [
             'events' => $events,
@@ -44,7 +44,8 @@ class EventListController extends Controller
         $roomNumbers = RoomNumber::get();
 
         return Inertia::render('EventPage/Event/EventEdit', [
-            'event' => $event, 'instructors' => $instructors,
+            'event' => $event,
+            'instructors' => $instructors,
             'categories' => $categories,
             'rooms' => $roomNumbers,
         ]);
@@ -85,14 +86,14 @@ class EventListController extends Controller
         $search = $request->query('query');
 
         if ($search === "null") {
-            $events = Event::with('lead_instructors', 'assists_instructors', 'categories')->orderBy('id', 'desc')->paginate(5);
+            $events = Event::with('lead_instructors', 'assists_instructors', 'categories')->orderBy('id', 'desc')->paginate(20);
         } else {
             $events = Event::with('lead_instructors', 'assists_instructors', 'categories')
                 ->when($search, function ($query) use ($search) {
                     return $query->where('event_name', 'LIKE', '%' . $search . '%');
                 })
                 ->orderBy('id', 'desc')
-                ->paginate(5);
+                ->paginate(20);
         }
 
         return Inertia::render('EventPage/Event/EventList', [
