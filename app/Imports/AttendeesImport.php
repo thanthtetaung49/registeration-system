@@ -15,11 +15,11 @@ class AttendeesImport implements ToModel, WithHeadingRow
     */
     public function model(array $row)
     {
-        // dd($row['attendees_types_id']);
+        // dd($row['age']);
 
         return new User([
-            'name' => $row['name'],
-            'age' => $row['age'],
+            'name' => trim($row['name']),
+            'age' => trim($row['age']),
             'sex' => $row['sex'],
             'phone_number' => $row['phone_number'],
             'nrc_number' => $row['nrc_number'],

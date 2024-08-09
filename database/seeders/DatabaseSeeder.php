@@ -35,20 +35,5 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('123'),
             'is_admin' => 1 // admin
         ]);
-
-        User::create([
-            'name' => 'security',
-            'age' => 30,
-            'sex' => rand(0, 1),
-            'phone_number' => fake()->phoneNumber(),
-            'nrc_number' => fake()->text(),
-            'edu_background'=> fake()->text(),
-            'position' => fake()->text(),
-            'department' => fake()->text(),
-            'address' => fake()->address(),
-            'email' => 'security@gmail.com',
-            'password' => Hash::make('123'),
-            'is_admin' => 2 // security
-        ]);
     }
 }
