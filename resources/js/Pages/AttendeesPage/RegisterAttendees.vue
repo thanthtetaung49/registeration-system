@@ -116,9 +116,9 @@ const searchUser = () => {
     });
 };
 
-onMounted(() => {
-    input.value.focus();
-});
+// onMounted(() => {
+//     input.value.focus();
+// });
 </script>
 
 <template>
@@ -245,10 +245,10 @@ onMounted(() => {
                                         </select>
                                     </div>
 
-                                    <div class="w-1/3 ms-5">
+                                   <div class="w-1/3 ms-5">
                                         <button
                                             type="button"
-                                            class="border p-2 rounded-md text-sm bg-blue-600 text-white"
+                                            class="border py-2 px-4 rounded-md text-xs uppercase bg-blue-600 text-white"
                                             v-on:click="filter"
                                         >
                                             Filter
@@ -267,7 +267,6 @@ onMounted(() => {
                                                 />
                                             </svg>
                                         </button>
-
                                         <button
                                             type="button"
                                             v-on:click="excelExport"

@@ -110,9 +110,9 @@ const searchUser = () => {
     });
 };
 
-onMounted(() => {
-    input.value.focus();
-});
+// onMounted(() => {
+//     input.value.focus();
+// });
 </script>
 
 <template>
