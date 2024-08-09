@@ -31,6 +31,8 @@ class RegisterAttendeesExport implements FromCollection, WithMapping, WithHeadin
 
         foreach ($user->register_events as $index => $register_event) {
             $rows[] = [
+                $user->name,
+                $user->attendees_types->name,
                 $user->phone_number,
                 $user->email,
                 $register_event->qr_code ?? '-',
@@ -43,10 +45,12 @@ class RegisterAttendeesExport implements FromCollection, WithMapping, WithHeadin
 
     public function headings(): array {
         return [
+            'Name',
+            'Attendees type',
             'Phone number',
             'Email',
             'Code',
-            'Event name'
+            'Event name',
         ];
     }
 

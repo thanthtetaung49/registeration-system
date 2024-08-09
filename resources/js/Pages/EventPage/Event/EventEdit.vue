@@ -56,7 +56,7 @@ const updateEvent = () => form.post(`/event/list/update/${event.id}`);
                     <InputLabel :value="'Event name'"></InputLabel>
                     <TextInput
                       v-model="form.event_name"
-                      class="mt-3 w-full"
+                      class="mt-3 w-full text-sm"
                     ></TextInput>
                     <InputError :message="form.errors.event_name"></InputError>
                   </div>
@@ -64,7 +64,7 @@ const updateEvent = () => form.post(`/event/list/update/${event.id}`);
                     <InputLabel :value="'Location'"></InputLabel>
                     <TextInput
                       v-model="form.location"
-                      class="mt-3 w-full"
+                      class="mt-3 w-full text-sm"
                     ></TextInput>
                     <InputError :message="form.errors.location"></InputError>
                   </div>
@@ -74,7 +74,7 @@ const updateEvent = () => form.post(`/event/list/update/${event.id}`);
                     ></InputLabel>
                     <TextInput
                       v-model="form.credits"
-                      class="mt-3 w-full"
+                      class="mt-3 w-full text-sm"
                     ></TextInput>
                     <InputError :message="form.errors.credits"></InputError>
                   </div>
@@ -152,7 +152,7 @@ const updateEvent = () => form.post(`/event/list/update/${event.id}`);
                     <TextInput
                       type="number"
                       v-model="form.max_seats"
-                      class="mt-3 w-full"
+                      class="mt-3 w-full text-sm"
                     ></TextInput>
                     <InputError :message="form.errors.max_seats"></InputError>
                   </div>
@@ -161,7 +161,7 @@ const updateEvent = () => form.post(`/event/list/update/${event.id}`);
                     <TextInput
                       type="number"
                       v-model="form.event_reference_id"
-                      class="mt-3 w-full"
+                      class="mt-3 w-full text-sm"
                     ></TextInput>
                     <InputError
                       :message="form.errors.event_reference_id"
@@ -196,7 +196,7 @@ const updateEvent = () => form.post(`/event/list/update/${event.id}`);
                     <TextInput
                       type="date"
                       v-model="form.start_date"
-                      class="mt-3 w-full"
+                      class="mt-3 w-full text-sm"
                     ></TextInput>
                     <InputError :message="form.errors.start_date"></InputError>
                   </div>
@@ -205,7 +205,7 @@ const updateEvent = () => form.post(`/event/list/update/${event.id}`);
                     <TextInput
                       type="date"
                       v-model="form.end_date"
-                      class="mt-3 w-full"
+                      class="mt-3 w-full text-sm"
                     ></TextInput>
                     <InputError :message="form.errors.end_date"></InputError>
                   </div>
@@ -214,7 +214,7 @@ const updateEvent = () => form.post(`/event/list/update/${event.id}`);
                     <TextInput
                       type="time"
                       v-model="form.start_time"
-                      class="mt-3 w-full"
+                      class="mt-3 w-full text-sm"
                     ></TextInput>
                     <InputError :message="form.errors.start_time"></InputError>
                   </div>
@@ -223,7 +223,7 @@ const updateEvent = () => form.post(`/event/list/update/${event.id}`);
                     <TextInput
                       type="time"
                       v-model="form.end_time"
-                      class="mt-3 w-full"
+                      class="mt-3 w-full text-sm"
                     ></TextInput>
                     <InputError :message="form.errors.end_time"></InputError>
                   </div>

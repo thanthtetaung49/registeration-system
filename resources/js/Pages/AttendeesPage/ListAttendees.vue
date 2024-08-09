@@ -332,7 +332,7 @@ const csvExport = () => {
                                                         >
                                                             {{
                                                                 user.created_at.split(
-                                                                    "%"
+                                                                    "T"
                                                                 )[0]
                                                             }}
                                                         </td>

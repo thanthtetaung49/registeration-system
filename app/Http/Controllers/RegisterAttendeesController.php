@@ -21,6 +21,8 @@ class RegisterAttendeesController extends Controller
             ->whereDoesntHave('register_events')
             ->paginate(20);
 
+        // dd($users);
+
         $events = Event::get();
         $groups = AttendeesGroup::get();
 
@@ -53,7 +55,7 @@ class RegisterAttendeesController extends Controller
             ]);
         }
 
-        return to_route('attendees.register.index');
+        return redirect()->route('attendees.register.index');
     }
 
     public function search(Request $request)
@@ -90,11 +92,12 @@ class RegisterAttendeesController extends Controller
 
     public function filterAttendees(Request $request)
     {
-        $users = User::select('users.name', 'users.phone_number', 'users.email', 'users.created_at', 'users.id as id')
-            ->leftJoin('register_events', 'users.id', 'register_events.users_id')
-            ->where('attendees_groups_id', $request['data']['attendeesGroupId'])
-            ->whereNull('register_events.id') // not registered
-            ->paginate(20);
+        $users = User::with('register_events')
+                ->where('is_admin', 0)
+                ->where('attendees_groups_id', $request['data']['attendeesGroupId'])
+                ->whereNotNull('attendees_groups_id')
+                ->whereDoesntHave('register_events') // not registered
+                ->paginate(20);
 
         $events = Event::get();
         $groups = AttendeesGroup::get();
@@ -104,7 +107,6 @@ class RegisterAttendeesController extends Controller
             'events' => $events,
             'groups' => $groups,
             'groupId' => $request['data']['attendeesGroupId'],
-            'eventsId' => $request['data']['eventsId'],
         ]);
     }
 
@@ -112,8 +114,11 @@ class RegisterAttendeesController extends Controller
     {
         $users = User::with(['register_events' => function ($query) {
             $query->with('events')->whereNotNull('id');
-        }])
+        }, 'attendees_types'])
+            ->whereHas('register_events')
             ->get();
+
+        // dd($users->toArray());
 
         return Excel::download(new RegisterAttendeesExport($users), 'registerAttendeesReport.xlsx');
     }

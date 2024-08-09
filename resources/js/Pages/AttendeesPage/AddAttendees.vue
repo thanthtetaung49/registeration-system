@@ -155,7 +155,7 @@ const saveAttendees = () =>
                     <TextInput
                       type="text"
                       v-model="form.name"
-                      class="w-full mt-3"
+                      class="w-full mt-3 text-sm"
                     ></TextInput>
                     <TextInputError
                       :message="form.errors.name"
@@ -166,7 +166,7 @@ const saveAttendees = () =>
                     <TextInput
                       type="number"
                       v-model="form.age"
-                      class="w-full mt-3"
+                      class="w-full mt-3 text-sm"
                     ></TextInput>
                     <TextInputError :message="form.errors.age"></TextInputError>
                   </div>
@@ -192,7 +192,7 @@ const saveAttendees = () =>
                     <TextInput
                       type="text"
                       v-model="form.phone_number"
-                      class="w-full mt-3"
+                      class="w-full mt-3 text-sm"
                     ></TextInput>
                     <TextInputError
                       :message="form.errors.phone_number"
@@ -203,7 +203,7 @@ const saveAttendees = () =>
                     <TextInput
                       type="text"
                       v-model="form.nrc_number"
-                      class="w-full mt-3"
+                      class="w-full mt-3 text-sm"
                     ></TextInput>
                     <TextInputError
                       :message="form.errors.nrc_number"
@@ -214,7 +214,7 @@ const saveAttendees = () =>
                     <TextInput
                       type="text"
                       v-model="form.edu_background"
-                      class="w-full mt-3"
+                      class="w-full mt-3 text-sm"
                     ></TextInput>
                     <TextInputError
                       :message="form.errors.edu_background"
@@ -228,7 +228,7 @@ const saveAttendees = () =>
                     <TextInput
                       type="text"
                       v-model="form.position"
-                      class="w-full mt-3"
+                      class="w-full mt-3 text-sm"
                     ></TextInput>
                     <TextInputError
                       :message="form.errors.position"
@@ -239,7 +239,7 @@ const saveAttendees = () =>
                     <TextInput
                       type="text"
                       v-model="form.department"
-                      class="w-full mt-3"
+                      class="w-full mt-3 text-sm"
                     ></TextInput>
                     <TextInputError
                       :message="form.errors.department"
@@ -250,7 +250,7 @@ const saveAttendees = () =>
                     <TextInput
                       type="text"
                       v-model="form.address"
-                      class="w-full mt-3"
+                      class="w-full mt-3 text-sm"
                     ></TextInput>
                     <TextInputError
                       :message="form.errors.address"
@@ -264,7 +264,7 @@ const saveAttendees = () =>
                     <TextInput
                       type="email"
                       v-model="form.email"
-                      class="w-full mt-3"
+                      class="w-full mt-3 text-sm"
                     ></TextInput>
                     <TextInputError
                       :message="form.errors.email"

@@ -87,7 +87,7 @@ const updateAttendees = () => form.post(`/attendees/update/${user.id}`);
                     <TextInput
                       type="text"
                       v-model="form.name"
-                      class="w-full mt-3"
+                      class="w-full mt-3 text-sm"
                       disabled
                     ></TextInput>
                   </div>
@@ -96,7 +96,7 @@ const updateAttendees = () => form.post(`/attendees/update/${user.id}`);
                     <TextInput
                       type="number"
                       v-model="form.age"
-                      class="w-full mt-3"
+                      class="w-full mt-3 text-sm"
                       disabled
                     ></TextInput>
                   </div>
@@ -120,7 +120,7 @@ const updateAttendees = () => form.post(`/attendees/update/${user.id}`);
                     <TextInput
                       type="text"
                       v-model="form.phone_number"
-                      class="w-full mt-3"
+                      class="w-full mt-3 text-sm"
                       disabled
                     ></TextInput>
                   </div>
@@ -129,7 +129,7 @@ const updateAttendees = () => form.post(`/attendees/update/${user.id}`);
                     <TextInput
                       type="text"
                       v-model="form.nrc_number"
-                      class="w-full mt-3"
+                      class="w-full mt-3 text-sm"
                       disabled
                     ></TextInput>
                   </div>
@@ -138,7 +138,7 @@ const updateAttendees = () => form.post(`/attendees/update/${user.id}`);
                     <TextInput
                       type="text"
                       v-model="form.edu_background"
-                      class="w-full mt-3"
+                      class="w-full mt-3 text-sm"
                       disabled
                     ></TextInput>
                   </div>
@@ -150,7 +150,7 @@ const updateAttendees = () => form.post(`/attendees/update/${user.id}`);
                     <TextInput
                       type="text"
                       v-model="form.position"
-                      class="w-full mt-3"
+                      class="w-full mt-3 text-sm"
                       disabled
                     ></TextInput>
                   </div>
@@ -159,7 +159,7 @@ const updateAttendees = () => form.post(`/attendees/update/${user.id}`);
                     <TextInput
                       type="text"
                       v-model="form.department"
-                      class="w-full mt-3"
+                      class="w-full mt-3 text-sm"
                       disabled
                     ></TextInput>
                   </div>
@@ -168,7 +168,7 @@ const updateAttendees = () => form.post(`/attendees/update/${user.id}`);
                     <TextInput
                       type="text"
                       v-model="form.address"
-                      class="w-full mt-3"
+                      class="w-full mt-3 text-sm"
                       disabled
                     ></TextInput>
                   </div>
@@ -180,7 +180,7 @@ const updateAttendees = () => form.post(`/attendees/update/${user.id}`);
                     <TextInput
                       type="email"
                       v-model="form.email"
-                      class="w-full mt-3"
+                      class="w-full mt-3 text-sm"
                       disabled
                     ></TextInput>
                   </div>

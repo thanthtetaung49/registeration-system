@@ -62,17 +62,17 @@ const saveEvent = () =>
       <div class="w-full flex">
         <div class="w-1/3">
           <InputLabel :value="'Event name'"></InputLabel>
-          <TextInput v-model="form.event_name" class="mt-3 w-full"></TextInput>
+          <TextInput v-model="form.event_name" class="mt-3 w-full text-sm"></TextInput>
           <InputError :message="form.errors.event_name"></InputError>
         </div>
         <div class="w-1/3 ms-2">
           <InputLabel :value="'Location'"></InputLabel>
-          <TextInput v-model="form.location" class="mt-3 w-full"></TextInput>
+          <TextInput v-model="form.location" class="mt-3 w-full text-sm"></TextInput>
           <InputError :message="form.errors.location"></InputError>
         </div>
         <div class="w-1/3 ms-2">
           <InputLabel :value="'Credits (e.g. 10.50, 0.50)'"></InputLabel>
-          <TextInput v-model="form.credits" class="mt-3 w-full"></TextInput>
+          <TextInput v-model="form.credits" class="mt-3 w-full text-sm"></TextInput>
           <InputError :message="form.errors.credits"></InputError>
         </div>
       </div>
@@ -141,7 +141,7 @@ const saveEvent = () =>
           <TextInput
             type="number"
             v-model="form.max_seats"
-            class="mt-3 w-full"
+            class="mt-3 w-full text-sm"
           ></TextInput>
           <InputError :message="form.errors.max_seats"></InputError>
         </div>
@@ -150,7 +150,7 @@ const saveEvent = () =>
           <TextInput
             type="number"
             v-model="form.event_reference_id"
-            class="mt-3 w-full"
+            class="mt-3 w-full text-sm"
           ></TextInput>
           <InputError :message="form.errors.event_reference_id"></InputError>
         </div>
@@ -175,7 +175,7 @@ const saveEvent = () =>
           <TextInput
             type="date"
             v-model="form.start_date"
-            class="mt-3 w-full"
+            class="mt-3 w-full text-sm"
           ></TextInput>
           <InputError :message="form.errors.start_date"></InputError>
         </div>
@@ -184,7 +184,7 @@ const saveEvent = () =>
           <TextInput
             type="date"
             v-model="form.end_date"
-            class="mt-3 w-full"
+            class="mt-3 w-full text-sm"
           ></TextInput>
           <InputError :message="form.errors.end_date"></InputError>
         </div>
@@ -193,7 +193,7 @@ const saveEvent = () =>
           <TextInput
             type="time"
             v-model="form.start_time"
-            class="mt-3 w-full"
+            class="mt-3 w-full text-sm"
           ></TextInput>
           <InputError :message="form.errors.start_time"></InputError>
         </div>
@@ -202,7 +202,7 @@ const saveEvent = () =>
           <TextInput
             type="time"
             v-model="form.end_time"
-            class="mt-3 w-full"
+            class="mt-3 w-full text-sm"
           ></TextInput>
           <InputError :message="form.errors.end_time"></InputError>
         </div>

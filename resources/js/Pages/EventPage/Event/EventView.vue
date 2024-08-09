@@ -48,7 +48,7 @@ const form = useForm({
                     <InputLabel :value="'Event name'"></InputLabel>
                     <TextInput
                       v-model="form.event_name"
-                      class="mt-3 w-full"
+                      class="mt-3 w-full text-sm"
                       disabled
                     ></TextInput>
                   </div>
@@ -56,7 +56,7 @@ const form = useForm({
                     <InputLabel :value="'Location'"></InputLabel>
                     <TextInput
                       v-model="form.location"
-                      class="mt-3 w-full"
+                      class="mt-3 w-full text-sm"
                       disabled
                     ></TextInput>
                   </div>
@@ -66,7 +66,7 @@ const form = useForm({
                     ></InputLabel>
                     <TextInput
                       v-model="form.credits"
-                      class="mt-3 w-full"
+                      class="mt-3 w-full text-sm"
                       disabled
                     ></TextInput>
                   </div>
@@ -77,7 +77,7 @@ const form = useForm({
                     <InputLabel :value="'Lead instructor'"></InputLabel>
                     <TextInput
                       v-model="form.lead_instructors_id"
-                      class="mt-3 w-full"
+                      class="mt-3 w-full text-sm"
                       disabled
                     ></TextInput>
                   </div>
@@ -85,7 +85,7 @@ const form = useForm({
                     <InputLabel :value="'Assist instructor'"></InputLabel>
                     <TextInput
                       v-model="form.assist_instructors_id"
-                      class="mt-3 w-full"
+                      class="mt-3 w-full text-sm"
                       disabled
                     ></TextInput>
 
@@ -94,7 +94,7 @@ const form = useForm({
                     <InputLabel :value="'Categories'"></InputLabel>
                    <TextInput
                       v-model="form.categories_id"
-                      class="mt-3 w-full"
+                      class="mt-3 w-full text-sm"
                       disabled
                     ></TextInput>
 
@@ -107,7 +107,7 @@ const form = useForm({
                     <TextInput
                       type="number"
                       v-model="form.max_seats"
-                      class="mt-3 w-full"
+                      class="mt-3 w-full text-sm"
                       disabled
                     ></TextInput>
                   </div>
@@ -116,7 +116,7 @@ const form = useForm({
                     <TextInput
                       type="number"
                       v-model="form.event_reference_id"
-                      class="mt-3 w-full"
+                      class="mt-3 w-full text-sm"
                       disabled
                     ></TextInput>
                   </div>
@@ -124,7 +124,7 @@ const form = useForm({
                     <InputLabel :value="'Room number'"></InputLabel>
                     <TextInput
                       v-model="form.room_numbers_id"
-                      class="mt-3 w-full"
+                      class="mt-3 w-full text-sm"
                       disabled
                     ></TextInput>
                   </div>
@@ -136,7 +136,7 @@ const form = useForm({
                     <TextInput
                       type="date"
                       v-model="form.start_date"
-                      class="mt-3 w-full"
+                      class="mt-3 w-full text-sm"
                       disabled
                     ></TextInput>
                   </div>
@@ -145,7 +145,7 @@ const form = useForm({
                     <TextInput
                       type="date"
                       v-model="form.end_date"
-                      class="mt-3 w-full"
+                      class="mt-3 w-full text-sm"
                       disabled
                     ></TextInput>
                   </div>
@@ -154,7 +154,7 @@ const form = useForm({
                     <TextInput
                       type="time"
                       v-model="form.start_time"
-                      class="mt-3 w-full"
+                      class="mt-3 w-full text-sm"
                       disabled
                     ></TextInput>
                   </div>
@@ -163,7 +163,7 @@ const form = useForm({
                     <TextInput
                       type="time"
                       v-model="form.end_time"
-                      class="mt-3 w-full"
+                      class="mt-3 w-full text-sm"
                       disabled
                     ></TextInput>
                   </div>

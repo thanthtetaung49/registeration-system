@@ -31,12 +31,12 @@ class UnregisterAttendeesController extends Controller
 
     public function unregisterEvent(Request $request)
     {
+        // dd($request->all());
         $usersId = $request->users_id;
 
         $request->validate([
             'events_id' => ['required'],
             'users_id' => ['required'],
-            'attendees_groups_id' => ['required'],
         ]);
 
         foreach ($usersId as $id) {
@@ -84,8 +84,6 @@ class UnregisterAttendeesController extends Controller
                 ->get();
         }
 
-        dd($users->toArray());
-
         return Inertia::render('AttendeesPage/UnRegisterAttendees/UnRegisterAttendees', [
             'users'  => $users,
             'events' => $events,
@@ -95,12 +93,16 @@ class UnregisterAttendeesController extends Controller
 
     public function filterAttendees(Request $request)
     {
-        $users = User::select('users.name', 'users.phone_number', 'users.email', 'users.created_at', 'users.id as id')
-            ->leftJoin('register_events', 'users.id', 'register_events.users_id')
-            ->where('attendees_groups_id', $request['data']['attendeesGroupId'])
-            ->whereNotNull('register_events.id')
-            ->distinct()
-            ->paginate(20);
+        $eventId = $request['data']['eventId'] ??  $request['data']['eventId'];
+
+        $users = User::with([
+            'register_events' => function ($query) use ($eventId) {
+                $query->where('register_events.id', $eventId);
+        }])
+            ->where('is_admin', 0)
+            ->whereNotNull('attendees_groups_id')
+            ->whereHas('register_events') // not registered
+            ->get();
 
         $events = Event::get();
         $groups = AttendeesGroup::get();
@@ -110,7 +112,7 @@ class UnregisterAttendeesController extends Controller
             'events' => $events,
             'groups' => $groups,
             'groupId' => $request['data']['attendeesGroupId'],
-            'eventsId' => $request['data']['eventsId'],
+            'eventsId' => $request['data']['eventId'],
         ]);
     }
 }

@@ -39,7 +39,8 @@ const registerEvent = () => {
 
             form.users_id = [];
             form.events_id = "";
-            window.location.href = "/attendees/event/register";
+
+            window.location.href = "/attendees/register";
         },
     });
 
@@ -89,7 +90,6 @@ const filter = () => {
     router.get("/attendees/event/register/filter", {
         data: {
             attendeesGroupId: form.attendees_groups_id,
-            eventsId: form.events_id,
         },
         method: "get",
         onSuccess: (page) => {
@@ -200,6 +200,7 @@ const searchUser = () => {
                                         <select
                                             class="hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-3 ps-4 pe-9 flex gap-x-2 text-nowrap w-full cursor-pointer bg-white border border-gray-200 rounded-lg text-start text-sm focus:outline-none focus:ring-2 focus:ring-blue-200 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-neutral-600"
                                             v-model="form.attendees_groups_id"
+                                            @change="filter"
                                         >
                                             <option value="">
                                                 Choose attendees group
@@ -245,32 +246,11 @@ const searchUser = () => {
                                         </select>
                                     </div>
 
-                                   <div class="w-1/3 ms-5">
-                                        <button
-                                            type="button"
-                                            class="border py-2 px-4 rounded-md text-xs uppercase bg-blue-600 text-white"
-                                            v-on:click="filter"
-                                        >
-                                            Filter
-                                            <svg
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                fill="none"
-                                                viewBox="0 0 24 24"
-                                                stroke-width="1.5"
-                                                stroke="currentColor"
-                                                class="size-5 inline"
-                                            >
-                                                <path
-                                                    stroke-linecap="round"
-                                                    stroke-linejoin="round"
-                                                    d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75"
-                                                />
-                                            </svg>
-                                        </button>
+                                    <div class="w-1/3 ms-5 inline-flex">
                                         <button
                                             type="button"
                                             v-on:click="excelExport"
-                                            class="inline-flex items-center px-4 py-2 bg-green-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-green-700 focus:bg-green-700 active:bg-green-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150 ms-3"
+                                            class="inline-flex items-center px-4 py-2 bg-green-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-green-700 focus:bg-green-700 active:bg-green-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150"
                                         >
                                             Excel
                                             <svg
@@ -288,7 +268,6 @@ const searchUser = () => {
                                                 />
                                             </svg>
                                         </button>
-
                                         <PrimaryButton
                                             type="submit"
                                             class="ms-3"
@@ -320,6 +299,10 @@ const searchUser = () => {
                                                                 class="flex items-center h-5"
                                                             >
                                                                 <input
+                                                                    :disabled="
+                                                                        !form.attendees_groups_id ||
+                                                                        !form.events_id
+                                                                    "
                                                                     ref="checkBoxAll"
                                                                     @change="
                                                                         handleSelectAllChackBoxChange(
@@ -394,6 +377,10 @@ const searchUser = () => {
                                                     >
                                                         <td class="py-3 ps-3">
                                                             <input
+                                                                :disabled="
+                                                                    !form.attendees_groups_id ||
+                                                                    !form.events_id
+                                                                "
                                                                 :value="user.id"
                                                                 :id="`hs-table-checkbox-${user.id}`"
                                                                 type="checkbox"
