@@ -13,11 +13,7 @@ class UnregisterAttendeesController extends Controller
 {
     public function index()
     {
-        $users = User::with('register_events')
-            ->whereNotNull('attendees_groups_id')
-            ->where('is_admin', 0)
-            ->whereHas('register_events')
-            ->paginate(20);
+        $users = RegisterEvent::with(['register_attendees', 'events'])->orderBy('id', 'desc')->paginate(20);
 
         $events = Event::get();
         $groups = AttendeesGroup::get();
@@ -43,11 +39,7 @@ class UnregisterAttendeesController extends Controller
             RegisterEvent::where('users_id', $id)->delete();
         }
 
-        $users = User::with('register_events')
-            ->whereNotNull('attendees_groups_id')
-            ->where('is_admin', 0)
-            ->whereHas('register_events')
-            ->paginate(20);
+        $users = RegisterEvent::with('register_attendees')->orderBy('id', 'desc')->paginate(20);
 
         $events = Event::get();
         $groups = AttendeesGroup::get();
@@ -62,26 +54,26 @@ class UnregisterAttendeesController extends Controller
     public function search(Request $request)
     {
         $search = $request->query('query');
+
         $events = Event::get();
         $groups = AttendeesGroup::get();
 
         if (empty($search)) {
-            $users = User::with('register_events')
-                ->whereNotNull('attendees_groups_id')
-                ->where('is_admin', 0)
-                ->whereHas('register_events')
-                ->paginate(20);
+            $users = RegisterEvent::with(['register_attendees', 'events'])
+                    ->orderBy('id', 'desc')
+                    ->paginate(20);
         } else {
-            $users = User::with('register_events')
-                ->when($search, function ($query) use ($search) {
+            $users = RegisterEvent::with(['register_attendees', 'events'])
+                ->whereHas('register_attendees', function ($query) use ($search) {
                     $query->where('name', 'like', '%' . $search . '%')
-                        ->where('is_admin', 0)
-                        ->orWhere('phone_number', 'like', '%' . $search . '%')
+                        ->orWhere('phone_number', '%' . $search . '%')
                         ->orWhere('email', 'like', '%' . $search . '%');
                 })
-                ->whereNotNull('attendees_groups_id')
-                ->whereHas('register_events')
-                ->get();
+                ->orWhereHas('events', function ($query) use ($search) {
+                    $query->where('event_name', 'like', '%' . $search . '%');
+                })
+                ->orderBy('id', 'desc')
+                ->paginate(20);
         }
 
         return Inertia::render('AttendeesPage/UnRegisterAttendees/UnRegisterAttendees', [
@@ -93,16 +85,16 @@ class UnregisterAttendeesController extends Controller
 
     public function filterAttendees(Request $request)
     {
-        $eventId = $request['data']['eventId'] ??  $request['data']['eventId'];
+        $eventId = $request['data']['eventsId'] ??  $request['data']['eventsId'];
 
-        $users = User::with([
-            'register_events' => function ($query) use ($eventId) {
-                $query->where('register_events.id', $eventId);
-        }])
-            ->where('is_admin', 0)
-            ->whereNotNull('attendees_groups_id')
-            ->whereHas('register_events') // not registered
-            ->get();
+        if (empty($eventId)) {
+            $users = RegisterEvent::with(['register_attendees', 'events'])->orderBy('id', 'desc')->paginate(20);
+        } else {
+            $users = RegisterEvent::with(['register_attendees', 'events'])
+                ->where('events_id', $eventId)
+                ->orderBy('id', 'desc')
+                ->paginate(20);
+        }
 
         $events = Event::get();
         $groups = AttendeesGroup::get();
@@ -111,8 +103,7 @@ class UnregisterAttendeesController extends Controller
             'users' => $users,
             'events' => $events,
             'groups' => $groups,
-            'groupId' => $request['data']['attendeesGroupId'],
-            'eventsId' => $request['data']['eventId'],
+            'eventsId' => $eventId,
         ]);
     }
 }

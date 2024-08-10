@@ -8,6 +8,7 @@ use App\Models\State;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 
 class AddAttendeesController extends Controller
@@ -33,6 +34,7 @@ class AddAttendeesController extends Controller
             "sex"            => ['required'],
             "phone_number"   => ['required'],
             "edu_background" => ['required'],
+            "nrc_number" => ['unique:users,nrc_number'],
             "position"       => ['required'],
             "address"        => ['required'],
             "email"          => ['required', 'email', 'unique:users,email'],
@@ -96,9 +98,10 @@ class AddAttendeesController extends Controller
             "sex"            => ['required'],
             "phone_number"   => ['required'],
             "edu_background" => ['required'],
+            "nrc_number" => [Rule::unique('users', 'nrc_number')->ignore($user->id)],
             "position"       => ['required'],
             "address"        => ['required'],
-            "email"          => ['required'],
+            "email"          => ['required', Rule::unique('users', 'email')->ignore($user->id)],
             "attendees_types_id" => ['required'],
             "attendees_groups_id" => ['required']
         ]);
@@ -158,12 +161,17 @@ class AddAttendeesController extends Controller
         ]);
     }
 
-    public function delete(User $user)
+    public function delete($id)
     {
+        $user = User::with('register_events')->where('id', $id)->first();
         $oldFilename = $user->profile_path;
 
         if (Storage::exists('public/' . $oldFilename)) {
             Storage::delete('public/' . $oldFilename);
+        }
+
+        foreach ($user->register_events as $event) {
+            $event->delete();
         }
 
         $user->delete();

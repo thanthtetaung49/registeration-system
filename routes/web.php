@@ -107,6 +107,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/search', [ListAttendeesController::class, 'search'])->name('attendees.search');
         Route::get('/list/excel/export', [ListAttendeesController::class, 'excelExport'])->name('attendees.excel.export');
         Route::get('/list/csv/export', [ListAttendeesController::class, 'csvExport'])->name('attendees.csv.export');
+        Route::get('/duplicate/check', [ListAttendeesController::class, 'duplicate'])->name('duplicate.check');
 
         // type
         Route::get('/type', [AttendeesTypeController::class, 'index'])->name('attendees.type.index');
@@ -130,7 +131,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/edit/{user}', [AddAttendeesController::class, 'edit'])->name('attendees.edit');
         Route::post('/update/{id}', [AddAttendeesController::class, 'update'])->name('attendees.update');
         Route::get('/view/{id}',[AddAttendeesController::class, 'view'])->name('attendees.view');
-        Route::get('/delete/{user}', [AddAttendeesController::class, 'delete'])->name('attendees.delete');
+        Route::get('/delete/{id}', [AddAttendeesController::class, 'delete'])->name('attendees.delete');
 
         // upload and  import
         Route::get('/upload', [UploadAttendeesController::class, 'index'])->name('attendees.upload.index');

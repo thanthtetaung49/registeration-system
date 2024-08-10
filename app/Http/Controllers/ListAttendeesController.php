@@ -12,7 +12,10 @@ class ListAttendeesController extends Controller
 {
     public function index()
     {
-        $users = User::with('attendees_types', 'attendees_groups', 'register_events')->orderBy('id', 'desc')->where('is_admin', 0)->paginate(20);
+        $users = User::with('attendees_types', 'attendees_groups', 'register_events')
+            ->orderBy('id', 'desc')
+            ->where('is_admin', 0)
+            ->paginate(20);
 
         return Inertia::render('AttendeesPage/ListAttendees', ['users' => $users]);
     }
@@ -27,9 +30,10 @@ class ListAttendeesController extends Controller
                 ->where('is_admin', 0)
                 ->paginate(20);
         } else {
-            $users = User::when($search, function ($query) use ($search) {
-                return $query->where('name', 'LIKE', '%' . $search . '%');
-            })
+            $users = User::with('attendees_types', 'attendees_groups', 'register_events')
+                ->when($search, function ($query) use ($search) {
+                    return $query->where('name', 'LIKE', '%' . $search . '%');
+                })
                 ->where('is_admin', 0)
                 ->orderBy('id', 'desc')
                 ->paginate(20);
@@ -52,7 +56,23 @@ class ListAttendeesController extends Controller
 
     private function exportAttendees()
     {
-        $attendees = User::with('attendees_types', 'register_events')->where('is_admin', 0)->get();
+        $attendees = User::with(['attendees_types', 'register_events'])
+            ->where('is_admin', 0)
+            ->get();
         return $attendees;
+    }
+
+    public function duplicate(Request $request)
+    {
+        $data = $request['data'];
+
+        if ($data == 'name') {
+            $users = User::select('name')->with('attendees_types', 'attendees_groups', 'register_events')
+                ->groupBy('name')
+                ->where('is_admin', 0)
+                ->get();
+        }
+
+        dd($users->toArray());
     }
 }

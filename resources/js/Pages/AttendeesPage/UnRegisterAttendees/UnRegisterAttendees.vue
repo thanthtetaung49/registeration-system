@@ -15,6 +15,8 @@ const props = defineProps({
     eventsId: String,
 });
 
+console.log(props);
+
 const users = ref(props.users);
 const status = ref(false);
 const checkBoxAll = ref(null);
@@ -84,24 +86,18 @@ const handleSelectAllChackBoxChange = (users) => {
     }
 };
 
-const chooseEvent = () =>
-{
-    filter();
-}
-
-const filter = () => {
+const chooseEvent = () => {
     router.get("/attendees/event/unregister/filter", {
         data: {
-            attendeesGroupId: form.attendees_groups_id,
-            eventId: form.events_id,
+            eventsId: form.events_id,
         },
         method: "get",
         onSuccess: (page) => {
             users.value = page.props.users;
-            console.log(form.users_id);
         },
     });
 };
+
 
 const searchUser = () => {
     router.visit(`/attendees/event/unregister/search`, {
@@ -116,14 +112,15 @@ const searchUser = () => {
     });
 };
 
-// onMounted(() => {
-//     input.value.focus();
-// });
+onMounted(() => {
+    input.value.focus();
+});
 </script>
 
 <template>
     <div>
         <AuthenticatedLayout>
+
             <div class="px-10 py-5">
                 <Transition name="slide-fade">
                     <div
@@ -143,7 +140,7 @@ const searchUser = () => {
                     <div class="border-b border-gray-200 px-4">
                         <AttendeesTabLayout></AttendeesTabLayout>
 
-                        <!-- <div class="flex w-full justify-end">
+                        <div class="flex w-full justify-end mt-5">
                             <div class="relative w-1/4 ms-3">
                                 <label
                                     for="hs-table-input-search"
@@ -181,7 +178,7 @@ const searchUser = () => {
                                     </svg>
                                 </div>
                             </div>
-                        </div> -->
+                        </div>
 
                         <div class="">
                             <InputError
@@ -275,7 +272,9 @@ const searchUser = () => {
                                             >
                                         </div>
                                     </div>
-                                    <div class="w-full flex justify-end mt-5"></div>
+                                    <div
+                                        class="w-full flex justify-end mt-5"
+                                    ></div>
                                 </form>
                             </div>
                         </div>
@@ -358,6 +357,17 @@ const searchUser = () => {
                                                             <div
                                                                 class="py-1 px-2.5 inline-flex items-center border border-transparent text-sm text-gray-500 rounded-md hover:border-gray-200"
                                                             >
+                                                                Event name
+                                                            </div>
+                                                        </th>
+
+                                                        <th
+                                                            scope="col"
+                                                            class="py-1 group text-start font-normal focus:outline-none"
+                                                        >
+                                                            <div
+                                                                class="py-1 px-2.5 inline-flex items-center border border-transparent text-sm text-gray-500 rounded-md hover:border-gray-200"
+                                                            >
                                                                 created_at
                                                             </div>
                                                         </th>
@@ -398,26 +408,32 @@ const searchUser = () => {
                                                         <td
                                                             class="p-3 whitespace-nowrap text-sm font-medium text-gray-800"
                                                         >
-                                                            {{ user.name }}
+                                                            {{ user.register_attendees.name }}
                                                         </td>
                                                         <td
                                                             class="p-3 whitespace-nowrap text-sm font-medium text-gray-800"
                                                         >
                                                             {{
-                                                                user.phone_number
+                                                                user.register_attendees.phone_number
                                                             }}
                                                         </td>
                                                         <td
                                                             class="p-3 whitespace-nowrap text-sm font-medium text-gray-800"
                                                         >
-                                                            {{ user.email }}
+                                                            {{ user.register_attendees.email }}
+                                                        </td>
+
+                                                        <td
+                                                            class="p-3 whitespace-nowrap text-sm font-medium text-gray-800"
+                                                        >
+                                                            {{ user.events.event_name }}
                                                         </td>
 
                                                         <td
                                                             class="p-3 whitespace-nowrap text-sm font-medium text-gray-800"
                                                         >
                                                             {{
-                                                                user.created_at.split(
+                                                                user.register_attendees.created_at.split(
                                                                     "T"
                                                                 )[0]
                                                             }}

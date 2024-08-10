@@ -21,8 +21,6 @@ class RegisterAttendeesController extends Controller
             ->whereDoesntHave('register_events')
             ->paginate(20);
 
-        // dd($users);
-
         $events = Event::get();
         $groups = AttendeesGroup::get();
 
@@ -58,46 +56,48 @@ class RegisterAttendeesController extends Controller
         return redirect()->route('attendees.register.index');
     }
 
-    public function search(Request $request)
-    {
-        $search = $request->query('query');
-        $events = Event::get();
-        $groups = AttendeesGroup::get();
+    // public function search(Request $request)
+    // {
+    //     $search = $request->query('query');
+    //     $events = Event::get();
+    //     $groups = AttendeesGroup::get();
 
-        if (empty($search)) {
-            $users = User::with('register_events')
-                ->whereNotNull('attendees_groups_id')
-                ->where('is_admin', 0)
-                ->whereDoesntHave('register_events')
-                ->paginate(20);
-        } else {
-            $users = User::with('register_events')
-                ->when($search, function ($query) use ($search) {
-                    $query->where('name', 'like', '%' . $search . '%')
-                        ->where('is_admin', 0)
-                        ->orWhere('phone_number', 'like', '%' . $search . '%')
-                        ->orWhere('email', 'like', '%' . $search . '%');
-                })
-                ->whereNotNull('attendees_groups_id')
-                ->whereDoesntHave('register_events')
-                ->paginate(20);
-        }
+    //     if (empty($search)) {
+    //         $users = User::with('register_events')
+    //             ->whereNotNull('attendees_groups_id')
+    //             ->where('is_admin', 0)
+    //             ->whereDoesntHave('register_events')
+    //             ->paginate(20);
+    //     } else {
+    //         $users = User::with('register_events')
+    //             ->when($search, function ($query) use ($search) {
+    //                 $query->where('name', 'like', '%' . $search . '%')
+    //                     ->where('is_admin', 0)
+    //                     ->orWhere('phone_number', 'like', '%' . $search . '%')
+    //                     ->orWhere('email', 'like', '%' . $search . '%');
+    //             })
+    //             ->whereNotNull('attendees_groups_id')
+    //             ->whereDoesntHave('register_events')
+    //             ->paginate(20);
+    //     }
 
-        return Inertia::render('AttendeesPage/RegisterAttendees', [
-            'users' => $users,
-            'events' => $events,
-            'groups' => $groups,
-        ]);
-    }
+    //     return Inertia::render('AttendeesPage/RegisterAttendees', [
+    //         'users' => $users,
+    //         'events' => $events,
+    //         'groups' => $groups,
+    //     ]);
+    // }
 
     public function filterAttendees(Request $request)
     {
+        // dd($request->all());
         $users = User::with('register_events')
                 ->where('is_admin', 0)
                 ->where('attendees_groups_id', $request['data']['attendeesGroupId'])
                 ->whereNotNull('attendees_groups_id')
                 ->whereDoesntHave('register_events') // not registered
                 ->paginate(20);
+
 
         $events = Event::get();
         $groups = AttendeesGroup::get();
@@ -112,14 +112,11 @@ class RegisterAttendeesController extends Controller
 
     public function export()
     {
-        $users = User::with(['register_events' => function ($query) {
-            $query->with('events')->whereNotNull('id');
-        }, 'attendees_types'])
+        $users = User::with(['register_events', 'attendees_types'])
             ->whereHas('register_events')
+            ->where('is_admin', 0)
             ->get();
-
-        // dd($users->toArray());
-
+            
         return Excel::download(new RegisterAttendeesExport($users), 'registerAttendeesReport.xlsx');
     }
 }
