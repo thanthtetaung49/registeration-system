@@ -14,10 +14,12 @@ const notRegisterMessage = ref(null);
 const paused = ref(false);
 const error = ref("");
 
+const showScanConfirmation = ref(false);
+
 const onDetect = async (detectedCodes, ctx) => {
     code.value = detectedCodes[0].rawValue;
     paused.value = true;
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    await new Promise((resolve) => setTimeout(resolve, 500));
     paused.value = false;
 
     axios
@@ -34,19 +36,19 @@ const onDetect = async (detectedCodes, ctx) => {
 
                 setInterval(() => {
                     successMessage.value = null;
-                }, 3000);
+                }, 4000);
             } else if (setalreadyregisterMessage) {
                 alreadyRegisterMessage.value = setalreadyregisterMessage;
 
                 setInterval(() => {
                     alreadyRegisterMessage.value = null;
-                }, 3000);
+                }, 4000);
             } else {
                 notRegisterMessage.value = setNotRegisterMessage;
 
                 setInterval(() => {
                     notRegisterMessage.value = null;
-                }, 3000);
+                }, 4000);
             }
         })
         .catch((error) => console.error(error));
@@ -90,6 +92,19 @@ const onError = (error) => {
     }
 };
 // error function
+
+// camera function
+const onCameraOn = () =>
+{
+    showScanConfirmation.value = false;
+}
+
+const onCameraOff = () =>
+{
+    showScanConfirmation.value = true;
+}
+
+// camera function
 </script>
 
 <template>
@@ -285,6 +300,8 @@ const onError = (error) => {
                 @detect="onDetect"
                 :paused="paused"
                 :track="paintBoundingBox"
+                @camera-on="onCameraOn"
+      @camera-off="onCameraOff"
                 @error="onError"
                 style="width: 300px; height: 300px; max-width: 100%"
             >
