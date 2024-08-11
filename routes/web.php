@@ -164,9 +164,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // qrcode download
     Route::get('qrcode/download/{registerEventId}', [QrcodePrintController::class, 'index'])->name('qrcode.print');
+    // qrcode scan
+    Route::post('/qrcode/scan', [QrcodePrintController::class, 'scanQrCode']);
 });
 
-Route::post('/qrcode/scan', [QrcodePrintController::class, 'scanQrCode']);
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
