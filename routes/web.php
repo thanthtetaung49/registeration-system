@@ -46,10 +46,8 @@ Route::get('/info', function () {
 
 Route::middleware(['auth', 'verified'])->group(function () {
 
-    // security
-    Route::prefix('/security')->group(function () {
-        Route::get('/home', [SecurityController::class, 'index'])->name('security.index');
-    });
+    // calendar
+    Route::get('/calendar', [CalendarController::class, 'index'])->name('calendar.index');
 
     Route::prefix('/event')->group(function () {
         // event
@@ -130,8 +128,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/create', [AddAttendeesController::class, 'submitAttendee'])->name('attendees.create');
         Route::get('/edit/{user}', [AddAttendeesController::class, 'edit'])->name('attendees.edit');
         Route::post('/update/{id}', [AddAttendeesController::class, 'update'])->name('attendees.update');
-        Route::get('/view/{id}',[AddAttendeesController::class, 'view'])->name('attendees.view');
-    Route::get('/delete/{id}', [AddAttendeesController::class, 'delete'])->name('attendees.delete');
+        Route::get('/view/{id}', [AddAttendeesController::class, 'view'])->name('attendees.view');
+        Route::get('/delete/{id}', [AddAttendeesController::class, 'delete'])->name('attendees.delete');
 
         // upload and  import
         Route::get('/upload', [UploadAttendeesController::class, 'index'])->name('attendees.upload.index');
@@ -159,13 +157,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('', [PrintController::class, 'nameBadgeGenerate'])->name('nameBadge.generate');
     });
 
-    // calendar
-    Route::get('/calendar', [CalendarController::class, 'index'])->name('calendar.index');
+    // security
+    Route::prefix('/security')->group(function () {
+        Route::get('/home', [SecurityController::class, 'index'])->name('security.index');
+        // qrcode scan
+        Route::post('/qrcode/scan', [SecurityController::class, 'scanQrCode']);
+    });
 
     // qrcode download
     Route::get('qrcode/download/{registerEventId}', [QrcodePrintController::class, 'index'])->name('qrcode.print');
-    // qrcode scan
-    Route::post('/qrcode/scan', [QrcodePrintController::class, 'scanQrCode']);
 });
 
 

@@ -7,22 +7,89 @@ import { QrcodeStream, QrcodeDropZone, QrcodeCapture } from "vue-qrcode-reader";
 defineComponent({ QrcodeStream, QrcodeDropZone, QrcodeCapture });
 
 const code = ref(null);
-const message = ref(null);
+const successMessage = ref(null);
+const alreadyRegisterMessage = ref(null);
+const notRegisterMessage = ref(null);
 
-const onDetect = (detectedCodes) => {
+const paused = ref(false);
+const error = ref("");
+
+const onDetect = async (detectedCodes, ctx) => {
     code.value = detectedCodes[0].rawValue;
+    paused.value = true;
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    paused.value = false;
 
     axios
-        .post("/qrcode/scan", { code: code.value })
+        .post("/security/qrcode/scan", { code: code.value })
         .then((response) => {
-            message.value = response.data.message;
+            // console.log(response.data);
+            let setSuccessMessage = response.data.successMessage;
+            let setalreadyregisterMessage =
+                response.data.alreadyRegisterMessage;
+            let setNotRegisterMessage = response.data.notRegisterMessage;
 
-            setInterval(() => {
-                message.value = null;
-            }, 3000);
+            if (setSuccessMessage) {
+                successMessage.value = setSuccessMessage;
+
+                setInterval(() => {
+                    successMessage.value = null;
+                }, 3000);
+            } else if (setalreadyregisterMessage) {
+                alreadyRegisterMessage.value = setalreadyregisterMessage;
+
+                setInterval(() => {
+                    alreadyRegisterMessage.value = null;
+                }, 3000);
+            } else {
+                notRegisterMessage.value = setNotRegisterMessage;
+
+                setInterval(() => {
+                    notRegisterMessage.value = null;
+                }, 3000);
+            }
         })
         .catch((error) => console.error(error));
 };
+
+// track function
+const paintBoundingBox = (detectedCodes, ctx) => {
+    for (const detectedCode of detectedCodes) {
+        const {
+            boundingBox: { x, y, width, height },
+        } = detectedCode;
+
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = "#007bff";
+        ctx.strokeRect(x, y, width, height);
+    }
+};
+// track function
+
+// error function
+const onError = (error) => {
+    error.value = `[${err.name}]: `;
+
+    if (err.name === "NotAllowedError") {
+        error.value += "you need to grant camera access permission";
+    } else if (err.name === "NotFoundError") {
+        error.value += "no camera on this device";
+    } else if (err.name === "NotSupportedError") {
+        error.value += "secure context required (HTTPS, localhost)";
+    } else if (err.name === "NotReadableError") {
+        error.value += "is the camera already in use?";
+    } else if (err.name === "OverconstrainedError") {
+        error.value += "installed cameras are not suitable";
+    } else if (err.name === "StreamApiNotSupportedError") {
+        error.value += "Stream API is not supported in this browser";
+    } else if (err.name === "InsecureContextError") {
+        error.value +=
+            "Camera access is only permitted in secure context. Use HTTPS or localhost rather than HTTP.";
+    } else {
+        error.value += err.message;
+    }
+};
+// error function
 </script>
 
 <template>
@@ -51,13 +118,14 @@ const onDetect = (detectedCodes) => {
                     />
                 </svg>
             </button> -->
-            <div class=" text-bold text-blue-900 text-center">
+            <div class="text-bold text-blue-900 text-center">
                 <span>Qr Code Scanner</span>
             </div>
         </div>
         <Transition name="slide-fade">
+            <!-- success message -->
             <div
-                v-if="message"
+                v-if="successMessage"
                 class="bg-teal-50 border-t-2 border-teal-500 rounded-lg p-4 dark:bg-teal-800/30"
                 role="alert"
                 tabindex="-1"
@@ -97,7 +165,107 @@ const onDetect = (detectedCodes) => {
                             Successfully register.
                         </h3>
                         <p class="text-sm text-gray-700 dark:text-neutral-400">
-                            {{ message }}
+                            {{ successMessage }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </Transition>
+
+        <Transition>
+            <!-- already register message -->
+            <div
+                v-if="alreadyRegisterMessage"
+                class="bg-yellow-50 border-t-2 border-yellow-500 rounded-lg p-4 dark:bg-yellow-800/30"
+                role="alert"
+                tabindex="-1"
+                aria-labelledby="hs-bordered-success-style-label"
+            >
+                <div class="flex">
+                    <div class="shrink-0">
+                        <!-- Icon -->
+                        <span
+                            class="inline-flex justify-center items-center size-8 rounded-full border-4 border-yellow-100 bg-yellow-200 text-yellow-800 dark:border-yellow-900 dark:bg-yellow-800 dark:text-yellow-400"
+                        >
+                            <svg
+                                class="shrink-0 size-4"
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="24"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                            >
+                                <path
+                                    d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"
+                                ></path>
+                                <path d="m9 12 2 2 4-4"></path>
+                            </svg>
+                        </span>
+                        <!-- End Icon -->
+                    </div>
+                    <div class="ms-3">
+                        <h3
+                            id="hs-bordered-success-style-label"
+                            class="text-gray-800 font-semibold dark:text-white"
+                        >
+                            Already register.
+                        </h3>
+                        <p class="text-sm text-gray-700 dark:text-neutral-400">
+                            {{ alreadyRegisterMessage }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </Transition>
+
+        <Transition>
+            <!-- not register -->
+            <div
+                v-if="notRegisterMessage"
+                class="bg-red-50 border-t-2 border-red-500 rounded-lg p-4 dark:bg-red-800/30"
+                role="alert"
+                tabindex="-1"
+                aria-labelledby="hs-bordered-success-style-label"
+            >
+                <div class="flex">
+                    <div class="shrink-0">
+                        <!-- Icon -->
+                        <span
+                            class="inline-flex justify-center items-center size-8 rounded-full border-4 border-red-100 bg-red-200 text-red-800 dark:border-red-900 dark:bg-red-800 dark:text-red-400"
+                        >
+                            <svg
+                                class="shrink-0 size-4"
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="24"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                            >
+                                <path
+                                    d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"
+                                ></path>
+                                <path d="m9 12 2 2 4-4"></path>
+                            </svg>
+                        </span>
+                        <!-- End Icon -->
+                    </div>
+                    <div class="ms-3">
+                        <h3
+                            id="hs-bordered-success-style-label"
+                            class="text-gray-800 font-semibold dark:text-white"
+                        >
+                            Not register.
+                        </h3>
+                        <p class="text-sm text-gray-700 dark:text-neutral-400">
+                            {{ notRegisterMessage }}
                         </p>
                     </div>
                 </div>
@@ -115,6 +283,9 @@ const onDetect = (detectedCodes) => {
         >
             <QrcodeStream
                 @detect="onDetect"
+                :paused="paused"
+                :track="paintBoundingBox"
+                @error="onError"
                 style="width: 300px; height: 300px; max-width: 100%"
             >
                 <div v-if="boundingBox" class="bounding-box"></div>

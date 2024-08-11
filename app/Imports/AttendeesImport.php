@@ -3,10 +3,11 @@
 namespace App\Imports;
 
 use App\Models\User;
+use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class AttendeesImport implements ToModel, WithHeadingRow
+class AttendeesImport implements ToModel, WithHeadingRow, SkipsEmptyRows
 {
     /**
     * @param array $row

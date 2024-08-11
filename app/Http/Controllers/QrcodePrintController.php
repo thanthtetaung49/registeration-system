@@ -50,21 +50,4 @@ class QrcodePrintController extends Controller
 
         // return response()->download($imagePath);
     }
-
-    public function scanQrCode(Request $request)
-    {
-        $scanQr = RegisterEvent::where('qr_code', $request->code)->first();
-        if ($scanQr->scan_time) {
-            return response()->json(['message' => 'You already register your Qr code preferences']);
-        } else {
-            $scanQr->update([
-                'registration_status' => 1,
-                'scan_time' => Carbon::now()->setTimezone('Asia/Yangon')
-            ]);
-        }
-
-        return response()->json([
-            'message' => 'You have successfully register your Qr code preferences.'
-        ]);
-    }
 }
