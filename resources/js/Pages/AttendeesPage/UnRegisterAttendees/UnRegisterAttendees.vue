@@ -5,6 +5,7 @@ import PrimaryButton from "@/Components/PrimaryButton.vue";
 import { Link, router, useForm } from "@inertiajs/vue3";
 import { onMounted, ref } from "vue";
 import InputError from "@/Components/InputError.vue";
+import axios from "axios";
 
 const props = defineProps({
     users: Object,
@@ -96,14 +97,25 @@ const chooseEvent = () => {
             users.value = page.props.users;
         },
     });
-};
 
+    // axios
+    //     .get(`tendees/event/unregister/filter`, {
+    //         data: {
+    //             eventsId: form.events_id,
+    //         },
+    //     })
+    //     .then((response) => {
+    //         users.value = response.data.users;
+    //     })
+    //     .catch((error) => console.error(error));
+};
 
 const searchUser = () => {
     router.visit(`/attendees/event/unregister/search`, {
         method: "get",
         data: {
             query: query.value,
+            eventId : form.events_id,
         },
         onSuccess: (page) => {
             users.value = page.props.users;
@@ -120,7 +132,6 @@ onMounted(() => {
 <template>
     <div>
         <AuthenticatedLayout>
-
             <div class="px-10 py-5">
                 <Transition name="slide-fade">
                     <div
@@ -408,25 +419,38 @@ onMounted(() => {
                                                         <td
                                                             class="p-3 whitespace-nowrap text-sm font-medium text-gray-800"
                                                         >
-                                                            {{ user.register_attendees.name }}
-                                                        </td>
-                                                        <td
-                                                            class="p-3 whitespace-nowrap text-sm font-medium text-gray-800"
-                                                        >
                                                             {{
-                                                                user.register_attendees.phone_number
+                                                                user
+                                                                    .register_attendees
+                                                                    .name
                                                             }}
                                                         </td>
                                                         <td
                                                             class="p-3 whitespace-nowrap text-sm font-medium text-gray-800"
                                                         >
-                                                            {{ user.register_attendees.email }}
+                                                            {{
+                                                                user
+                                                                    .register_attendees
+                                                                    .phone_number
+                                                            }}
+                                                        </td>
+                                                        <td
+                                                            class="p-3 whitespace-nowrap text-sm font-medium text-gray-800"
+                                                        >
+                                                            {{
+                                                                user
+                                                                    .register_attendees
+                                                                    .email
+                                                            }}
                                                         </td>
 
                                                         <td
                                                             class="p-3 whitespace-nowrap text-sm font-medium text-gray-800"
                                                         >
-                                                            {{ user.events.event_name }}
+                                                            {{
+                                                                user.events
+                                                                    .event_name
+                                                            }}
                                                         </td>
 
                                                         <td

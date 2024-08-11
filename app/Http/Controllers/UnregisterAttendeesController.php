@@ -13,7 +13,9 @@ class UnregisterAttendeesController extends Controller
 {
     public function index()
     {
-        $users = RegisterEvent::with(['register_attendees', 'events'])->orderBy('id', 'desc')->paginate(20);
+        $users = RegisterEvent::with(['register_attendees', 'events'])
+            ->orderBy('id', 'desc')
+            ->paginate(20);
 
         $events = Event::get();
         $groups = AttendeesGroup::get();
@@ -53,15 +55,18 @@ class UnregisterAttendeesController extends Controller
 
     public function search(Request $request)
     {
-        $search = $request->query('query');
+        $search = $request['query'];
+        $eventId = $request['eventId'];
 
         $events = Event::get();
         $groups = AttendeesGroup::get();
 
         if (empty($search)) {
             $users = RegisterEvent::with(['register_attendees', 'events'])
-                    ->orderBy('id', 'desc')
-                    ->paginate(20);
+                ->orderBy('id', 'desc')
+                ->paginate(20);
+
+            $eventId = null;
         } else {
             $users = RegisterEvent::with(['register_attendees', 'events'])
                 ->whereHas('register_attendees', function ($query) use ($search) {
@@ -69,9 +74,7 @@ class UnregisterAttendeesController extends Controller
                         ->orWhere('phone_number', '%' . $search . '%')
                         ->orWhere('email', 'like', '%' . $search . '%');
                 })
-                ->orWhereHas('events', function ($query) use ($search) {
-                    $query->where('event_name', 'like', '%' . $search . '%');
-                })
+                ->where('events_id', $eventId)
                 ->orderBy('id', 'desc')
                 ->paginate(20);
         }
@@ -80,6 +83,7 @@ class UnregisterAttendeesController extends Controller
             'users'  => $users,
             'events' => $events,
             'groups' => $groups,
+            'eventsId' => $eventId,
         ]);
     }
 

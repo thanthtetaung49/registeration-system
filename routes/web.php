@@ -131,7 +131,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/edit/{user}', [AddAttendeesController::class, 'edit'])->name('attendees.edit');
         Route::post('/update/{id}', [AddAttendeesController::class, 'update'])->name('attendees.update');
         Route::get('/view/{id}',[AddAttendeesController::class, 'view'])->name('attendees.view');
-        Route::get('/delete/{id}', [AddAttendeesController::class, 'delete'])->name('attendees.delete');
+    Route::get('/delete/{id}', [AddAttendeesController::class, 'delete'])->name('attendees.delete');
 
         // upload and  import
         Route::get('/upload', [UploadAttendeesController::class, 'index'])->name('attendees.upload.index');

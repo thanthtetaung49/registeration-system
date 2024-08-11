@@ -59,11 +59,12 @@ class QrcodePrintController extends Controller
         } else {
             $scanQr->update([
                 'registration_status' => 1,
-                'scan_time' => Carbon::now()
+                'scan_time' => Carbon::now()->setTimezone('Asia/Yangon')
             ]);
         }
 
-
-        return response()->json(['message' => 'You have successfully register your Qr code preferences.']);
+        return response()->json([
+            'message' => 'You have successfully register your Qr code preferences.'
+        ]);
     }
 }
