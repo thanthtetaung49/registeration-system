@@ -18,13 +18,13 @@ class AddLinkHeadersForPreloadedAssets
      */
     public function handle($request, $next)
     {
-        if (Auth::check() && !Route::currentRouteName('calendar.index')) {
-            if (Auth::user()->is_admin != 2) {
-                return redirect()->route('calendar.index');
-            }
+        // if (Auth::check() && !Route::currentRouteName('calendar.index')) {
+        //     if (Auth::user()->is_admin != 2) {
+        //         return redirect()->route('calendar.index');
+        //     }
 
-            return redirect()->route('security.index');
-        }
+        //     return redirect()->route('security.index');
+        // }
 
         return tap($next($request), function ($response) {
             if (Vite::preloadedAssets() !== []) {

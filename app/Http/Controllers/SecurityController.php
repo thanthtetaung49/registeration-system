@@ -15,6 +15,7 @@ class SecurityController extends Controller
 
     public function scanQrCode(Request $request)
     {
+        // dd($request->all());
         $code = $request->code;
         $scanQr = RegisterEvent::where('qr_code', $code)->first();
         $existsOrNotStatus = RegisterEvent::where('qr_code', $code)->exists();
