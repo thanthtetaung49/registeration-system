@@ -61,12 +61,24 @@ class UnregisterAttendeesController extends Controller
         $events = Event::get();
         $groups = AttendeesGroup::get();
 
-        if (empty($search)) {
-            $users = RegisterEvent::with(['register_attendees', 'events'])
-                ->orderBy('id', 'desc')
-                ->paginate(20);
+        if ($eventId) {
+            if (empty($search)) {
+                $users = RegisterEvent::with(['register_attendees', 'events'])
+                    ->orderBy('id', 'desc')
+                    ->paginate(20);
 
-            $eventId = null;
+                $eventId = null;
+            } else {
+                $users = RegisterEvent::with(['register_attendees', 'events'])
+                    ->whereHas('register_attendees', function ($query) use ($search) {
+                        $query->where('name', 'like', '%' . $search . '%')
+                            ->orWhere('phone_number', '%' . $search . '%')
+                            ->orWhere('email', 'like', '%' . $search . '%');
+                    })
+                    ->where('events_id', $eventId)
+                    ->orderBy('id', 'desc')
+                    ->paginate(20);
+            }
         } else {
             $users = RegisterEvent::with(['register_attendees', 'events'])
                 ->whereHas('register_attendees', function ($query) use ($search) {
@@ -74,7 +86,6 @@ class UnregisterAttendeesController extends Controller
                         ->orWhere('phone_number', '%' . $search . '%')
                         ->orWhere('email', 'like', '%' . $search . '%');
                 })
-                ->where('events_id', $eventId)
                 ->orderBy('id', 'desc')
                 ->paginate(20);
         }
