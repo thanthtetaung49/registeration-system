@@ -8,7 +8,7 @@ import InputError from "@/Components/InputError.vue";
 import axios from "axios";
 
 const props = defineProps({
-    users: Object,
+    registerEvents: Object,
     events: Object,
     message: String,
     groups: Object,
@@ -16,16 +16,16 @@ const props = defineProps({
     eventsId: String,
 });
 
-console.log(props);
+// console.log(props);
 
-const users = ref(props.users);
+const registerEvents = ref(props.registerEvents);
 const status = ref(false);
 const checkBoxAll = ref(null);
 const query = ref(null);
 const input = ref(null);
 
 const form = useForm({
-    users_id: [],
+    registerEvents_id: [],
     events_id: props.eventsId ? props.eventsId : "",
     attendees_groups_id: props.groupId ? props.groupId : "",
 });
@@ -34,13 +34,15 @@ const unregisterEvent = () => {
     const checkBoxes = document.querySelectorAll(".checkBoxes");
 
     form.post("/attendees/event/unregister", {
-        onSuccess: () => {
+        onSuccess: () =>
+        {
             status.value = true;
+
             setInterval(() => {
                 status.value = false;
             }, 5000);
 
-            form.users_id = [];
+            form.registerEvents_id = [];
             form.events_id = "";
 
             window.location.href = "/attendees/unregister";
@@ -57,17 +59,17 @@ const handleCheckboxChange = (event) => {
     const id = event.target.value;
 
     if (event.target.checked) {
-        form.users_id.push(id);
+        form.registerEvents_id.push(id);
     } else {
-        const index = form.users_id.indexOf(id);
+        const index = form.registerEvents_id.indexOf(id);
 
         if (index > -1) {
-            form.users_id.splice(index, 1);
+            form.registerEvents_id.splice(index, 1);
         }
     }
 };
 
-const handleSelectAllChackBoxChange = (users) => {
+const handleSelectAllChackBoxChange = (registerEvents) => {
     const checkBoxes = document.querySelectorAll(".checkBoxes");
 
     if (checkBoxAll.value.checked) {
@@ -75,15 +77,15 @@ const handleSelectAllChackBoxChange = (users) => {
             checkBox.checked = true;
         });
 
-        users.data.forEach((user) => {
-            form.users_id.push(user.id);
+        registerEvents.data.forEach((registerEvent) => {
+            form.registerEvents_id.push(registerEvent.id);
         });
     } else {
         checkBoxes.forEach((checkBox) => {
             checkBox.checked = false;
         });
 
-        form.users_id = [];
+        form.registerEvents_id = [];
     }
 };
 
@@ -94,7 +96,7 @@ const chooseEvent = () => {
         },
         method: "get",
         onSuccess: (page) => {
-            users.value = page.props.users;
+            registerEvents.value = page.props.registerEvents;
         },
     });
 
@@ -105,7 +107,7 @@ const chooseEvent = () => {
     //         },
     //     })
     //     .then((response) => {
-    //         users.value = response.data.users;
+    //         registerEvents.value = response.data.registerEvents;
     //     })
     //     .catch((error) => console.error(error));
 };
@@ -118,8 +120,8 @@ const searchUser = () => {
             eventId : form.events_id,
         },
         onSuccess: (page) => {
-            users.value = page.props.users;
-            console.log(users.value);
+            registerEvents.value = page.props.registerEvents;
+            console.log(registerEvents.value);
         },
     });
 };
@@ -199,7 +201,7 @@ onMounted(() => {
                                 :message="form.errors.events_id"
                             ></InputError>
                             <InputError
-                                :message="form.errors.users_id"
+                                :message="form.errors.registerEvents_id"
                             ></InputError>
 
                             <div class="">
@@ -296,7 +298,7 @@ onMounted(() => {
                                     <div
                                         class="min-w-full inline-block align-middle"
                                     >
-                                        <div class="overflow-hidden">
+                                        <div class="">
                                             <table class="min-w-full">
                                                 <thead
                                                     class="border-b border-gray-200"
@@ -313,18 +315,14 @@ onMounted(() => {
                                                                     ref="checkBoxAll"
                                                                     @change="
                                                                         handleSelectAllChackBoxChange(
-                                                                            users
+                                                                            registerEvents
                                                                         )
                                                                     "
                                                                     id="hs-table-checkbox-all"
                                                                     type="checkbox"
                                                                     class="border-gray-300 rounded text-blue-600 focus:ring-blue-500"
                                                                 />
-                                                                <label
-                                                                    for="hs-table-checkbox-all"
-                                                                    class="sr-only"
-                                                                    >Checkbox</label
-                                                                >
+
                                                             </div>
                                                         </th>
 
@@ -387,11 +385,10 @@ onMounted(() => {
 
                                                 <tbody
                                                     class="divide-y divide-gray-200"
-                                                    id="tableBody"
                                                 >
                                                     <tr
-                                                        v-for="user in users.data"
-                                                        :key="user.id"
+                                                        v-for="registerEvent in registerEvents.data"
+                                                        :key="registerEvent.id"
                                                     >
                                                         <td class="py-3 ps-3">
                                                             <div
@@ -399,9 +396,9 @@ onMounted(() => {
                                                             >
                                                                 <input
                                                                     :value="
-                                                                        user.id
+                                                                        registerEvent.id
                                                                     "
-                                                                    :id="`hs-table-checkbox-${user.id}`"
+                                                                    :id="`hs-table-checkbox-${registerEvent.id}`"
                                                                     type="checkbox"
                                                                     class="border-gray-300 checkBoxes rounded text-blue-600 focus:ring-blue-500"
                                                                     data-hs-datatable-row-selecting-individual=""
@@ -409,18 +406,14 @@ onMounted(() => {
                                                                         handleCheckboxChange
                                                                     "
                                                                 />
-                                                                <label
-                                                                    for="`hs-table-checkbox-${user.id}`"
-                                                                    class="sr-only"
-                                                                    >Checkbox</label
-                                                                >
+
                                                             </div>
                                                         </td>
                                                         <td
                                                             class="p-3 whitespace-nowrap text-sm font-medium text-gray-800"
                                                         >
                                                             {{
-                                                                user
+                                                                registerEvent
                                                                     .register_attendees
                                                                     .name
                                                             }}
@@ -429,7 +422,7 @@ onMounted(() => {
                                                             class="p-3 whitespace-nowrap text-sm font-medium text-gray-800"
                                                         >
                                                             {{
-                                                                user
+                                                                registerEvent
                                                                     .register_attendees
                                                                     .phone_number
                                                             }}
@@ -438,7 +431,7 @@ onMounted(() => {
                                                             class="p-3 whitespace-nowrap text-sm font-medium text-gray-800"
                                                         >
                                                             {{
-                                                                user
+                                                                registerEvent
                                                                     .register_attendees
                                                                     .email
                                                             }}
@@ -448,7 +441,7 @@ onMounted(() => {
                                                             class="p-3 whitespace-nowrap text-sm font-medium text-gray-800"
                                                         >
                                                             {{
-                                                                user.events
+                                                                registerEvent.events
                                                                     .event_name
                                                             }}
                                                         </td>
@@ -457,7 +450,7 @@ onMounted(() => {
                                                             class="p-3 whitespace-nowrap text-sm font-medium text-gray-800"
                                                         >
                                                             {{
-                                                                user.register_attendees.created_at.split(
+                                                                registerEvent.register_attendees.created_at.split(
                                                                     "T"
                                                                 )[0]
                                                             }}
@@ -473,7 +466,7 @@ onMounted(() => {
                                     <div class="mb-7 my-5">
                                         <Link
                                             :href="`${link.url}&data[attendeesGroupId]=${form.attendees_groups_id}&data[eventsId]=${form.events_id}`"
-                                            v-for="(link, index) in users.links"
+                                            v-for="(link, index) in registerEvents.links"
                                             :key="index"
                                             class="border py-2 px-3 text-sm"
                                             :class="{

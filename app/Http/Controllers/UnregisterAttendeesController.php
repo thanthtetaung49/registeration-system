@@ -12,7 +12,7 @@ class UnregisterAttendeesController extends Controller
 {
     public function index()
     {
-        $users = RegisterEvent::with(['register_attendees', 'events'])
+        $registerEvents = RegisterEvent::with(['register_attendees', 'events'])
             ->orderBy('id', 'desc')
             ->paginate(20);
 
@@ -20,7 +20,7 @@ class UnregisterAttendeesController extends Controller
         $groups = AttendeesGroup::get();
 
         return Inertia::render('AttendeesPage/UnRegisterAttendees/UnRegisterAttendees', [
-            'users' => $users,
+            'registerEvents' => $registerEvents,
             'events' => $events,
             'groups' => $groups,
         ]);
@@ -29,27 +29,30 @@ class UnregisterAttendeesController extends Controller
     public function unregisterEvent(Request $request)
     {
         // dd($request->all());
-        $usersId = $request->users_id;
+        $registerEventsId = $request->registerEvents_id;
+        $eventId = $request->events_id;
 
         $request->validate([
+            'registerEvents_id' => ['required'],
             'events_id' => ['required'],
-            'users_id' => ['required'],
         ]);
 
-        foreach ($usersId as $id) {
-            RegisterEvent::where('users_id', $id)->delete();
+        foreach ($registerEventsId as $regEventId) {
+            $regEvent = RegisterEvent::where('id', $regEventId)
+                ->delete();
         }
 
-        $users = RegisterEvent::with('register_attendees')->orderBy('id', 'desc')->paginate(20);
+        $registerEvents = RegisterEvent::with('register_attendees')->orderBy('id', 'desc')->paginate(20);
 
         $events = Event::get();
         $groups = AttendeesGroup::get();
 
-        return Inertia::render('AttendeesPage/UnRegisterAttendees/UnRegisterAttendees', [
-            'users' => $users,
-            'events' => $events,
-            'groups' => $groups,
-        ]);
+        return to_route('attendees.unregister.index');
+        // return Inertia::render('AttendeesPage/UnRegisterAttendees/UnRegisterAttendees', [
+        //     'registerEvents' => $registerEvents,
+        //     'events' => $events,
+        //     'groups' => $groups,
+        // ]);
     }
 
     public function search(Request $request)
@@ -62,13 +65,13 @@ class UnregisterAttendeesController extends Controller
 
         if ($eventId) {
             if (empty($search)) {
-                $users = RegisterEvent::with(['register_attendees', 'events'])
+                $registerEvents = RegisterEvent::with(['register_attendees', 'events'])
                     ->orderBy('id', 'desc')
                     ->paginate(20);
 
                 $eventId = null;
             } else {
-                $users = RegisterEvent::with(['register_attendees', 'events'])
+                $registerEvents = RegisterEvent::with(['register_attendees', 'events'])
                     ->whereHas('register_attendees', function ($query) use ($search) {
                         $query->where('name', 'like', '%' . $search . '%')
                             ->orWhere('phone_number', '%' . $search . '%')
@@ -79,7 +82,7 @@ class UnregisterAttendeesController extends Controller
                     ->paginate(20);
             }
         } else {
-            $users = RegisterEvent::with(['register_attendees', 'events'])
+            $registerEvents = RegisterEvent::with(['register_attendees', 'events'])
                 ->whereHas('register_attendees', function ($query) use ($search) {
                     $query->where('name', 'like', '%' . $search . '%')
                         ->orWhere('phone_number', '%' . $search . '%')
@@ -90,7 +93,7 @@ class UnregisterAttendeesController extends Controller
         }
 
         return Inertia::render('AttendeesPage/UnRegisterAttendees/UnRegisterAttendees', [
-            'users'  => $users,
+            'registerEvents'  => $registerEvents,
             'events' => $events,
             'groups' => $groups,
             'eventsId' => $eventId,
@@ -102,9 +105,9 @@ class UnregisterAttendeesController extends Controller
         $eventId = $request['data']['eventsId'] ??  $request['data']['eventsId'];
 
         if (empty($eventId)) {
-            $users = RegisterEvent::with(['register_attendees', 'events'])->orderBy('id', 'desc')->paginate(20);
+            $registerEvents = RegisterEvent::with(['register_attendees', 'events'])->orderBy('id', 'desc')->paginate(20);
         } else {
-            $users = RegisterEvent::with(['register_attendees', 'events'])
+            $registerEvents = RegisterEvent::with(['register_attendees', 'events'])
                 ->where('events_id', $eventId)
                 ->orderBy('id', 'desc')
                 ->paginate(20);
@@ -114,7 +117,7 @@ class UnregisterAttendeesController extends Controller
         $groups = AttendeesGroup::get();
 
         return Inertia::render('AttendeesPage/UnRegisterAttendees/UnRegisterAttendees', [
-            'users' => $users,
+            'registerEvents' => $registerEvents,
             'events' => $events,
             'groups' => $groups,
             'eventsId' => $eventId,

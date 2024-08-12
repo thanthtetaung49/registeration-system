@@ -63,7 +63,6 @@ const handleCheckboxChange = (event) => {
         }
     }
 
-    console.log(form.users_id);
 };
 
 const handleSelectAllChackBoxChange = (users) => {
@@ -339,6 +338,17 @@ const searchUser = () => {
                                                             <div
                                                                 class="py-1 px-2.5 inline-flex items-center border border-transparent text-sm text-gray-500 rounded-md hover:border-gray-200"
                                                             >
+                                                                Attendees group
+                                                            </div>
+                                                        </th>
+
+                                                        <th
+                                                            scope="col"
+                                                            class="py-1 group text-start font-normal focus:outline-none"
+                                                        >
+                                                            <div
+                                                                class="py-1 px-2.5 inline-flex items-center border border-transparent text-sm text-gray-500 rounded-md hover:border-gray-200"
+                                                            >
                                                                 Phone number
                                                             </div>
                                                         </th>
@@ -395,6 +405,11 @@ const searchUser = () => {
                                                             class="p-3 whitespace-nowrap text-sm font-medium text-gray-800"
                                                         >
                                                             {{ user.name }}
+                                                        </td>
+                                                        <td
+                                                            class="p-3 whitespace-nowrap text-sm font-medium text-gray-800"
+                                                        >
+                                                            {{ user.attendees_groups.name }}
                                                         </td>
                                                         <td
                                                             class="p-3 whitespace-nowrap text-sm font-medium text-gray-800"
