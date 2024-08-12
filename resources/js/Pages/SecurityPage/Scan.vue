@@ -19,10 +19,10 @@ const showScanConfirmation = ref(false);
 const onDetect = async (detectedCodes, ctx) => {
     code.value = detectedCodes[0].rawValue;
     paused.value = true;
-    await new Promise((resolve) => setTimeout(resolve, 500));
-    paused.value = false;
-
-    axios
+    await new Promise((resolve) => setTimeout(resolve, 5000));
+    
+    if (paused.value) {
+            axios
         .post("/security/qrcode/scan", { code: code.value })
         .then((response) => {
             // console.log(response.data);
@@ -52,6 +52,9 @@ const onDetect = async (detectedCodes, ctx) => {
             }
         })
         .catch((error) => console.error(error));
+    }
+    
+    paused.value = false;
 };
 
 // track function
