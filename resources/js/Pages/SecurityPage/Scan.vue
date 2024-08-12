@@ -16,46 +16,44 @@ const error = ref("");
 
 const showScanConfirmation = ref(false);
 
-const onDetect = async (detectedCodes, ctx) => {
+const onDetect = async (detectedCodes,) => {
     code.value = detectedCodes[0].rawValue;
     paused.value = true;
-    await new Promise((resolve) => setTimeout(resolve, 5000));
-    
-    if (paused.value) {
-            axios
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+
+    axios
         .post("/security/qrcode/scan", { code: code.value })
         .then((response) => {
-            // console.log(response.data);
+            console.log(response.data);
             let setSuccessMessage = response.data.successMessage;
-            let setalreadyregisterMessage =
-                response.data.alreadyRegisterMessage;
+            let setAlreadyRegisterMessage = response.data.alreadyRegisterMessage;
             let setNotRegisterMessage = response.data.notRegisterMessage;
 
             if (setSuccessMessage) {
                 successMessage.value = setSuccessMessage;
 
-                setInterval(() => {
+                setTimeout(() => {
                     successMessage.value = null;
-                }, 4000);
-            } else if (setalreadyregisterMessage) {
-                alreadyRegisterMessage.value = setalreadyregisterMessage;
+                }, 3000);
+            } else if (setAlreadyRegisterMessage) {
+                alreadyRegisterMessage.value = setAlreadyRegisterMessage;
 
-                setInterval(() => {
+                setTimeout(() => {
                     alreadyRegisterMessage.value = null;
-                }, 4000);
+                }, 3000);
             } else {
                 notRegisterMessage.value = setNotRegisterMessage;
 
-                setInterval(() => {
+                setTimeout(() => {
                     notRegisterMessage.value = null;
-                }, 4000);
+                }, 3000);
             }
         })
         .catch((error) => console.error(error));
-    }
-    
+
     paused.value = false;
 };
+
 
 // track function
 const paintBoundingBox = (detectedCodes, ctx) => {
@@ -304,7 +302,7 @@ const onCameraOff = () =>
                 :paused="paused"
                 :track="paintBoundingBox"
                 @camera-on="onCameraOn"
-      @camera-off="onCameraOff"
+                @camera-off="onCameraOff"
                 @error="onError"
                 style="width: 300px; height: 300px; max-width: 100%"
             >
