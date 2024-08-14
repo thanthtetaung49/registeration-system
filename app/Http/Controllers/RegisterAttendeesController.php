@@ -15,7 +15,7 @@ class RegisterAttendeesController extends Controller
 {
     public function index()
     {
-        $users = User::with('register_events')
+        $users = User::with(['register_events', 'attendees_groups'])
             ->whereNotNull('attendees_groups_id')
             ->where('is_admin', 0)
             ->whereDoesntHave('register_events')
@@ -90,13 +90,22 @@ class RegisterAttendeesController extends Controller
 
     public function filterAttendees(Request $request)
     {
-        // dd($request->all());
-        $users = User::with('register_events')
+        $groupId = $request['data']['attendeesGroupId'];
+
+        if (!$groupId) {
+            $users = User::with(['register_events', 'attendees_groups'])
+                ->whereNotNull('attendees_groups_id')
                 ->where('is_admin', 0)
-                ->where('attendees_groups_id', $request['data']['attendeesGroupId'])
+                ->whereDoesntHave('register_events')
+                ->paginate(20);
+        } else {
+            $users = User::with(['register_events', 'attendees_groups'])
+                ->where('is_admin', 0)
+                ->where('attendees_groups_id', $groupId)
                 ->whereNotNull('attendees_groups_id')
                 ->whereDoesntHave('register_events') // not registered
                 ->paginate(20);
+        }
 
 
         $events = Event::get();
@@ -106,17 +115,17 @@ class RegisterAttendeesController extends Controller
             'users' => $users,
             'events' => $events,
             'groups' => $groups,
-            'groupId' => $request['data']['attendeesGroupId'],
+            'groupId' => $groupId,
         ]);
     }
 
     public function export()
     {
-        $users = User::with(['register_events', 'attendees_types'])
+        $users = User::with(['register_events', 'attendees_types', 'attendees_groups'])
             ->whereHas('register_events')
             ->where('is_admin', 0)
             ->get();
-            
+
         return Excel::download(new RegisterAttendeesExport($users), 'registerAttendeesReport.xlsx');
     }
 }
