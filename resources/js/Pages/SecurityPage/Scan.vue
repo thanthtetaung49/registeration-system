@@ -28,10 +28,10 @@ const onDetect = async (detectedCodes,) => {
             let setSuccessMessage = response.data.successMessage;
             let setAlreadyRegisterMessage = response.data.alreadyRegisterMessage;
             let setNotRegisterMessage = response.data.notRegisterMessage;
-
-            if (setSuccessMessage) {
-                successMessage.value = setSuccessMessage;
-
+            
+            if (setSuccessMessage)
+            
+             successMessage.value = setSuccessMessage;
                 setTimeout(() => {
                     successMessage.value = null;
                 }, 3000);
@@ -50,7 +50,6 @@ const onDetect = async (detectedCodes,) => {
             }
         })
         .catch((error) => console.error(error));
-
     paused.value = false;
 };
 
