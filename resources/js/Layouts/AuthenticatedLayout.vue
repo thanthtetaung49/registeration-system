@@ -97,6 +97,7 @@ const showingNavigationDropdown = ref(false);
                                     </template>
                                 </Dropdown>
                             </div>
+
                         </div>
 
                         <!-- Hamburger -->
@@ -227,8 +228,7 @@ const showingNavigationDropdown = ref(false);
                             route().current('category.view') ||
                             route().current('roomNumber.index') ||
                             route().current('roomNumber.edit') ||
-route().current('roomNumber.view') ||
-
+                            route().current('roomNumber.view') ||
                             route().current('event.index') ||
                             route().current('event.list.index') ||
                             route().current('event.list.edit') ||
@@ -268,7 +268,8 @@ route().current('roomNumber.view') ||
                             route().current('attendees.type.view') ||
                             route().current('attendees.group.index') ||
                             route().current('attendees.group.edit') ||
-                            route().current('attendees.group.view') || route().current('attendees.filter') ||
+                            route().current('attendees.group.view') ||
+                            route().current('attendees.filter') ||
                             route().current('attendees.search')
                         "
                     >

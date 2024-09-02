@@ -30,7 +30,6 @@ class UnregisterAttendeesController extends Controller
     {
         // dd($request->all());
         $registerEventsId = $request->registerEvents_id;
-        $eventId = $request->events_id;
 
         $request->validate([
             'registerEvents_id' => ['required'],
@@ -38,7 +37,7 @@ class UnregisterAttendeesController extends Controller
         ]);
 
         foreach ($registerEventsId as $regEventId) {
-            $regEvent = RegisterEvent::where('id', $regEventId)
+            RegisterEvent::where('id', $regEventId)
                 ->delete();
         }
 
@@ -48,11 +47,6 @@ class UnregisterAttendeesController extends Controller
         $groups = AttendeesGroup::get();
 
         return to_route('attendees.unregister.index');
-        // return Inertia::render('AttendeesPage/UnRegisterAttendees/UnRegisterAttendees', [
-        //     'registerEvents' => $registerEvents,
-        //     'events' => $events,
-        //     'groups' => $groups,
-        // ]);
     }
 
     public function search(Request $request)
@@ -105,7 +99,9 @@ class UnregisterAttendeesController extends Controller
         $eventId = $request['data']['eventsId'] ??  $request['data']['eventsId'];
 
         if (empty($eventId)) {
-            $registerEvents = RegisterEvent::with(['register_attendees', 'events'])->orderBy('id', 'desc')->paginate(20);
+            $registerEvents = RegisterEvent::with(['register_attendees', 'events'])
+                ->orderBy('id', 'desc')
+                ->paginate(20);
         } else {
             $registerEvents = RegisterEvent::with(['register_attendees', 'events'])
                 ->where('events_id', $eventId)

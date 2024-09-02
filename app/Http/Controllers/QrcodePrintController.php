@@ -19,16 +19,14 @@ class QrcodePrintController extends Controller
     {
         $nameBadgeData = RegisterEvent::with(['register_attendees', 'events', 'attendees_types'])->where('id', $registerEventId)->first();
 
-        $url = $nameBadgeData->qr_code;
+        $qrCode = $nameBadgeData->qr_code;
 
-        $qrCode = QrCode::size(100)->generate($url);
+        $qrCode = QrCode::size(100)->generate($qrCode);
         $qrCode = preg_replace('/<\?xml.*?\?>/', '', $qrCode);
         $data = [
             'nameBadgeData' => $nameBadgeData,
             'qrCode' => $qrCode,
         ];
-
-        // return view('pdf', $data);
 
         $registerAttendeesId = $nameBadgeData->register_attendees->id;
         $mpdf = new Mpdf([

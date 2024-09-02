@@ -13,8 +13,7 @@ const query = ref(null);
 const duplicate = ref(null);
 const input = ref(null);
 
-onMounted(() =>
-{
+onMounted(() => {
     input.value.focus();
 });
 
@@ -129,8 +128,6 @@ const csvExport = () => {
                                 <option value="email">Email</option>
                             </select> -->
                             <!-- End Select -->
-
-
 
                             <div class="relative ms-3">
                                 <TextInput
@@ -386,7 +383,7 @@ const csvExport = () => {
                                                         >
                                                             <Link
                                                                 :href="`/attendees/view/${user.id}`"
-                                                                class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border text-gray-600 focus:outline-none focus:text-gray-800 disabled:opacity-50 disabled:pointer-events-none dark:text-gray-500 dark:hover:text-gray-400 dark:focus:text-gray-400 p-2 mr-3 hover:bg-green-700 hover:text-white"
+                                                                class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border text-gray-600 focus:outline-none focus:text-whitedisabled:opacity-50 disabled:pointer-events-none dark:text-gray-500 dark:hover:text-gray-400 dark:focus:text-gray-400 p-2 mr-3 hover:bg-green-700 hover:text-white"
                                                                 aria-haspopup="dialog"
                                                                 aria-expanded="false"
                                                                 aria-controls="hs-scale-animation-modal"
@@ -420,7 +417,7 @@ const csvExport = () => {
 
                                                             <Link
                                                                 :href="`/attendees/edit/${user.id}`"
-                                                                class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border text-gray-600 focus:outline-none focus:text-gray-800 disabled:opacity-50 disabled:pointer-events-none dark:text-gray-500 dark:hover:text-gray-400 dark:focus:text-gray-400 p-2 mr-3 hover:bg-gray-700 hover:text-white"
+                                                                class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border text-gray-600 focus:outline-none focus:text-whitedisabled:opacity-50 disabled:pointer-events-none dark:text-gray-500 dark:hover:text-gray-400 dark:focus:text-gray-400 p-2 mr-3 hover:bg-gray-700 hover:text-white"
                                                                 aria-haspopup="dialog"
                                                                 aria-expanded="false"
                                                                 aria-controls="hs-scale-animation-modal"
@@ -449,7 +446,7 @@ const csvExport = () => {
 
                                                             <Link
                                                                 :href="`/attendees/delete/${user.id}`"
-                                                                class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border text-gray-600 focus:outline-none focus:text-gray-800 disabled:opacity-50 disabled:pointer-events-none dark:text-gray-500 dark:hover:text-gray-400 dark:focus:text-gray-400 p-2 mr-3 hover:bg-red-700 hover:text-white"
+                                                                class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border text-gray-600 focus:outline-none focus:text-whitedisabled:opacity-50 disabled:pointer-events-none dark:text-gray-500 dark:hover:text-gray-400 dark:focus:text-gray-400 p-2 mr-3 hover:bg-red-700 hover:text-white"
                                                                 aria-haspopup="dialog"
                                                                 aria-expanded="false"
                                                                 aria-controls="hs-scale-animation-modal"

@@ -30,7 +30,7 @@ import { Link } from "@inertiajs/vue3";
           'text-gray-500 ': !route().current('attendees.type.index'),
         }"
       >
-        Add attendees type
+        Attendees type
       </Link>
       <Link
         href="/attendees/group"
@@ -41,7 +41,7 @@ import { Link } from "@inertiajs/vue3";
           'text-gray-500 ': !route().current('attendees.group.index'),
         }"
       >
-        Add attendees group
+        Attendees group
       </Link>
       <Link
         href="/attendees/add"
@@ -52,7 +52,7 @@ import { Link } from "@inertiajs/vue3";
           'text-gray-500 ': !route().current('attendees.index'),
         }"
       >
-        Add attendees
+        Attendees
       </Link>
 
       <Link
@@ -64,7 +64,7 @@ import { Link } from "@inertiajs/vue3";
           'text-gray-500 ': !route().current('attendees.upload.index'),
         }"
       >
-        Upload attendees
+        Attendees import
       </Link>
 
       <Link

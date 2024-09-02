@@ -37,7 +37,8 @@ class PrintController extends Controller
         $eventsId = $request->events_id;
         $usersId = $request->users_id;
 
-        $nameBadgeData = RegisterEvent::with('register_attendees', 'events', 'attendees_types')->where('events_id', $eventsId)
+        $nameBadgeData = RegisterEvent::with('register_attendees', 'events', 'attendees_types')
+            ->where('events_id', $eventsId)
             ->where('users_id', $usersId)
             ->first();
 

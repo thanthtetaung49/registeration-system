@@ -12,14 +12,12 @@ use App\Http\Controllers\InstructorController;
 use App\Http\Controllers\ListAttendeesController;
 use App\Http\Controllers\PrintController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\QrCodeController;
 use App\Http\Controllers\QrcodePrintController;
 use App\Http\Controllers\RegisterAttendeesController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\SecurityController;
 use App\Http\Controllers\UnregisterAttendeesController;
 use App\Http\Controllers\UploadAttendeesController;
-use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -40,10 +38,6 @@ Route::get('/info', function () {
     phpinfo();
 });
 
-// Route::get('/dashboard', function () {
-//     return Inertia::render('Dashboard');
-// })->middleware(['auth', 'verified'])->name('dashboard');
-
 Route::middleware(['auth', 'verified'])->group(function () {
 
     // calendar
@@ -62,6 +56,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/list/delete/{event}', [EventListController::class, 'delete'])->name('event.list.delete');
         Route::get('/search', [EventListController::class, 'search'])->name('event.search');
         Route::get('/attendees/list/{eventId}', [EventListController::class, 'eventAttendeesList'])->name('event.attendees.list');
+        Route::get('/type2/qrcode/generate/{eventId}', [EventListController::class, 'eventType2QrcodeGenerate'])->name('event.type2.qrcode');
 
         // event report
         Route::get('/report', [EventReportController::class, 'index'])->name('event.report.index');
