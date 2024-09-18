@@ -40,6 +40,15 @@ class RegisterAttendeesController extends Controller
         ]);
 
         $usersId = $request->users_id;
+        $eventId = $request->events_id;
+
+        $event = Event::where('id', $eventId)->first();
+
+        if ($event->event_type == 2) {
+            User::whereIn('id', $usersId)->update([
+                'is_admin' => 3 // change user type to self check-in user
+            ]);
+        }
 
         foreach ($usersId as $id) {
             $letters = chr(rand(65, 90)) . chr(rand(65, 90)) . chr(rand(65, 90));
@@ -48,7 +57,7 @@ class RegisterAttendeesController extends Controller
 
             RegisterEvent::create([
                 'users_id'  => $id,
-                'events_id' => $request->events_id,
+                'events_id' => $eventId,
                 'qr_code'   => $code,
             ]);
         }

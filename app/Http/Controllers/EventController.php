@@ -44,15 +44,15 @@ class EventController extends Controller
             "early_attendance_min" => ['required'],
             "late_attendance_min" => ['required'],
             "room_numbers_id" => ['required'],
-            "event_type" => ['required'],
+            "event_type" => ['required'],   
         ]);
 
         $letters = chr(rand(65, 90)) . chr(rand(65, 90)) . chr(rand(65, 90));
         $digits = rand(100, 999);
         $code = $letters . $digits;
-        $eventCode = ['event_code' => $code];
+        $eventCode = ['event_code' => $code, 'event_type' => $request->event_type ? 2 : 1];
         $mergeEvent = array_merge($validation, $eventCode);
-        
+
         Event::create($mergeEvent);
 
         return to_route('event.index');

@@ -5,17 +5,21 @@ namespace App\Http\Controllers;
 use App\Models\RegisterEvent;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class SecurityController extends Controller
 {
     public function index () {
-        return Inertia::render('SecurityPage/Scan');
+        $user = Auth::user();
+
+        return Inertia::render('SecurityPage/Scan', [
+            'user' => $user,
+        ]);
     }
 
     public function scanQrCode(Request $request)
     {
-        // dd($request->all());
         $code = $request->code;
         $scanQr = RegisterEvent::where('qr_code', $code)->first();
         $existsOrNotStatus = RegisterEvent::where('qr_code', $code)->exists();

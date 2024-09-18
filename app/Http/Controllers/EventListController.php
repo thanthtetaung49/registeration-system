@@ -8,7 +8,6 @@ use App\Models\Instructor;
 use App\Models\RegisterEvent;
 use App\Models\RoomNumber;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
@@ -64,7 +63,7 @@ class EventListController extends Controller
 
     public function update(Event $event, Request $request)
     {
-        $event->update($request->validate([
+        $validation = $request->validate([
             "event_name" => ['required'],
             "description" => ['required'],
             "location" => ['required'],
@@ -90,7 +89,15 @@ class EventListController extends Controller
             "late_attendance_min" => ['required'],
             "room_numbers_id" => ['required'],
             "event_type" => ['required'],
-        ]));
+        ]);
+
+        $letters = chr(rand(65, 90)) . chr(rand(65, 90)) . chr(rand(65, 90));
+        $digits = rand(100, 999);
+        $code = $letters . $digits;
+        $eventCode = ['event_code' => $code, 'event_type' => $request->event_type ? 2 : 1];
+        $mergeEvent = array_merge($validation, $eventCode);
+
+        $event->update($mergeEvent);
 
         return to_route('event.list.index');
     }
@@ -123,10 +130,11 @@ class EventListController extends Controller
         ]);
     }
 
-    public function eventType2QrcodeGenerate ($eventId) {
+    public function eventType2QrcodeGenerate($eventId)
+    {
         $event = Event::findOrFail($eventId);
-
-        $url = $event->event_code;
+        // $url = env('APP_URL') . '/student/' . $event->event_code;
+        $url = env('APP_URL') . '/student';
         $qrCode = (string) QrCode::size(300)->generate($url);
 
         return response()->json([

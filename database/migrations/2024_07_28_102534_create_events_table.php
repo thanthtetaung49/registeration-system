@@ -22,7 +22,7 @@ return new class extends Migration
             $table->unsignedBigInteger('assist_instructors_id');
             $table->foreign('assist_instructors_id')->references('id')->on('instructors')->onDelete('cascade');
             $table->foreignId('categories_id')->constrained()->cascadeOnDelete();
-            $table->integer('event_type'); // 1 = type I and 2 = type II
+            $table->integer('event_type')->default(1); // 1 = type I and 2 = type II
             $table->string('event_code');
             $table->integer('max_seats');
             $table->string('event_reference_id');

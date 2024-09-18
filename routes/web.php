@@ -1,25 +1,27 @@
 <?php
 
-use App\Http\Controllers\AddAttendeesController;
-use App\Http\Controllers\AttendeesGroupController;
-use App\Http\Controllers\AttendeesTypeController;
-use App\Http\Controllers\CalendarController;
-use App\Http\Controllers\CategoryController;
+use Inertia\Inertia;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\RoomController;
 use App\Http\Controllers\EventController;
-use App\Http\Controllers\EventListController;
-use App\Http\Controllers\EventReportController;
-use App\Http\Controllers\InstructorController;
-use App\Http\Controllers\ListAttendeesController;
 use App\Http\Controllers\PrintController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\QrcodePrintController;
-use App\Http\Controllers\RegisterAttendeesController;
-use App\Http\Controllers\RoomController;
+use App\Http\Controllers\StudentController;
+use App\Http\Controllers\CalendarController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\SecurityController;
-use App\Http\Controllers\UnregisterAttendeesController;
+use App\Http\Controllers\EventListController;
+use App\Http\Controllers\InstructorController;
+use App\Http\Controllers\EventReportController;
+use App\Http\Controllers\QrcodePrintController;
+use App\Http\Controllers\AddAttendeesController;
+use App\Http\Controllers\AttendeesTypeController;
+use App\Http\Controllers\ListAttendeesController;
+use App\Http\Controllers\AttendeesGroupController;
 use App\Http\Controllers\UploadAttendeesController;
-use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
+use App\Http\Controllers\RegisterAttendeesController;
+use App\Http\Controllers\ScannerController;
+use App\Http\Controllers\UnregisterAttendeesController;
 
 // Route::get('/', function () {
 //     return Inertia::render('Welcome', [
@@ -32,10 +34,6 @@ use Inertia\Inertia;
 
 Route::get('/', function () {
     return Inertia::render('Auth/Login');
-});
-
-Route::get('/info', function () {
-    phpinfo();
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -100,7 +98,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/search', [ListAttendeesController::class, 'search'])->name('attendees.search');
         Route::get('/list/excel/export', [ListAttendeesController::class, 'excelExport'])->name('attendees.excel.export');
         Route::get('/list/csv/export', [ListAttendeesController::class, 'csvExport'])->name('attendees.csv.export');
-        Route::get('/duplicate/check', [ListAttendeesController::class, 'duplicate'])->name('duplicate.check');
+        // Route::get('/duplicate/check', [ListAttendeesController::class, 'duplicate'])->name('duplicate.check');
 
         // type
         Route::get('/type', [AttendeesTypeController::class, 'index'])->name('attendees.type.index');
@@ -153,16 +151,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
 
     // security
-    Route::prefix('/security')->group(function () {
-        Route::get('/home', [SecurityController::class, 'index'])->name('security.index');
-        // qrcode scan
-        Route::post('/qrcode/scan', [SecurityController::class, 'scanQrCode']);
+    Route::prefix('/scan')->group(function () {
+        Route::get('', [SecurityController::class, 'index'])->name('scan.index');
     });
 
     // qrcode download
-    Route::get('qrcode/download/{registerEventId}', [QrcodePrintController::class, 'index'])->name('qrcode.print');
-});
+    Route::get('/qrcode/download/{registerEventId}', [QrcodePrintController::class, 'index'])->name('qrcode.print');
 
+    // qrcode scan
+    Route::post('/security/qrcode/scan', [ScannerController::class, 'SecurityScanQrCode']);
+    Route::get('/student/qrcode/scan', [ScannerController::class, 'SelfCheckinScanQrCode']);
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
