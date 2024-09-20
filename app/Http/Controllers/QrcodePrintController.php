@@ -2,20 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Event;
 use App\Models\RegisterEvent;
-use App\Models\User;
-use Carbon\Carbon;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
 use Mpdf\Mpdf;
-use Mpdf\Tag\Option;
-use PhpOffice\PhpSpreadsheet\Writer\Pdf\Dompdf;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Spatie\Browsershot\Browsershot;
 
 class QrcodePrintController extends Controller
 {
-    public function index($registerEventId)
+    public function attendeesQrcodeIndex($registerEventId)
     {
         $nameBadgeData = RegisterEvent::with(['register_attendees', 'events', 'attendees_types'])->where('id', $registerEventId)->first();
 
@@ -34,18 +30,37 @@ class QrcodePrintController extends Controller
             'orientation' => 'P'  // Portrait orientation
         ]);
 
-        $html = View::make('pdf', $data)->render();
+        $html = View::make('pdf.AttendeesPdf', $data)->render();
         $mpdf->WriteHTML($html);
 
         $filename = $registerAttendeesId . '_' . $nameBadgeData->register_attendees->name . '_qrCode.pdf';
 
         $mpdf->Output($filename, \Mpdf\Output\Destination::DOWNLOAD);
+    }
 
-        // $htmlContent = View::make('pdf', $data)->render();
+    public function eventQrcodeIndex ($eventId) {
+        $event = Event::findOrFail($eventId);
+        $eventCode = $event->event_code;
+        $eventName = $event->event_name;
 
-        // $imagePath = storage_path('app/public/qrCode/' . $registerAttendeesId . '_' .$nameBadgeData->register_attendees->name .  '_qrCode.png');
-        // Browsershot::html($htmlContent)->save($imagePath);
+        $qrCode = (string) QrCode::size(100)->generate($eventCode);
+        $qrCode = preg_replace('/<\?xml.*?\?>/', '', $qrCode);
 
-        // return response()->download($imagePath);
+        $data = [
+            'nameBadgeData' => $eventName,
+            'qrCode' => $qrCode,
+        ];
+
+        $mpdf = new Mpdf([
+            'format' => [210, 100],  // Size in millimeters: [width, height]
+            'orientation' => 'P'  // Portrait orientation
+        ]);
+
+        $html = View::make('pdf.eventSelfCheckinPdf', $data)->render();
+        $mpdf->WriteHTML($html);
+
+        $filename = $eventName . '.pdf';
+
+        $mpdf->Output($filename, \Mpdf\Output\Destination::DOWNLOAD);
     }
 }

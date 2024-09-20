@@ -43,12 +43,12 @@ const updateAttendees = () => form.post(`/attendees/update/${user.id}`);
     <AuthenticatedLayout>
       <div class="px-10 py-10">
         <header class="mb-10">
-          <h3 class="text-gray-800 text-2xl pb-1 bold">Attendees</h3>
+          <h3 class="text-gray-800 text-2xl pb-1 bold dark:text-white">Attendees</h3>
           <div class="w-10 h-1 bg-blue-800"></div>
         </header>
 
-        <div class="w-full bg-white rounded-lg shadow-md">
-          <div class="border-b border-gray-200 px-4 py-5 mb-10">
+        <div class="w-full bg-white rounded-lg shadow-md dark:text-white dark:bg-gray-800">
+          <div class="border-b border-gray-200 dark:border-none px-4 py-5 mb-10">
             <div class="mt-5">
               <form v-on:submit.prevent="updateAttendees">
                 <div class="w-1/3 my-3 flex items-end">
@@ -77,7 +77,7 @@ const updateAttendees = () => form.post(`/attendees/update/${user.id}`);
                       type="file"
                       name="import_file"
                       id="file-input"
-                      class="hidden w-full border border-gray-200 shadow-sm rounded-lg text-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 file:bg-gray-50 file:border-0 file:me-4 file:py-3 file:px-4 dark:file:bg-neutral-700 dark:file:text-neutral-400 mt-3"
+                      class="hidden w-full border border-gray-200 dark:border-none shadow-sm rounded-lg text-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 file:bg-gray-50 file:border-0 file:me-4 file:py-3 file:px-4 dark:file:bg-neutral-700 dark:file:text-neutral-400 mt-3"
                     />
                   </div>
                 </div>
@@ -105,7 +105,7 @@ const updateAttendees = () => form.post(`/attendees/update/${user.id}`);
                     <select
                       disabled
                       v-model="form.sex"
-                      class="py-3 px-4 pe-9 block w-full border-gray-200 rounded-lg text-sm focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none mt-3"
+                      class="py-3 px-4 pe-9 block w-full border-gray-200 dark:border-none rounded-lg text-sm focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none mt-3 dark:bg-gray-900"
                     >
                       <option value="" selected="">Open this select sex</option>
                       <option value="0">Male</option>
@@ -188,7 +188,7 @@ const updateAttendees = () => form.post(`/attendees/update/${user.id}`);
                     <InputLabel :value="'Attendees type'"></InputLabel>
                     <select
                       v-model="form.attendees_types_id"
-                      class="py-3 px-4 pe-9 block w-full border-gray-200 rounded-lg text-sm focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none mt-3"
+                      class="py-3 px-4 pe-9 block w-full border-gray-200 dark:border-none rounded-lg text-sm focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none mt-3 dark:bg-gray-900"
                       disabled
                     >
                       <option value="" selected="">
@@ -209,7 +209,7 @@ const updateAttendees = () => form.post(`/attendees/update/${user.id}`);
                     <InputLabel :value="'Attendees group'"></InputLabel>
                     <select
                       v-model="form.attendees_groups_id"
-                      class="py-3 px-4 pe-9 block w-full border-gray-200 rounded-lg text-sm focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none mt-3" disabled
+                      class="py-3 px-4 pe-9 block w-full border-gray-200 dark:border-none rounded-lg text-sm focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none mt-3 dark:bg-gray-900" disabled
                     >
                       <option value="" selected="">
                         Open this attendees group

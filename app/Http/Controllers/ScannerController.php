@@ -16,24 +16,9 @@ class ScannerController extends Controller
         $scanQr = RegisterEvent::where('qr_code', $code)->first();
         $existsOrNotStatus = RegisterEvent::where('qr_code', $code)->exists();
 
-        if ($existsOrNotStatus) {
-            if ($scanQr->scan_time) {
-                return response()->json(['alreadyRegisterMessage' => 'You already register your Qr code preferences']);
-            } else {
-                $scanQr->update([
-                    'registration_status' => 1,
-                    'scan_time' => Carbon::now()->setTimezone('Asia/Yangon')
-                ]);
+        $message = $this->qrCodeScan($existsOrNotStatus, $scanQr);
 
-                return response()->json([
-                    'successMessage' => 'You have successfully register your Qr code preferences.'
-                ]);
-            }
-        } else {
-            return response()->json([
-                'notRegisterMessage' => 'You are not register your Qr code preferences.',
-            ]);
-        }
+        return response()->json($message);
     }
 
     // student scan
@@ -41,8 +26,8 @@ class ScannerController extends Controller
     {
         $code = $request->code;
         $userId = $request->authId;
-        $event = Event::where('event_code', $code);
-        $eventId = $event->id;
+        $event = Event::where('event_code', $code)->first();
+        $eventId = $event?->id;
 
         $scanQr = RegisterEvent::where('events_id', $eventId)
             ->where('users_id', $userId)
@@ -52,23 +37,30 @@ class ScannerController extends Controller
             ->where('users_id', $userId)
             ->exists();
 
+        $message = $this->qrCodeScan($existsOrNotStatus, $scanQr);
+
+        return response()->json($message);
+    }
+
+    // qrcode scan logic
+    public function qrCodeScan($existsOrNotStatus, $scanQr)
+    {
+        $message = [];
+
         if ($existsOrNotStatus) {
             if ($scanQr->scan_time) {
-                return response()->json(['alreadyRegisterMessage' => 'You already register your Qr code preferences']);
+                $message['alreadyRegisterMessage'] = 'You have already registered your Qr code preferences.';
             } else {
                 $scanQr->update([
                     'registration_status' => 1,
-                    'scan_time' => Carbon::now()->setTimezone('Asia/Yangon')
+                    'scan_time' => Carbon::now()->setTimezone('Asia/Yangon'),
                 ]);
-
-                return response()->json([
-                    'successMessage' => 'You have successfully register your Qr code preferences.'
-                ]);
+                $message['successMessage'] = 'You have successfully registered your Qr code preferences.';
             }
         } else {
-            return response()->json([
-                'notRegisterMessage' => 'You are not register your Qr code preferences.',
-            ]);
+            $message['notRegisterMessage'] = 'You are not registered for your Qr code preferences.';
         }
+
+        return $message;
     }
 }

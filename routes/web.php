@@ -133,7 +133,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/register', [RegisterAttendeesController::class, 'index'])->name('attendees.register.index');
         Route::post('/event/register', [RegisterAttendeesController::class, 'submitAttendeeEvent'])->name('attendees.register.create');
         Route::get('/event/register/filter', [RegisterAttendeesController::class, 'filterAttendees'])->name('attendees.filter');
-        Route::get('/event/register/search', [RegisterAttendeesController::class, 'search'])->name('attendees.search');
+        Route::get('/event/register/search', [RegisterAttendeesController::class, 'search'])->name('event.register.search');
         Route::get('/event/registerAttendees/Export', [RegisterAttendeesController::class, 'export'])->name('attendees.register.export');
 
         // unregister
@@ -155,12 +155,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('', [SecurityController::class, 'index'])->name('scan.index');
     });
 
-    // qrcode download
-    Route::get('/qrcode/download/{registerEventId}', [QrcodePrintController::class, 'index'])->name('qrcode.print');
-
     // qrcode scan
     Route::post('/security/qrcode/scan', [ScannerController::class, 'SecurityScanQrCode']);
-    Route::get('/student/qrcode/scan', [ScannerController::class, 'SelfCheckinScanQrCode']);
+    Route::post('/student/qrcode/scan', [ScannerController::class, 'SelfCheckinScanQrCode']);
+
+    // qrcode download
+    Route::get('attendees/qrcode/download/{registerEventId}', [QrcodePrintController::class, 'attendeesQrcodeIndex'])->name('attendees.qrcode.print');
+    Route::get('event/qrcode/download/{eventId}', [QrcodePrintController::class, 'eventQrcodeIndex'])->name('event.qrcode.print');
 });
 
 Route::middleware('auth')->group(function () {

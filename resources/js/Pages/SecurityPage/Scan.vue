@@ -66,12 +66,12 @@ const securityScan = () => {
 const selfCheckinUserScan = () => {
   console.log("self check in work");
     axios
-      .post("/security/qrcode/scan", {
+      .post("/student/qrcode/scan", {
             code: code.value,
             authId: auth.id,
         })
       .then((response) => {
-        console.log(response.data);
+        console.log(response);
         let setSuccessMessage = response.data.successMessage;
         let setAlreadyRegisterMessage = response.data.alreadyRegisterMessage;
         let setNotRegisterMessage = response.data.notRegisterMessage;

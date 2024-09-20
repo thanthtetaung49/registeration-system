@@ -14,7 +14,7 @@ const eventsData = ref(props.events.data);
 const eventLink = ref(props.events.links);
 const input = ref(null);
 const qrCode = ref(null);
-const eventName = ref(null);
+const event = ref(null);
 
 const getRegisterAttendees = (eventId) => {
   axios
@@ -33,7 +33,7 @@ const eventType2QrGenerate = (eventId) => {
     .then((response) => {
       console.log(response);
       qrCode.value = response.data.qrCode;
-      eventName.value = response.data.eventName;
+      event.value = response.data.event;
     })
     .catch((error) => console.error(error));
 };
@@ -58,12 +58,12 @@ onMounted(() => {
     <AuthenticatedLayout>
       <div class="px-10 py-10">
         <header class="mb-10">
-          <h3 class="text-gray-800 text-2xl pb-1 bold">Event</h3>
+          <h3 class="text-gray-800 text-2xl pb-1 bold dark:text-white dark:text-white">Event</h3>
           <div class="w-10 h-1 bg-blue-800"></div>
         </header>
 
-        <div class="w-full bg-white rounded-lg shadow-md">
-          <div class="border-b border-gray-200 px-4 pb-5 mb-10">
+        <div class="w-full bg-white rounded-lg shadow-md dark:text-white dark:bg-gray-800 dark:bg-gray-800 dark:text-white">
+          <div class="border-b border-gray-200 dark:border-none px-4 pb-5 mb-10">
             <EventTabLayout></EventTabLayout>
 
             <div class="flex justify-end">
@@ -166,47 +166,47 @@ onMounted(() => {
                       <tbody class="divide-y divide-gray-200">
                         <tr v-for="(event, index) in eventsData" :key="event.id">
                           <td
-                            class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800"
+                            class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white dark:text-white"
                           >
                             {{ index + 1 }}
                           </td>
                           <td
-                            class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800"
+                            class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white dark:text-white"
                           >
                             {{ event.event_name }}
                           </td>
                           <td
-                            class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800"
+                            class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white dark:text-white"
                           >
                             {{ event.event_type == 1 ? "Type I" : "Type II" }}
                           </td>
                           <td
-                            class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800"
+                            class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white dark:text-white"
                           >
                             {{ event.description }}
                           </td>
                           <td
-                            class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800"
+                            class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white dark:text-white"
                           >
                             {{ event.location }}
                           </td>
                           <td
-                            class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800"
+                            class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white dark:text-white"
                           >
                             {{ event.lead_instructors.name }}
                           </td>
                           <td
-                            class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800"
+                            class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white dark:text-white"
                           >
                             {{ event.assists_instructors.name }}
                           </td>
                           <td
-                            class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800"
+                            class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white dark:text-white"
                           >
                             {{ event.categories.category_name }}
                           </td>
                           <td
-                            class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800"
+                            class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white dark:text-white"
                           >
                             {{ event.created_at.split("T")[0] }}
                           </td>
@@ -370,7 +370,7 @@ onMounted(() => {
                   :href="link.url"
                   v-for="(link, index) in eventLink"
                   :key="index"
-                  class="border py-2 px-3 text-sm"
+                  class="border py-2 px-3 text-sm dark:text-white"
                   :class="{
                     'bg-blue-500 text-white': link.active,
                   }"
@@ -395,7 +395,7 @@ onMounted(() => {
           class="hs-overlay-animation-target hs-overlay-open:scale-100 hs-overlay-open:opacity-100 scale-95 opacity-0 ease-in-out transition-all duration-200 sm:max-w-2xl sm:w-full m-3 sm:mx-auto min-h-[calc(100%-3.5rem)] flex items-center"
         >
           <div
-            class="w-full flex flex-col bg-white border shadow-sm rounded-xl pointer-events-auto dark:bg-neutral-800 dark:border-neutral-700 dark:shadow-neutral-700/70"
+            class=" dark:text-white w-full flex flex-col bg-white border shadow-sm rounded-xl pointer-events-auto dark:bg-neutral-800 dark:border-neutral-700 dark:shadow-neutral-700/70"
           >
             <div
               class="flex justify-between items-center py-3 px-4 border-b dark:border-neutral-700"
@@ -502,32 +502,32 @@ onMounted(() => {
                             }"
                           >
                             <td
-                              class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800"
+                              class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white"
                             >
                               {{ index + 1 }}
                             </td>
                             <td
-                              class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800"
+                              class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white"
                             >
                               {{ attendee.register_attendees.name }}
                             </td>
                             <td
-                              class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800"
+                              class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white"
                             >
                               {{ attendee.register_attendees.email }}
                             </td>
                             <td
-                              class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800"
+                              class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white"
                             >
                               {{ attendee.register_attendees.department }}
                             </td>
                             <td
-                              class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800"
+                              class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white"
                             >
                               {{ attendee.register_attendees.position }}
                             </td>
                             <td
-                              class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800"
+                              class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white"
                             >
                               <span
                                 v-if="
@@ -540,7 +540,7 @@ onMounted(() => {
                             </td>
 
                             <td
-                              class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800"
+                              class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white"
                             >
                               {{ attendee.register_attendees.created_at.split("T")[0] }}
                             </td>
@@ -557,7 +557,7 @@ onMounted(() => {
             >
               <button
                 type="button"
-                class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
+                class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 dark:border-none bg-white text-gray-800 shadow-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
                 data-hs-overlay="#register-attendees-modal"
               >
                 Close
@@ -588,7 +588,7 @@ onMounted(() => {
                 id="register-attendees-qrcode-modal"
                 class="font-bold text-gray-800 dark:text-white"
               >
-                {{ eventName }}
+                {{ event?.event_name }}
               </h3>
               <button
                 type="button"
@@ -615,6 +615,28 @@ onMounted(() => {
               </button>
             </div>
             <div class="p-4 overflow-y-auto">
+              <div class="w-full flex justify-end">
+                <a
+                  target="_blank" :href="`/event/qrcode/download/${event?.id}`"
+                  class="inline-flex items-center px-4 py-2 bg-blue-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700 focus:bg-blue-700 active:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150"
+                >
+                  <span>Download</span>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    class="size-5 inline ms-1"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"
+                    />
+                  </svg>
+                </a>
+              </div>
               <div class="flex flex-col mt-5">
                 <div class="-m-1.5 overflow-x-auto">
                   <div class="p-1.5 min-w-full h-[400px] inline-block align-middle">
@@ -630,7 +652,7 @@ onMounted(() => {
             >
               <button
                 type="button"
-                class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
+                class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 dark:border-none bg-white text-gray-800 shadow-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
                 data-hs-overlay="#register-attendees-qrcode-modal"
               >
                 Close

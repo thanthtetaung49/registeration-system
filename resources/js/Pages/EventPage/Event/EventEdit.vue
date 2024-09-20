@@ -45,11 +45,11 @@ const updateEvent = () => form.post(`/event/list/update/${event.id}`);
     <AuthenticatedLayout>
       <div class="px-10 py-10">
         <header class="mb-10">
-          <h3 class="text-gray-800 text-2xl pb-1 bold">Event edit</h3>
+          <h3 class="text-gray-800 text-2xl pb-1 bold dark:text-white dark:text-white">Event edit</h3>
           <div class="w-10 h-1 bg-blue-800"></div>
         </header>
-        <div class="w-full bg-white rounded-lg shadow-md">
-          <div class="border-b border-gray-200 px-4 py-5 mb-10">
+        <div class="w-full bg-white rounded-lg shadow-md dark:text-white dark:bg-gray-800 dark:bg-gray-800 dark:text-white">
+          <div class="border-b border-gray-200 dark:border-none px-4 py-5 mb-10">
             <div class="my-5">
               <form v-on:submit.prevent="updateEvent">
                 <div class="w-full flex">
@@ -84,7 +84,7 @@ const updateEvent = () => form.post(`/event/list/update/${event.id}`);
                     <InputLabel :value="'Lead instructor'"></InputLabel>
                     <select
                       v-model="form.lead_instructors_id"
-                      class="py-3 px-4 pe-9 block w-full border-gray-200 rounded-lg text-sm focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none mt-3"
+                      class="dark:bg-gray-900 dark:text-white py-3 px-4 pe-9 block w-full border-gray-200 dark:border-none rounded-lg text-sm focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none mt-3 dark:bg-gray-900"
                     >
                       <option value="" selected="">
                         Open this select lead instructor
@@ -103,7 +103,7 @@ const updateEvent = () => form.post(`/event/list/update/${event.id}`);
                     <InputLabel :value="'Assist instructor'"></InputLabel>
                     <select
                       v-model="form.assist_instructors_id"
-                      class="py-3 px-4 pe-9 block w-full border-gray-200 rounded-lg text-sm focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none mt-3"
+                      class="dark:bg-gray-900 dark:text-white py-3 px-4 pe-9 block w-full border-gray-200 dark:border-none rounded-lg text-sm focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none mt-3 dark:bg-gray-900"
                     >
                       <option value="" selected="">
                         Open this select assist instructor
@@ -122,7 +122,7 @@ const updateEvent = () => form.post(`/event/list/update/${event.id}`);
                     <InputLabel :value="'Categories'"></InputLabel>
                     <select
                       v-model="form.categories_id"
-                      class="py-3 px-4 pe-9 block w-full border-gray-200 rounded-lg text-sm focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none mt-3"
+                      class="dark:bg-gray-900 dark:text-white py-3 px-4 pe-9 block w-full border-gray-200 dark:border-none rounded-lg text-sm focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none mt-3 dark:bg-gray-900"
                     >
                       <option value="" selected="">Open this select categories</option>
                       <option
@@ -160,7 +160,7 @@ const updateEvent = () => form.post(`/event/list/update/${event.id}`);
                     <InputLabel :value="'Room number'"></InputLabel>
                     <select
                       v-model="form.room_numbers_id"
-                      class="py-2 px-4 pe-9 block w-full border-gray-200 rounded-lg text-sm focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none mt-3"
+                      class="dark:bg-gray-900 dark:text-white  py-2 px-4 pe-9 block w-full border-gray-200 dark:border-none rounded-lg text-sm focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none mt-3 dark:bg-gray-900"
                     >
                       <option value="" selected="">Open this select room number</option>
                       <option v-for="room in rooms" :key="room.id" :value="room.id">
@@ -215,7 +215,7 @@ const updateEvent = () => form.post(`/event/list/update/${event.id}`);
                     <InputLabel :value="'Early attendance minutes'"></InputLabel>
                     <select
                       v-model="form.early_attendance_min"
-                      class="py-3 px-4 pe-9 block w-full border-gray-200 rounded-lg text-sm focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none mt-3"
+                      class="dark:bg-gray-900 dark:text-white py-3 px-4 pe-9 block w-full border-gray-200 dark:border-none rounded-lg text-sm focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none mt-3 dark:bg-gray-900"
                     >
                       <option value="" selected="">
                         Open this select early attendance minutes
@@ -231,7 +231,7 @@ const updateEvent = () => form.post(`/event/list/update/${event.id}`);
                     <InputLabel :value="'Late attendance minutes'"></InputLabel>
                     <select
                       v-model="form.late_attendance_min"
-                      class="py-3 px-4 pe-9 block w-full border-gray-200 rounded-lg text-sm focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none mt-3"
+                      class="dark:bg-gray-900 dark:text-white py-3 px-4 pe-9 block w-full border-gray-200 dark:border-none rounded-lg text-sm focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none mt-3 dark:bg-gray-900"
                     >
                       <option value="" selected="">
                         Open this select late attendance minutes
@@ -247,7 +247,7 @@ const updateEvent = () => form.post(`/event/list/update/${event.id}`);
                     <InputLabel :value="'Description'"></InputLabel>
                     <div class="max-w-sm space-y-3">
                       <textarea
-                        class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+                        class="dark:bg-gray-900 dark:text-white py-3 px-4 block w-full border-gray-200 dark:border-none rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-gray-900"
                         rows="3"
                         placeholder="Description"
                         v-model="form.description"

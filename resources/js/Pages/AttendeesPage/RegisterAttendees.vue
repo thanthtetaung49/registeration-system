@@ -133,12 +133,12 @@ const searchUser = () => {
         </Transition>
 
         <header class="mb-10">
-          <h3 class="text-gray-800 text-2xl pb-1 bold">Attendees</h3>
+          <h3 class="text-gray-800 text-2xl pb-1 bold dark:text-white">Attendees</h3>
           <div class="w-10 h-1 bg-blue-800"></div>
         </header>
 
-        <div class="w-full bg-white shadow-md mb-20">
-          <div class="border-b border-gray-200 px-4">
+        <div class="w-full bg-white shadow-md mb-20 dark:bg-gray-800">
+          <div class="border-b border-gray-200 dark:border-none px-4">
             <AttendeesTabLayout></AttendeesTabLayout>
 
             <!-- <div class="flex w-full justify-end">
@@ -155,7 +155,7 @@ const searchUser = () => {
                                     type="text"
                                     name="hs-table-search"
                                     id="hs-table-input-search"
-                                    class="p-3 ps-9 block w-full border-gray-200 shadow-sm rounded-lg text-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+                                    class="p-3 ps-9 block w-full border-gray-200 dark:border-none shadow-sm rounded-lg text-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
                                     placeholder="Search for items"
                                     data-hs-datatable-search=""
                                 />
@@ -190,7 +190,7 @@ const searchUser = () => {
                 <div class="w-full flex items-center mt-5">
                   <div class="w-1/3 ms-3">
                     <select
-                      class="hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-3 ps-4 pe-9 flex gap-x-2 text-nowrap w-full cursor-pointer bg-white border border-gray-200 rounded-lg text-start text-sm focus:outline-none focus:ring-2 focus:ring-blue-200 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-neutral-600"
+                      class="hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-3 ps-4 pe-9 flex gap-x-2 text-nowrap w-full cursor-pointer bg-white border border-gray-200 dark:border-none rounded-lg text-start text-sm focus:outline-none focus:ring-2 focus:ring-blue-200 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-neutral-600"
                       v-model="form.attendees_groups_id"
                       @change="filter"
                     >
@@ -206,12 +206,12 @@ const searchUser = () => {
                       data-hs-select='{
                     "hasSearch": true,
                     "searchPlaceholder": "Search...",
-                    "searchClasses": "block w-full text-sm border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 before:absolute before:inset-0 before:z-[1] dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 py-2 px-3",
+                    "searchClasses": "block w-full text-sm border-gray-200 dark:border-none rounded-lg focus:border-blue-500 focus:ring-blue-500 before:absolute before:inset-0 before:z-[1] dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 py-2 px-3",
                     "searchWrapperClasses": "bg-white p-2 -mx-1 sticky top-0 dark:bg-neutral-900",
                     "placeholder": "Select event...",
                     "toggleTag": "<button type=\"button\" aria-expanded=\"false\"><span class=\"me-2\" data-icon></span><span class=\"text-gray-800 dark:text-neutral-200 \" data-title></span></button>",
-                    "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-3 ps-4 pe-9 flex gap-x-2 text-nowrap w-full cursor-pointer bg-white border border-gray-200 rounded-lg text-start text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-neutral-600 w-[250px]",
-                    "dropdownClasses": "mt-2 max-h-72 pb-1 px-1 space-y-0.5 z-20 w-full bg-white border border-gray-200 rounded-lg overflow-hidden overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500 dark:bg-neutral-900 dark:border-neutral-700",
+                    "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-3 ps-4 pe-9 flex gap-x-2 text-nowrap w-full cursor-pointer bg-white border border-gray-200 dark:border-none rounded-lg text-start text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-neutral-600 w-[250px]",
+                    "dropdownClasses": "mt-2 max-h-72 pb-1 px-1 space-y-0.5 z-20 w-full bg-white border border-gray-200 dark:border-none rounded-lg overflow-hidden overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500 dark:bg-neutral-900 dark:border-neutral-700",
                     "optionClasses": "py-2 px-4 w-full text-sm text-gray-800 cursor-pointer hover:bg-gray-100 rounded-lg focus:outline-none focus:bg-gray-100 dark:bg-neutral-900 dark:hover:bg-neutral-800 dark:text-neutral-200 dark:focus:bg-neutral-800",
                     "optionTemplate": "<div><div class=\"flex items-center\"><div class=\"me-2\" data-icon></div><div class=\"text-gray-800 dark:text-neutral-200 \" data-title></div></div></div>",
                     "extraMarkup": "<div class=\"absolute top-1/2 end-3 -translate-y-1/2\"><svg class=\"shrink-0 size-3.5 text-gray-500 dark:text-neutral-500 \" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m7 15 5 5 5-5\"/><path d=\"m7 9 5-5 5 5\"/></svg></div>"
@@ -261,7 +261,7 @@ const searchUser = () => {
                   <div class="min-w-full inline-block align-middle">
                     <div class="overflow-hidden">
                       <table class="min-w-full">
-                        <thead class="border-b border-gray-200">
+                        <thead class="border-b border-gray-200 dark:border-none">
                           <tr>
                             <th scope="col" class="py-1 ps-3 --exclude-from-ordering">
                               <div class="flex items-center h-5">
@@ -284,7 +284,7 @@ const searchUser = () => {
                               class="py-1 group text-start font-normal focus:outline-none"
                             >
                               <div
-                                class="py-1 px-2.5 inline-flex items-center border border-transparent text-sm text-gray-500 rounded-md hover:border-gray-200"
+                                class="py-1 px-2.5 inline-flex items-center border border-transparent text-sm text-gray-500 rounded-md hover:border-gray-200 dark:border-none"
                               >
                                 Name
                               </div>
@@ -295,7 +295,7 @@ const searchUser = () => {
                               class="py-1 group text-start font-normal focus:outline-none"
                             >
                               <div
-                                class="py-1 px-2.5 inline-flex items-center border border-transparent text-sm text-gray-500 rounded-md hover:border-gray-200"
+                                class="py-1 px-2.5 inline-flex items-center border border-transparent text-sm text-gray-500 rounded-md hover:border-gray-200 dark:border-none"
                               >
                                 Attendees group
                               </div>
@@ -306,7 +306,7 @@ const searchUser = () => {
                               class="py-1 group text-start font-normal focus:outline-none"
                             >
                               <div
-                                class="py-1 px-2.5 inline-flex items-center border border-transparent text-sm text-gray-500 rounded-md hover:border-gray-200"
+                                class="py-1 px-2.5 inline-flex items-center border border-transparent text-sm text-gray-500 rounded-md hover:border-gray-200 dark:border-none"
                               >
                                 Phone number
                               </div>
@@ -317,7 +317,7 @@ const searchUser = () => {
                               class="py-1 group text-start font-normal focus:outline-none"
                             >
                               <div
-                                class="py-1 px-2.5 inline-flex items-center border border-transparent text-sm text-gray-500 rounded-md hover:border-gray-200"
+                                class="py-1 px-2.5 inline-flex items-center border border-transparent text-sm text-gray-500 rounded-md hover:border-gray-200 dark:border-none"
                               >
                                 Email
                               </div>
@@ -328,7 +328,7 @@ const searchUser = () => {
                               class="py-1 group text-start font-normal focus:outline-none"
                             >
                               <div
-                                class="py-1 px-2.5 inline-flex items-center border border-transparent text-sm text-gray-500 rounded-md hover:border-gray-200"
+                                class="py-1 px-2.5 inline-flex items-center border border-transparent text-sm text-gray-500 rounded-md hover:border-gray-200 dark:border-none"
                               >
                                 created_at
                               </div>
@@ -350,28 +350,28 @@ const searchUser = () => {
                               />
                             </td>
                             <td
-                              class="p-3 whitespace-nowrap text-sm font-medium text-gray-800"
+                              class="p-3 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white"
                             >
                               {{ user.name }}
                             </td>
                             <td
-                              class="p-3 whitespace-nowrap text-sm font-medium text-gray-800"
+                              class="p-3 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white"
                             >
                               {{ user.attendees_groups.name }}
                             </td>
                             <td
-                              class="p-3 whitespace-nowrap text-sm font-medium text-gray-800"
+                              class="p-3 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white"
                             >
                               {{ user.phone_number }}
                             </td>
                             <td
-                              class="p-3 whitespace-nowrap text-sm font-medium text-gray-800"
+                              class="p-3 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white"
                             >
                               {{ user.email }}
                             </td>
 
                             <td
-                              class="p-3 whitespace-nowrap text-sm font-medium text-gray-800"
+                              class="p-3 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white"
                             >
                               {{ user.created_at.split("T")[0] }}
                             </td>
@@ -388,7 +388,7 @@ const searchUser = () => {
                       :href="`${link.url}&data[attendeesGroupId]=${form.attendees_groups_id}&data[eventsId]=${form.events_id}`"
                       v-for="(link, index) in users.links"
                       :key="index"
-                      class="border py-2 px-3 text-sm"
+                      class="border py-2 px-3 text-sm dark:text-white"
                       :class="{
                         'bg-blue-500 text-white': link.active,
                       }"

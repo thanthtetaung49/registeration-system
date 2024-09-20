@@ -133,13 +133,13 @@ class EventListController extends Controller
     public function eventType2QrcodeGenerate($eventId)
     {
         $event = Event::findOrFail($eventId);
-        // $url = env('APP_URL') . '/student/' . $event->event_code;
-        $url = env('APP_URL') . '/student';
-        $qrCode = (string) QrCode::size(300)->generate($url);
+        $eventCode = $event->event_code;
+
+        $qrCode = (string) QrCode::size(300)->generate($eventCode);
 
         return response()->json([
             'qrCode' => $qrCode,
-            'eventName' => $event->event_name,
+            'event' => $event,
         ]);
     }
 }

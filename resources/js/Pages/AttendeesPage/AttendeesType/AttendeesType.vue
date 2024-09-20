@@ -29,12 +29,12 @@ const props = defineProps({
         <AuthenticatedLayout>
             <div class="px-10 py-10">
                 <header class="mb-10">
-                    <h3 class="text-gray-800 text-2xl pb-1 bold">Event</h3>
+                    <h3 class="text-gray-800 text-2xl pb-1 bold dark:text-white">Event</h3>
                     <div class="w-10 h-1 bg-blue-800"></div>
                 </header>
 
-                <div class="w-full bg-white rounded-lg shadow-md">
-                    <div class="border-b border-gray-200 px-4">
+                <div class="w-full bg-white rounded-lg shadow-md dark:text-white dark:bg-gray-800">
+                    <div class="border-b border-gray-200 dark:border-none px-4">
                         <AttendeesTabLayout></AttendeesTabLayout>
 
                         <div class="mt-5">
@@ -106,17 +106,17 @@ const props = defineProps({
                                                     :key="type.id"
                                                 >
                                                     <td
-                                                        class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800"
+                                                        class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white"
                                                     >
                                                         {{ index + 1 }}
                                                     </td>
                                                     <td
-                                                        class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800"
+                                                        class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white"
                                                     >
                                                         {{ type.name }}
                                                     </td>
                                                     <td
-                                                        class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800"
+                                                        class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white"
                                                     >
                                                         {{
                                                             type.created_at.split(
@@ -228,7 +228,7 @@ const props = defineProps({
                                     :href="link.url"
                                     v-for="(link, index) in types.links"
                                     :key="index"
-                                    class="border py-2 px-3 text-sm"
+                                    class="border py-2 px-3 text-sm dark:text-white"
                                     :class="{
                                         'bg-blue-500 text-white': link.active,
                                     }"

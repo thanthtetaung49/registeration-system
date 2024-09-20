@@ -84,7 +84,7 @@ const saveEvent = () =>
           <InputLabel :value="'Lead instructor'"></InputLabel>
           <select
             v-model="form.lead_instructors_id"
-            class="py-3 px-4 pe-9 block w-full border-gray-200 rounded-lg text-sm focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none mt-3"
+            class="py-3 px-4 pe-9 block w-full border-gray-200 dark:border-none rounded-lg text-sm focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none mt-3 dark:bg-gray-900"
           >
             <option value="" selected="">Open this select lead instructor</option>
             <option
@@ -101,7 +101,7 @@ const saveEvent = () =>
           <InputLabel :value="'Assist instructor'"></InputLabel>
           <select
             v-model="form.assist_instructors_id"
-            class="py-3 px-4 pe-9 block w-full border-gray-200 rounded-lg text-sm focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none mt-3"
+            class="py-3 px-4 pe-9 block w-full border-gray-200 dark:border-none rounded-lg text-sm focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none mt-3 dark:bg-gray-900"
           >
             <option value="" selected="">Open this select assist instructor</option>
             <option
@@ -118,7 +118,7 @@ const saveEvent = () =>
           <InputLabel :value="'Categories'"></InputLabel>
           <select
             v-model="form.categories_id"
-            class="py-3 px-4 pe-9 block w-full border-gray-200 rounded-lg text-sm focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none mt-3"
+            class="py-3 px-4 pe-9 block w-full border-gray-200 dark:border-none rounded-lg text-sm focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none mt-3 dark:bg-gray-900"
           >
             <option value="" selected="">Open this select categories</option>
             <option
@@ -156,7 +156,7 @@ const saveEvent = () =>
           <InputLabel :value="'Room number'"></InputLabel>
           <select
             v-model="form.room_numbers_id"
-            class="py-2 px-4 pe-9 block w-full border-gray-200 rounded-lg text-sm focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none mt-3"
+            class="py-2 px-4 pe-9 block w-full border-gray-200 dark:border-none rounded-lg text-sm focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none mt-3 dark:bg-gray-900"
           >
             <option value="" selected="">Open this select room number</option>
             <option v-for="room in rooms" :key="room.id" :value="room.id">
@@ -211,7 +211,7 @@ const saveEvent = () =>
           <InputLabel :value="'Early attendance minutes'"></InputLabel>
           <select
             v-model="form.early_attendance_min"
-            class="py-3 px-4 pe-9 block w-full border-gray-200 rounded-lg text-sm focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none mt-3"
+            class="py-3 px-4 pe-9 block w-full border-gray-200 dark:border-none rounded-lg text-sm focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none mt-3 dark:bg-gray-900"
           >
             <option value="" selected="">
               Open this select early attendance minutes
@@ -227,7 +227,7 @@ const saveEvent = () =>
           <InputLabel :value="'Late attendance minutes'"></InputLabel>
           <select
             v-model="form.late_attendance_min"
-            class="py-3 px-4 pe-9 block w-full border-gray-200 rounded-lg text-sm focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none mt-3"
+            class="py-3 px-4 pe-9 block w-full border-gray-200 dark:border-none rounded-lg text-sm focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none mt-3 dark:bg-gray-900"
           >
             <option value="" selected="">Open this select late attendance minutes</option>
             <option value="15">15</option>
@@ -241,7 +241,7 @@ const saveEvent = () =>
           <InputLabel :value="'Description'"></InputLabel>
           <div class="max-w-sm space-y-3 mt-3">
             <textarea
-              class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+              class="py-3 px-4 block w-full border-gray-200 dark:border-none rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-gray-900"
               rows="3"
               placeholder="Description"
               v-model="form.description"

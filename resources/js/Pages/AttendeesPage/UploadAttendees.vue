@@ -33,12 +33,12 @@ const excelExport = () => {
     <AuthenticatedLayout>
       <div class="px-10 py-10">
         <header class="mb-10">
-          <h3 class="text-gray-800 text-2xl pb-1 bold">Attendees</h3>
+          <h3 class="text-gray-800 text-2xl pb-1 bold dark:text-white">Attendees</h3>
           <div class="w-10 h-1 bg-blue-800"></div>
         </header>
 
-        <div class="w-full bg-white rounded-lg shadow-md">
-          <div class="border-b border-gray-200 px-4">
+        <div class="w-full bg-white rounded-lg shadow-md dark:text-white dark:bg-gray-800 pb-5">
+          <div class="border-b border-gray-200 dark:border-none px-4">
             <AttendeesTabLayout></AttendeesTabLayout>
 
             <div class="mt-5">
@@ -82,12 +82,12 @@ const excelExport = () => {
                       type="file"
                       name="import_file"
                       id="file-input"
-                      class="block w-full border border-gray-200 shadow-sm rounded-lg text-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 file:bg-gray-50 file:border-0 file:me-4 file:py-3 file:px-4 dark:file:bg-neutral-700 dark:file:text-neutral-400"
+                      class="block w-full border border-gray-200 dark:border-none shadow-sm rounded-lg text-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 file:bg-gray-50 file:border-0 file:me-4 file:py-3 file:px-4 dark:file:bg-neutral-700 dark:file:text-neutral-400"
                     />
                   </div>
                 </div>
                 <InputError :message="form.errors.import_file"></InputError>
-                <div class="flex w-full justify-end mt-5 mb-10">
+                <div class="flex w-full justify-end mt-5">
                   <PrimaryButton type="submit">Save</PrimaryButton>
                 </div>
               </form>

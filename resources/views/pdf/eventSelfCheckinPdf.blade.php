@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>{{ $nameBadgeData['events']['event_name'] }}</title>
+    <title>{{ $nameBadgeData }}</title>
     <style>
         body {
             font-family: sans-serif;
@@ -29,7 +29,6 @@
             margin-left: 40%;
             height: 100px;
             margin-top: 70px;
-            /* margin-bottom: 20px; */
         }
     </style>
 </head>

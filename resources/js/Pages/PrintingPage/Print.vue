@@ -53,12 +53,12 @@ const nameBadgeGenerate = () => {
         <AuthenticatedLayout>
             <div class="px-10 py-10">
                 <header class="mb-10">
-                    <h3 class="text-gray-800 text-2xl pb-1 bold">Print</h3>
+                    <h3 class="text-gray-800 text-2xl pb-1 bold dark:text-white">Print</h3>
                     <div class="w-10 h-1 bg-blue-800"></div>
                 </header>
 
-                <div class="w-full bg-white rounded-lg shadow-md">
-                    <div class="border-b border-gray-200 px-4 pb-10 pt-3 mb-10">
+                <div class="w-full bg-white rounded-lg shadow-md dark:text-white dark:bg-gray-800">
+                    <div class="border-b border-gray-200 dark:border-none px-4 pb-10 pt-3 mb-10">
                         <div class="mt-5">
                             <form v-on:submit.prevent="nameBadgeGenerate">
                                 <div class="w-full flex">
@@ -69,7 +69,7 @@ const nameBadgeGenerate = () => {
                                         ></InputLabel>
                                         <select
                                             v-model="form.events_id"
-                                            class="hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-3 ps-4 pe-9 flex gap-x-2 text-nowrap w-full cursor-pointer bg-white border border-gray-200 rounded-lg text-start text-sm focus:outline-none focus:ring-2 focus:ring-blue-200 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-neutral-600"
+                                            class="hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-3 ps-4 pe-9 flex gap-x-2 text-nowrap w-full cursor-pointer bg-white border border-gray-200 dark:border-none rounded-lg text-start text-sm focus:outline-none focus:ring-2 focus:ring-blue-200 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-neutral-600"
                                             v-on:change="selectEvent"
                                         >
                                             <option value="" selected>
@@ -95,7 +95,7 @@ const nameBadgeGenerate = () => {
                                             class="mb-3"
                                         ></InputLabel>
                                         <select
-                                            class="hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-3 ps-4 pe-9 flex gap-x-2 text-nowrap w-full cursor-pointer bg-white border border-gray-200 rounded-lg text-start text-sm focus:outline-none focus:ring-2 focus:ring-blue-200 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-neutral-600"
+                                            class="hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-3 ps-4 pe-9 flex gap-x-2 text-nowrap w-full cursor-pointer bg-white border border-gray-200 dark:border-none rounded-lg text-start text-sm focus:outline-none focus:ring-2 focus:ring-blue-200 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-neutral-600"
                                             v-model="form.users_id"
                                         >
                                             <option value="">Choose</option>
@@ -123,7 +123,7 @@ const nameBadgeGenerate = () => {
 
                         <div class="border-t mt-5 pt-5" v-if="nameBadgeData">
                             <header class="mb-5">
-                                <h3 class="text-gray-800 text-lg pb-1 bold">
+                                <h3 class="text-gray-800 text-lg pb-1 bold dark:text-white">
                                     Card design
                                 </h3>
                                 <div class="w-10 h-1 bg-blue-800"></div>
@@ -131,7 +131,7 @@ const nameBadgeGenerate = () => {
                             <div class="w-full flex justify-end">
                                 <a
                                     target="_blank"
-                                    :href="`qrcode/download/${nameBadgeData.id}`"
+                                    :href="`attendees/qrcode/download/${nameBadgeData.id}`"
                                     class="inline-flex items-center px-4 py-2 bg-blue-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700 focus:bg-blue-700 active:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150"
                                 >
                                     <span>Download</span>

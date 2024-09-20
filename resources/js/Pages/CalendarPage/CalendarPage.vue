@@ -61,7 +61,7 @@ const addOneDay = (date) => {
 <template>
   <AuthenticatedLayout>
     <template #header>
-      <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+      <h2 class="font-semibold text-xl text-gray-800 leading-tight ">
         Dashboard
       </h2>
     </template>
@@ -69,11 +69,11 @@ const addOneDay = (date) => {
     <div class="py-12">
       <div class="max-w-full mx-auto sm:px-6 lg:px-8">
         <header class="mb-10">
-          <h3 class="text-gray-800 text-2xl pb-1 bold">Calendar</h3>
+          <h3 class="text-gray-800 text-2xl pb-1 bold dark:text-white dark:text-white">Calendar</h3>
           <div class="w-10 h-1 bg-blue-800"></div>
         </header>
         <div
-          class="bg-white text-sm overflow-hidden shadow-sm sm:rounded-lg p-10 w-full"
+          class="bg-white text-sm overflow-hidden shadow-sm sm:rounded-lg p-10 w-full dark:bg-gray-800 dark:text-white"
         >
           <FullCalendar :options="calendarOptions"></FullCalendar>
         </div>

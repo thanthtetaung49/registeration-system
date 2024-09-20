@@ -8,12 +8,12 @@ import InputError from "@/Components/InputError.vue";
 import axios from "axios";
 
 const props = defineProps({
-    registerEvents: Object,
-    events: Object,
-    message: String,
-    groups: Object,
-    groupId: String,
-    eventsId: String,
+  registerEvents: Object,
+  events: Object,
+  message: String,
+  groups: Object,
+  groupId: String,
+  eventsId: String,
 });
 
 // console.log(props);
@@ -25,486 +25,372 @@ const query = ref(null);
 const input = ref(null);
 
 const form = useForm({
-    registerEvents_id: [],
-    events_id: props.eventsId ? props.eventsId : "",
-    attendees_groups_id: props.groupId ? props.groupId : "",
+  registerEvents_id: [],
+  events_id: props.eventsId ? props.eventsId : "",
+  attendees_groups_id: props.groupId ? props.groupId : "",
 });
 
 const unregisterEvent = () => {
-    const checkBoxes = document.querySelectorAll(".checkBoxes");
+  const checkBoxes = document.querySelectorAll(".checkBoxes");
 
-    form.post("/attendees/event/unregister", {
-        onSuccess: () =>
-        {
-            status.value = true;
+  form.post("/attendees/event/unregister", {
+    onSuccess: () => {
+      status.value = true;
 
-            setInterval(() => {
-                status.value = false;
-            }, 5000);
+      setInterval(() => {
+        status.value = false;
+      }, 5000);
 
-            form.registerEvents_id = [];
-            form.events_id = "";
+      form.registerEvents_id = [];
+      form.events_id = "";
 
-            window.location.href = "/attendees/unregister";
-        },
-    });
+      window.location.href = "/attendees/unregister";
+    },
+  });
 
-    checkBoxAll.value.checked = false;
-    checkBoxes.forEach((checkBox) => {
-        checkBox.checked = false;
-    });
+  checkBoxAll.value.checked = false;
+  checkBoxes.forEach((checkBox) => {
+    checkBox.checked = false;
+  });
 };
 
 const handleCheckboxChange = (event) => {
-    const id = event.target.value;
+  const id = event.target.value;
 
-    if (event.target.checked) {
-        form.registerEvents_id.push(id);
-    } else {
-        const index = form.registerEvents_id.indexOf(id);
+  if (event.target.checked) {
+    form.registerEvents_id.push(id);
+  } else {
+    const index = form.registerEvents_id.indexOf(id);
 
-        if (index > -1) {
-            form.registerEvents_id.splice(index, 1);
-        }
+    if (index > -1) {
+      form.registerEvents_id.splice(index, 1);
     }
+  }
 };
 
 const handleSelectAllChackBoxChange = (registerEvents) => {
-    const checkBoxes = document.querySelectorAll(".checkBoxes");
+  const checkBoxes = document.querySelectorAll(".checkBoxes");
 
-    if (checkBoxAll.value.checked) {
-        checkBoxes.forEach((checkBox) => {
-            checkBox.checked = true;
-        });
+  if (checkBoxAll.value.checked) {
+    checkBoxes.forEach((checkBox) => {
+      checkBox.checked = true;
+    });
 
-        registerEvents.data.forEach((registerEvent) => {
-            form.registerEvents_id.push(registerEvent.id);
-        });
-    } else {
-        checkBoxes.forEach((checkBox) => {
-            checkBox.checked = false;
-        });
+    registerEvents.data.forEach((registerEvent) => {
+      form.registerEvents_id.push(registerEvent.id);
+    });
+  } else {
+    checkBoxes.forEach((checkBox) => {
+      checkBox.checked = false;
+    });
 
-        form.registerEvents_id = [];
-    }
+    form.registerEvents_id = [];
+  }
 };
 
 const chooseEvent = () => {
-    router.get("/attendees/event/unregister/filter", {
-        data: {
-            eventsId: form.events_id,
-        },
-        method: "get",
-        onSuccess: (page) => {
-            registerEvents.value = page.props.registerEvents;
-        },
-    });
-
-    // axios
-    //     .get(`tendees/event/unregister/filter`, {
-    //         data: {
-    //             eventsId: form.events_id,
-    //         },
-    //     })
-    //     .then((response) => {
-    //         registerEvents.value = response.data.registerEvents;
-    //     })
-    //     .catch((error) => console.error(error));
+  router.get("/attendees/event/unregister/filter", {
+    data: {
+      eventsId: form.events_id,
+    },
+    method: "get",
+    onSuccess: (page) => {
+      registerEvents.value = page.props.registerEvents;
+    },
+  });
 };
 
 const searchUser = () => {
-    router.visit(`/attendees/event/unregister/search`, {
-        method: "get",
-        data: {
-            query: query.value,
-            eventId : form.events_id,
-        },
-        onSuccess: (page) => {
-            registerEvents.value = page.props.registerEvents;
-            console.log(registerEvents.value);
-        },
-    });
+  router.visit(`/attendees/event/unregister/search`, {
+    method: "get",
+    data: {
+      query: query.value,
+      eventId: form.events_id,
+    },
+    onSuccess: (page) => {
+      registerEvents.value = page.props.registerEvents;
+      console.log(registerEvents.value);
+    },
+  });
 };
 
 onMounted(() => {
-    input.value.focus();
+  input.value.focus();
 });
 </script>
 
 <template>
-    <div>
-        <AuthenticatedLayout>
-            <div class="px-10 py-5">
-                <Transition name="slide-fade">
-                    <div
-                        v-if="status"
-                        class="text-xs bg-red-500 block fixed right-10 top-20 z-10 text-white px-3 py-4 rounded-md"
-                    >
-                        Event registration delete successfully.
-                    </div>
-                </Transition>
+  <div>
+    <AuthenticatedLayout>
+      <div class="px-10 py-5">
+        <Transition name="slide-fade">
+          <div
+            v-if="status"
+            class="text-xs bg-red-500 block fixed right-10 top-20 z-10 text-white px-3 py-4 rounded-md"
+          >
+            Event registration delete successfully.
+          </div>
+        </Transition>
 
-                <header class="mb-10">
-                    <h3 class="text-gray-800 text-2xl pb-1 bold">Attendees</h3>
-                    <div class="w-10 h-1 bg-blue-800"></div>
-                </header>
+        <header class="mb-10">
+          <h3 class="text-gray-800 text-2xl pb-1 bold dark:text-white">Attendees</h3>
+          <div class="w-10 h-1 bg-blue-800"></div>
+        </header>
 
-                <div class="w-full bg-white shadow-md mb-20">
-                    <div class="border-b border-gray-200 px-4">
-                        <AttendeesTabLayout></AttendeesTabLayout>
+        <div class="w-full bg-white shadow-md mb-20 dark:bg-gray-800">
+          <div class="border-b border-gray-200 dark:border-none px-4">
+            <AttendeesTabLayout></AttendeesTabLayout>
 
-                        <div class="flex w-full justify-end mt-5">
-                            <div class="relative w-1/4 ms-3">
-                                <label
-                                    for="hs-table-input-search"
-                                    class="sr-only"
-                                    >Search</label
-                                >
-                                <input
-                                    ref="input"
-                                    v-model="query"
-                                    @keydown.enter="searchUser"
-                                    type="text"
-                                    name="hs-table-search"
-                                    id="hs-table-input-search"
-                                    class="p-3 ps-9 block w-full border-gray-200 shadow-sm rounded-lg text-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
-                                    placeholder="Search for items"
-                                    data-hs-datatable-search=""
-                                />
-                                <div
-                                    class="absolute inset-y-0 start-0 flex items-center pointer-events-none ps-3"
-                                >
-                                    <svg
-                                        class="size-4 text-gray-400 dark:text-neutral-500"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        width="24"
-                                        height="24"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        stroke-width="2"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                    >
-                                        <circle cx="11" cy="11" r="8"></circle>
-                                        <path d="m21 21-4.3-4.3"></path>
-                                    </svg>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="">
-                            <InputError
-                                :message="form.errors.attendees_groups_id"
-                            ></InputError>
-                            <InputError
-                                :message="form.errors.events_id"
-                            ></InputError>
-                            <InputError
-                                :message="form.errors.registerEvents_id"
-                            ></InputError>
-
-                            <div class="">
-                                <form v-on:submit.prevent="unregisterEvent">
-                                    <div class="w-full flex items-center mt-5">
-                                        <!-- <div class="w-1/3 ms-3">
-                                            <select
-                                                @change="chooseAttendeesGroup"
-                                                class="hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-3 ps-4 pe-9 flex gap-x-2 text-nowrap w-full cursor-pointer bg-white border border-gray-200 rounded-lg text-start text-sm focus:outline-none focus:ring-2 focus:ring-blue-200 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-neutral-600"
-                                                v-model="form.attendees_groups_id"
-                                            >
-                                                <option value="">
-                                                    Choose attendees group
-                                                </option>
-                                                <option
-                                                    v-for="group in groups"
-                                                    :key="group.id"
-                                                    :value="group.id"
-                                                >
-                                                    {{ group.name }}
-                                                </option>
-                                            </select>
-                                        </div> -->
-                                        <div class="w-1/3 ms-3">
-                                            <select
-                                                @change="chooseEvent"
-                                                data-hs-select='{
-                                  "hasSearch": true,
-                                  "searchPlaceholder": "Search...",
-                                                                            "searchClasses": "block w-full text-sm border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 before:absolute before:inset-0 before:z-[1] dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 py-2 px-3",
-                                                                            "searchWrapperClasses": "bg-white p-2 -mx-1 sticky top-0 dark:bg-neutral-900",
-                                                                            "placeholder": "Select event...",
-                                                                            "toggleTag": "<button type=\"button\" aria-expanded=\"false\"><span class=\"me-2\" data-icon></span><span class=\"text-gray-800 dark:text-neutral-200 \" data-title></span></button>",
-                                                                            "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-3 ps-4 pe-9 flex gap-x-2 text-nowrap w-full cursor-pointer bg-white border border-gray-200 rounded-lg text-start text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-neutral-600 w-[250px]",
-                                                                            "dropdownClasses": "mt-2 max-h-72 pb-1 px-1 space-y-0.5 z-20 w-full bg-white border border-gray-200 rounded-lg overflow-hidden overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500 dark:bg-neutral-900 dark:border-neutral-700",
-                                                                            "optionClasses": "py-2 px-4 w-full text-sm text-gray-800 cursor-pointer hover:bg-gray-100 rounded-lg focus:outline-none focus:bg-gray-100 dark:bg-neutral-900 dark:hover:bg-neutral-800 dark:text-neutral-200 dark:focus:bg-neutral-800",
-                                                                            "optionTemplate": "<div><div class=\"flex items-center\"><div class=\"me-2\" data-icon></div><div class=\"text-gray-800 dark:text-neutral-200 \" data-title></div></div></div>",
-                                                                            "extraMarkup": "<div class=\"absolute top-1/2 end-3 -translate-y-1/2\"><svg class=\"shrink-0 size-3.5 text-gray-500 dark:text-neutral-500 \" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m7 15 5 5 5-5\"/><path d=\"m7 9 5-5 5 5\"/></svg></div>"
-                                }'
-                                                class="hidden"
-                                                v-model="form.events_id"
-                                            >
-                                                <option value="">
-                                                    Choose events
-                                                </option>
-                                                <option
-                                                    v-for="event in events"
-                                                    :key="event.id"
-                                                    :value="event.id"
-                                                >
-                                                    {{ event.event_name }}
-                                                </option>
-                                            </select>
-                                        </div>
-                                        <div class="w-1/3 ms-5">
-                                            <!-- <button
-                                                type="button"
-                                                class="border py-2 px-4 rounded-md text-xs uppercase bg-blue-600 text-white"
-                                                v-on:click="filter"
-                                            >
-                                                Filter
-                                                <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    fill="none"
-                                                    viewBox="0 0 24 24"
-                                                    stroke-width="1.5"
-                                                    stroke="currentColor"
-                                                    class="size-5 inline"
-                                                >
-                                                    <path
-                                                        stroke-linecap="round"
-                                                        stroke-linejoin="round"
-                                                        d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75"
-                                                    />
-                                                </svg>
-                                            </button> -->
-                                            <PrimaryButton
-                                                type="submit"
-                                                class="ms-3"
-                                                >Unregister</PrimaryButton
-                                            >
-                                        </div>
-                                    </div>
-                                    <div
-                                        class="w-full flex justify-end mt-5"
-                                    ></div>
-                                </form>
-                            </div>
-                        </div>
-
-                        <div class="">
-                            <div class="flex flex-col">
-                                <div class="overflow-x-auto">
-                                    <div
-                                        class="min-w-full inline-block align-middle"
-                                    >
-                                        <div class="">
-                                            <table class="min-w-full">
-                                                <thead
-                                                    class="border-b border-gray-200"
-                                                >
-                                                    <tr>
-                                                        <th
-                                                            scope="col"
-                                                            class="py-1 ps-3 --exclude-from-ordering"
-                                                        >
-                                                            <div
-                                                                class="flex items-center h-5"
-                                                            >
-                                                                <input
-                                                                    ref="checkBoxAll"
-                                                                    @change="
-                                                                        handleSelectAllChackBoxChange(
-                                                                            registerEvents
-                                                                        )
-                                                                    "
-                                                                    id="hs-table-checkbox-all"
-                                                                    type="checkbox"
-                                                                    class="border-gray-300 rounded text-blue-600 focus:ring-blue-500"
-                                                                />
-
-                                                            </div>
-                                                        </th>
-
-                                                        <th
-                                                            scope="col"
-                                                            class="py-1 group text-start font-normal focus:outline-none"
-                                                        >
-                                                            <div
-                                                                class="py-1 px-2.5 inline-flex items-center border border-transparent text-sm text-gray-500 rounded-md hover:border-gray-200"
-                                                            >
-                                                                Name
-                                                            </div>
-                                                        </th>
-
-                                                        <th
-                                                            scope="col"
-                                                            class="py-1 group text-start font-normal focus:outline-none"
-                                                        >
-                                                            <div
-                                                                class="py-1 px-2.5 inline-flex items-center border border-transparent text-sm text-gray-500 rounded-md hover:border-gray-200"
-                                                            >
-                                                                Phone number
-                                                            </div>
-                                                        </th>
-
-                                                        <th
-                                                            scope="col"
-                                                            class="py-1 group text-start font-normal focus:outline-none"
-                                                        >
-                                                            <div
-                                                                class="py-1 px-2.5 inline-flex items-center border border-transparent text-sm text-gray-500 rounded-md hover:border-gray-200"
-                                                            >
-                                                                Email
-                                                            </div>
-                                                        </th>
-
-                                                        <th
-                                                            scope="col"
-                                                            class="py-1 group text-start font-normal focus:outline-none"
-                                                        >
-                                                            <div
-                                                                class="py-1 px-2.5 inline-flex items-center border border-transparent text-sm text-gray-500 rounded-md hover:border-gray-200"
-                                                            >
-                                                                Event name
-                                                            </div>
-                                                        </th>
-
-                                                        <th
-                                                            scope="col"
-                                                            class="py-1 group text-start font-normal focus:outline-none"
-                                                        >
-                                                            <div
-                                                                class="py-1 px-2.5 inline-flex items-center border border-transparent text-sm text-gray-500 rounded-md hover:border-gray-200"
-                                                            >
-                                                                created_at
-                                                            </div>
-                                                        </th>
-                                                    </tr>
-                                                </thead>
-
-                                                <tbody
-                                                    class="divide-y divide-gray-200"
-                                                >
-                                                    <tr
-                                                        v-for="registerEvent in registerEvents.data"
-                                                        :key="registerEvent.id"
-                                                    >
-                                                        <td class="py-3 ps-3">
-                                                            <div
-                                                                class="flex items-center h-5"
-                                                            >
-                                                                <input
-                                                                    :value="
-                                                                        registerEvent.id
-                                                                    "
-                                                                    :id="`hs-table-checkbox-${registerEvent.id}`"
-                                                                    type="checkbox"
-                                                                    class="border-gray-300 checkBoxes rounded text-blue-600 focus:ring-blue-500"
-                                                                    data-hs-datatable-row-selecting-individual=""
-                                                                    @change="
-                                                                        handleCheckboxChange
-                                                                    "
-                                                                />
-
-                                                            </div>
-                                                        </td>
-                                                        <td
-                                                            class="p-3 whitespace-nowrap text-sm font-medium text-gray-800"
-                                                        >
-                                                            {{
-                                                                registerEvent
-                                                                    .register_attendees
-                                                                    .name
-                                                            }}
-                                                        </td>
-                                                        <td
-                                                            class="p-3 whitespace-nowrap text-sm font-medium text-gray-800"
-                                                        >
-                                                            {{
-                                                                registerEvent
-                                                                    .register_attendees
-                                                                    .phone_number
-                                                            }}
-                                                        </td>
-                                                        <td
-                                                            class="p-3 whitespace-nowrap text-sm font-medium text-gray-800"
-                                                        >
-                                                            {{
-                                                                registerEvent
-                                                                    .register_attendees
-                                                                    .email
-                                                            }}
-                                                        </td>
-
-                                                        <td
-                                                            class="p-3 whitespace-nowrap text-sm font-medium text-gray-800"
-                                                        >
-                                                            {{
-                                                                registerEvent.events
-                                                                    .event_name
-                                                            }}
-                                                        </td>
-
-                                                        <td
-                                                            class="p-3 whitespace-nowrap text-sm font-medium text-gray-800"
-                                                        >
-                                                            {{
-                                                                registerEvent.register_attendees.created_at.split(
-                                                                    "T"
-                                                                )[0]
-                                                            }}
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="flex justify-end w-full">
-                                    <div class="mb-7 my-5">
-                                        <Link
-                                            :href="`${link.url}&data[attendeesGroupId]=${form.attendees_groups_id}&data[eventsId]=${form.events_id}`"
-                                            v-for="(link, index) in registerEvents.links"
-                                            :key="index"
-                                            class="border py-2 px-3 text-sm"
-                                            :class="{
-                                                'bg-blue-500 text-white':
-                                                    link.active,
-                                            }"
-                                        >
-                                            <span v-html="link.label"></span
-                                        ></Link>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+            <div class="flex w-full justify-end mt-5">
+              <div class="relative w-1/4 ms-3">
+                <label for="hs-table-input-search" class="sr-only">Search</label>
+                <input
+                  ref="input"
+                  v-model="query"
+                  @keydown.enter="searchUser"
+                  type="text"
+                  name="hs-table-search"
+                  id="hs-table-input-search"
+                  class="p-3 ps-9 block w-full border-gray-200 dark:border-none shadow-sm rounded-lg text-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+                  placeholder="Search for items"
+                  data-hs-datatable-search=""
+                />
+                <div
+                  class="absolute inset-y-0 start-0 flex items-center pointer-events-none ps-3"
+                >
+                  <svg
+                    class="size-4 text-gray-400 dark:text-neutral-500"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <path d="m21 21-4.3-4.3"></path>
+                  </svg>
                 </div>
+              </div>
             </div>
-        </AuthenticatedLayout>
-    </div>
+
+            <div class="">
+              <InputError :message="form.errors.attendees_groups_id"></InputError>
+              <InputError :message="form.errors.events_id"></InputError>
+              <InputError :message="form.errors.registerEvents_id"></InputError>
+
+              <div class="">
+                <form v-on:submit.prevent="unregisterEvent">
+                  <div class="w-full flex items-center mt-5">
+                    <div class="w-1/3 ms-3">
+                      <select
+                        @change="chooseEvent"
+                        data-hs-select='{
+                                "hasSearch": true,
+                                "searchPlaceholder": "Search...",
+                                "searchClasses": "block w-full text-sm border-gray-200 dark:border-none rounded-lg focus:border-blue-500 focus:ring-blue-500 before:absolute before:inset-0 before:z-[1] dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 py-2 px-3",
+                                "searchWrapperClasses": "bg-white p-2 -mx-1 sticky top-0 dark:bg-neutral-900",
+                                "placeholder": "Select event...",
+                                "toggleTag": "<button type=\"button\" aria-expanded=\"false\"><span class=\"me-2\" data-icon></span><span class=\"text-gray-800 dark:text-neutral-200 \" data-title></span></button>",
+                                "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-3 ps-4 pe-9 flex gap-x-2 text-nowrap w-full cursor-pointer bg-white border border-gray-200 dark:border-none rounded-lg text-start text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-neutral-600 w-[250px]",
+                                "dropdownClasses": "mt-2 max-h-72 pb-1 px-1 space-y-0.5 z-20 w-full bg-white border border-gray-200 dark:border-none rounded-lg overflow-hidden overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500 dark:bg-neutral-900 dark:border-neutral-700",
+                                "optionClasses": "py-2 px-4 w-full text-sm text-gray-800 cursor-pointer hover:bg-gray-100 rounded-lg focus:outline-none focus:bg-gray-100 dark:bg-neutral-900 dark:hover:bg-neutral-800 dark:text-neutral-200 dark:focus:bg-neutral-800",
+                                "optionTemplate": "<div><div class=\"flex items-center\"><div class=\"me-2\" data-icon></div><div class=\"text-gray-800 dark:text-neutral-200 \" data-title></div></div></div>",
+                                "extraMarkup": "<div class=\"absolute top-1/2 end-3 -translate-y-1/2\"><svg class=\"shrink-0 size-3.5 text-gray-500 dark:text-neutral-500 \" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m7 15 5 5 5-5\"/><path d=\"m7 9 5-5 5 5\"/></svg></div>"
+                                }'
+                        class="hidden"
+                        v-model="form.events_id"
+                      >
+                        <option value="">Choose events</option>
+                        <option v-for="event in events" :key="event.id" :value="event.id">
+                          {{ event.event_name }}
+                        </option>
+                      </select>
+                    </div>
+                    <div class="w-1/3 ms-5">
+                      <PrimaryButton type="submit" class="ms-3">Unregister</PrimaryButton>
+                    </div>
+                  </div>
+                  <div class="w-full flex justify-end mt-5"></div>
+                </form>
+              </div>
+            </div>
+
+            <div class="">
+              <div class="flex flex-col">
+                <div class="overflow-x-auto">
+                  <div class="min-w-full inline-block align-middle">
+                    <div class="">
+                      <table class="min-w-full">
+                        <thead class="border-b border-gray-200 dark:border-none">
+                          <tr>
+                            <th scope="col" class="py-1 ps-3 --exclude-from-ordering">
+                              <div class="flex items-center h-5">
+                                <input
+                                  ref="checkBoxAll"
+                                  @change="handleSelectAllChackBoxChange(registerEvents)"
+                                  id="hs-table-checkbox-all"
+                                  type="checkbox"
+                                  class="border-gray-300 rounded text-blue-600 focus:ring-blue-500"
+                                />
+                              </div>
+                            </th>
+
+                            <th
+                              scope="col"
+                              class="py-1 group text-start font-normal focus:outline-none"
+                            >
+                              <div
+                                class="py-1 px-2.5 inline-flex items-center border border-transparent text-sm text-gray-500 rounded-md hover:border-gray-200 dark:border-none"
+                              >
+                                Name
+                              </div>
+                            </th>
+
+                            <th
+                              scope="col"
+                              class="py-1 group text-start font-normal focus:outline-none"
+                            >
+                              <div
+                                class="py-1 px-2.5 inline-flex items-center border border-transparent text-sm text-gray-500 rounded-md hover:border-gray-200 dark:border-none"
+                              >
+                                Phone number
+                              </div>
+                            </th>
+
+                            <th
+                              scope="col"
+                              class="py-1 group text-start font-normal focus:outline-none"
+                            >
+                              <div
+                                class="py-1 px-2.5 inline-flex items-center border border-transparent text-sm text-gray-500 rounded-md hover:border-gray-200 dark:border-none"
+                              >
+                                Email
+                              </div>
+                            </th>
+
+                            <th
+                              scope="col"
+                              class="py-1 group text-start font-normal focus:outline-none"
+                            >
+                              <div
+                                class="py-1 px-2.5 inline-flex items-center border border-transparent text-sm text-gray-500 rounded-md hover:border-gray-200 dark:border-none"
+                              >
+                                Event name
+                              </div>
+                            </th>
+
+                            <th
+                              scope="col"
+                              class="py-1 group text-start font-normal focus:outline-none"
+                            >
+                              <div
+                                class="py-1 px-2.5 inline-flex items-center border border-transparent text-sm text-gray-500 rounded-md hover:border-gray-200 dark:border-none"
+                              >
+                                created_at
+                              </div>
+                            </th>
+                          </tr>
+                        </thead>
+
+                        <tbody class="divide-y divide-gray-200">
+                          <tr
+                            v-for="registerEvent in registerEvents.data"
+                            :key="registerEvent.id"
+                          >
+                            <td class="py-3 ps-3">
+                              <div class="flex items-center h-5">
+                                <input
+                                  :value="registerEvent.id"
+                                  :id="`hs-table-checkbox-${registerEvent.id}`"
+                                  type="checkbox"
+                                  class="border-gray-300 checkBoxes rounded text-blue-600 focus:ring-blue-500"
+                                  data-hs-datatable-row-selecting-individual=""
+                                  @change="handleCheckboxChange"
+                                />
+                              </div>
+                            </td>
+                            <td
+                              class="p-3 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white"
+                            >
+                              {{ registerEvent.register_attendees.name }}
+                            </td>
+                            <td
+                              class="p-3 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white"
+                            >
+                              {{ registerEvent.register_attendees.phone_number }}
+                            </td>
+                            <td
+                              class="p-3 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white"
+                            >
+                              {{ registerEvent.register_attendees.email }}
+                            </td>
+
+                            <td
+                              class="p-3 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white"
+                            >
+                              {{ registerEvent.events.event_name }}
+                            </td>
+
+                            <td
+                              class="p-3 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white"
+                            >
+                              {{
+                                registerEvent.register_attendees.created_at.split("T")[0]
+                              }}
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="flex justify-end w-full">
+                  <div class="mb-7 my-5">
+                    <Link
+                      :href="`${link.url}&data[attendeesGroupId]=${form.attendees_groups_id}&data[eventsId]=${form.events_id}`"
+                      v-for="(link, index) in registerEvents.links"
+                      :key="index"
+                      class="border py-2 px-3 text-sm dark:text-white"
+                      :class="{
+                        'bg-blue-500 text-white': link.active,
+                      }"
+                    >
+                      <span v-html="link.label"></span
+                    ></Link>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </AuthenticatedLayout>
+  </div>
 </template>
 
 <style>
 .dt-layout-row:has(.dt-search),
 .dt-layout-row:has(.dt-length),
 .dt-layout-row:has(.dt-paging) {
-    display: none !important;
+  display: none !important;
 }
 
 .slide-fade-enter-active {
-    transition: all 0.3s ease-out;
+  transition: all 0.3s ease-out;
 }
 
 .slide-fade-leave-active {
-    transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
+  transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
 }
 
 .slide-fade-enter-from,
 .slide-fade-leave-to {
-    transform: translateX(20px);
-    opacity: 0;
+  transform: translateX(20px);
+  opacity: 0;
 }
 </style>
