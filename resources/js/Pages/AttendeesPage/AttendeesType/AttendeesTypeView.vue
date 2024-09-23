@@ -24,7 +24,7 @@ const form = useForm({
     <AuthenticatedLayout>
       <div class="px-10 py-10">
         <header class="mb-10">
-          <h3 class="text-gray-800 text-2xl pb-1 bold dark:text-white">Event</h3>
+          <h3 class="text-gray-800 text-2xl pb-1 bold dark:text-white">Attendees type</h3>
           <div class="w-10 h-1 bg-blue-800"></div>
         </header>
 

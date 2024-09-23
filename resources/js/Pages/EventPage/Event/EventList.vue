@@ -62,7 +62,7 @@ onMounted(() => {
           <div class="w-10 h-1 bg-blue-800"></div>
         </header>
 
-        <div class="w-full bg-white rounded-lg shadow-md dark:text-white dark:bg-gray-800 dark:bg-gray-800 dark:text-white">
+        <div class="w-full bg-white rounded-lg shadow-md dark:text-white dark:bg-gray-800">
           <div class="border-b border-gray-200 dark:border-none px-4 pb-5 mb-10">
             <EventTabLayout></EventTabLayout>
 
@@ -72,7 +72,7 @@ onMounted(() => {
                   ref="input"
                   v-model.lazy="query"
                   @keydown.enter="searchEvent"
-                  placeholder="Search attendees..."
+                  placeholder="Search event..."
                   class="text-sm"
                 ></TextInput>
                 <div class="absolute right-3 top-1/2 -translate-y-1/2">

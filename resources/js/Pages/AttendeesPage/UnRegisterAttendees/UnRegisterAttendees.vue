@@ -133,7 +133,7 @@ onMounted(() => {
         </Transition>
 
         <header class="mb-10">
-          <h3 class="text-gray-800 text-2xl pb-1 bold dark:text-white">Attendees</h3>
+          <h3 class="text-gray-800 text-2xl pb-1 bold dark:text-white">Unregister attendees</h3>
           <div class="w-10 h-1 bg-blue-800"></div>
         </header>
 
@@ -147,7 +147,7 @@ onMounted(() => {
                   ref="input"
                   v-model="query"
                   @keydown.enter="searchUser"
-                  placeholder="Search items..."
+                  placeholder="Search attendees..."
                   class="text-sm"
                 ></TextInput>
                 <div class="absolute right-3 top-1/2 -translate-y-1/2">
