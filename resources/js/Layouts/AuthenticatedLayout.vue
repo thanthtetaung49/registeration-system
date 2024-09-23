@@ -72,7 +72,7 @@ const showingNavigationDropdown = ref(false);
                   viewBox="0 0 24 24"
                   stroke-width="1.5"
                   stroke="currentColor"
-                  class="size-5"
+                  class="size-4"
                 >
                   <path
                     stroke-linecap="round"
@@ -93,7 +93,7 @@ const showingNavigationDropdown = ref(false);
                   viewBox="0 0 24 24"
                   stroke-width="1.5"
                   stroke="currentColor"
-                  class="size-5"
+                  class="size-4"
                 >
                   <path
                     stroke-linecap="round"
@@ -186,17 +186,17 @@ const showingNavigationDropdown = ref(false);
           }"
           class="sm:hidden"
         >
-          <div class="pt-2 pb-3 space-y-1">
+          <!-- <div class="pt-2 pb-3 space-y-1">
             <ResponsiveNavLink
               :href="route('calendar.index')"
               :active="route().current('calendar.index')"
             >
               Calendar
             </ResponsiveNavLink>
-          </div>
+          </div> -->
 
           <!-- Responsive Settings Options -->
-          <div class="pt-4 pb-1 border-t border-gray-200 dark:border-none">
+          <!-- <div class="pt-4 pb-1 border-t border-gray-200 dark:border-none">
             <div class="px-4">
               <div class="font-medium text-base text-gray-800">
                 {{ $page.props.auth.user.name }}
@@ -214,7 +214,7 @@ const showingNavigationDropdown = ref(false);
                 Log Out
               </ResponsiveNavLink>
             </div>
-          </div>
+          </div> -->
         </div>
       </nav>
 
@@ -234,7 +234,7 @@ const showingNavigationDropdown = ref(false);
               viewBox="0 0 24 24"
               stroke-width="1.5"
               stroke="currentColor"
-              class="size-5 mr-3"
+              class="size-4 mr-3"
             >
               <path
                 stroke-linecap="round"
@@ -271,7 +271,7 @@ const showingNavigationDropdown = ref(false);
               viewBox="0 0 24 24"
               stroke-width="1.5"
               stroke="currentColor"
-              class="size-5 mr-3"
+              class="size-4 mr-3"
             >
               <path
                 stroke-linecap="round"
@@ -307,7 +307,7 @@ const showingNavigationDropdown = ref(false);
               viewBox="0 0 24 24"
               stroke-width="1.5"
               stroke="currentColor"
-              class="size-5 mr-3"
+              class="size-4 mr-3"
             >
               <path
                 stroke-linecap="round"
@@ -328,7 +328,7 @@ const showingNavigationDropdown = ref(false);
               viewBox="0 0 24 24"
               stroke-width="1.5"
               stroke="currentColor"
-              class="size-5 mr-3"
+              class="size-4 mr-3"
             >
               <path
                 stroke-linecap="round"

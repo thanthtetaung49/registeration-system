@@ -141,7 +141,7 @@ const nameBadgeGenerate = () => {
                                         viewBox="0 0 24 24"
                                         stroke-width="1.5"
                                         stroke="currentColor"
-                                        class="size-5 inline ms-1"
+                                        class="size-4 inline ms-1"
                                     >
                                         <path
                                             stroke-linecap="round"

@@ -110,7 +110,7 @@ function handleImageError() {
                                         class="flex size-12 shrink-0 items-center justify-center rounded-full bg-[#FF2D20]/10 sm:size-16"
                                     >
                                         <svg
-                                            class="size-5 sm:size-6"
+                                            class="size-4 sm:size-6"
                                             xmlns="http://www.w3.org/2000/svg"
                                             fill="none"
                                             viewBox="0 0 24 24"
@@ -161,7 +161,7 @@ function handleImageError() {
                                 class="flex size-12 shrink-0 items-center justify-center rounded-full bg-[#FF2D20]/10 sm:size-16"
                             >
                                 <svg
-                                    class="size-5 sm:size-6"
+                                    class="size-4 sm:size-6"
                                     xmlns="http://www.w3.org/2000/svg"
                                     fill="none"
                                     viewBox="0 0 24 24"
@@ -207,7 +207,7 @@ function handleImageError() {
                                 class="flex size-12 shrink-0 items-center justify-center rounded-full bg-[#FF2D20]/10 sm:size-16"
                             >
                                 <svg
-                                    class="size-5 sm:size-6"
+                                    class="size-4 sm:size-6"
                                     xmlns="http://www.w3.org/2000/svg"
                                     fill="none"
                                     viewBox="0 0 24 24"
@@ -258,7 +258,7 @@ function handleImageError() {
                                 class="flex size-12 shrink-0 items-center justify-center rounded-full bg-[#FF2D20]/10 sm:size-16"
                             >
                                 <svg
-                                    class="size-5 sm:size-6"
+                                    class="size-4 sm:size-6"
                                     xmlns="http://www.w3.org/2000/svg"
                                     fill="none"
                                     viewBox="0 0 24 24"

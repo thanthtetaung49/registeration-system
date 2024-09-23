@@ -141,46 +141,6 @@ const searchUser = () => {
           <div class="border-b border-gray-200 dark:border-none px-4">
             <AttendeesTabLayout></AttendeesTabLayout>
 
-            <!-- <div class="flex w-full justify-end">
-                            <div class="relative w-1/4 ms-3">
-                                <label
-                                    for="hs-table-input-search"
-                                    class="sr-only"
-                                    >Search</label
-                                >
-                                <input
-                                    ref="input"
-                                    v-model="query"
-                                    @keydown.enter="searchUser"
-                                    type="text"
-                                    name="hs-table-search"
-                                    id="hs-table-input-search"
-                                    class="p-3 ps-9 block w-full border-gray-200 dark:border-none shadow-sm rounded-lg text-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
-                                    placeholder="Search for items"
-                                    data-hs-datatable-search=""
-                                />
-                                <div
-                                    class="absolute inset-y-0 start-0 flex items-center pointer-events-none ps-3"
-                                >
-                                    <svg
-                                        class="size-4 text-gray-400 dark:text-neutral-500"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        width="24"
-                                        height="24"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        stroke-width="2"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                    >
-                                        <circle cx="11" cy="11" r="8"></circle>
-                                        <path d="m21 21-4.3-4.3"></path>
-                                    </svg>
-                                </div>
-                            </div>
-                        </div> -->
-
             <div class="">
               <InputError :message="form.errors.attendees_groups_id"></InputError>
               <InputError :message="form.errors.events_id"></InputError>
@@ -190,7 +150,7 @@ const searchUser = () => {
                 <div class="w-full flex items-center mt-5">
                   <div class="w-1/3 ms-3">
                     <select
-                      class="hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-3 ps-4 pe-9 flex gap-x-2 text-nowrap w-full cursor-pointer bg-white border border-gray-200 dark:border-none rounded-lg text-start text-sm focus:outline-none focus:ring-2 focus:ring-blue-200 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-neutral-600"
+                      class="hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-2 ps-4 pe-9 flex gap-x-2 text-nowrap w-full cursor-pointer bg-white border border-gray-200 dark:border-none rounded-lg text-start text-sm focus:outline-none focus:ring-2 focus:ring-blue-200 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-neutral-600"
                       v-model="form.attendees_groups_id"
                       @change="filter"
                     >
@@ -210,7 +170,7 @@ const searchUser = () => {
                     "searchWrapperClasses": "bg-white p-2 -mx-1 sticky top-0 dark:bg-neutral-900",
                     "placeholder": "Select event...",
                     "toggleTag": "<button type=\"button\" aria-expanded=\"false\"><span class=\"me-2\" data-icon></span><span class=\"text-gray-800 dark:text-neutral-200 \" data-title></span></button>",
-                    "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-3 ps-4 pe-9 flex gap-x-2 text-nowrap w-full cursor-pointer bg-white border border-gray-200 dark:border-none rounded-lg text-start text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-neutral-600 w-[250px]",
+                    "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-2 ps-4 pe-9 flex gap-x-2 text-nowrap w-full cursor-pointer bg-white border border-gray-200 dark:border-none rounded-lg text-start text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-neutral-600 w-[250px]",
                     "dropdownClasses": "mt-2 max-h-72 pb-1 px-1 space-y-0.5 z-20 w-full bg-white border border-gray-200 dark:border-none rounded-lg overflow-hidden overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500 dark:bg-neutral-900 dark:border-neutral-700",
                     "optionClasses": "py-2 px-4 w-full text-sm text-gray-800 cursor-pointer hover:bg-gray-100 rounded-lg focus:outline-none focus:bg-gray-100 dark:bg-neutral-900 dark:hover:bg-neutral-800 dark:text-neutral-200 dark:focus:bg-neutral-800",
                     "optionTemplate": "<div><div class=\"flex items-center\"><div class=\"me-2\" data-icon></div><div class=\"text-gray-800 dark:text-neutral-200 \" data-title></div></div></div>",
@@ -239,7 +199,7 @@ const searchUser = () => {
                         viewBox="0 0 24 24"
                         stroke-width="1.5"
                         stroke="currentColor"
-                        class="size-5 ms-2"
+                        class="size-4 ms-2"
                       >
                         <path
                           stroke-linecap="round"

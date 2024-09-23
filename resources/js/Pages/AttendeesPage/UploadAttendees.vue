@@ -61,7 +61,7 @@ const excelExport = () => {
                       viewBox="0 0 24 24"
                       stroke-width="1.5"
                       stroke="currentColor"
-                      class="size-5 ms-2"
+                      class="size-4 ms-2"
                     >
                       <path
                         stroke-linecap="round"

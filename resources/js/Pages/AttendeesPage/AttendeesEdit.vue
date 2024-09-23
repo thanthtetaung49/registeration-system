@@ -247,7 +247,7 @@ const updateAttendees = () => form.post(`/attendees/update/${user.id}`);
                   </div>
                 </div>
 
-                <div class="w-full flex my-3">
+                <div class="w-full flex my-3" v-if="user.is_admin == 3">
                   <div class="w-1/2">
                     <InputLabel :value="'Password'"></InputLabel>
                     <TextInput

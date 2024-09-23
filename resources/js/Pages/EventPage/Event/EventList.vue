@@ -3,7 +3,7 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import EventTabLayout from "@/Layouts/EventTabLayout.vue";
 import { Link, router } from "@inertiajs/vue3";
 import axios from "axios";
-import { nextTick, ref, onMounted } from "vue";
+import { ref, onMounted } from "vue";
 import TextInput from "@/Components/TextInput.vue";
 
 const props = defineProps({ events: Object });
@@ -82,7 +82,7 @@ onMounted(() => {
                     viewBox="0 0 24 24"
                     stroke-width="1.5"
                     stroke="currentColor"
-                    class="size-5"
+                    class="size-4"
                   >
                     <path
                       stroke-linecap="round"
@@ -627,7 +627,7 @@ onMounted(() => {
                     viewBox="0 0 24 24"
                     stroke-width="1.5"
                     stroke="currentColor"
-                    class="size-5 inline ms-1"
+                    class="size-4 inline ms-1"
                   >
                     <path
                       stroke-linecap="round"
