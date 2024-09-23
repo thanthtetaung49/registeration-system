@@ -6,7 +6,9 @@ use App\Models\AttendeesGroup;
 use App\Models\AttendeesType;
 use App\Models\State;
 use App\Models\User;
+use App\Rules\NotSameAsOldPassword;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
@@ -92,6 +94,7 @@ class AddAttendeesController extends Controller
     public function update($id, Request $request)
     {
         $user = User::where('id', $id)->first();
+        $password = $request->password;
 
         $request->validate([
             "name"           => ['required'],
@@ -103,12 +106,13 @@ class AddAttendeesController extends Controller
             "address"        => ['required'],
             "email"          => ['required', Rule::unique('users', 'email')->ignore($user->id)],
             "attendees_types_id" => ['required'],
-            "attendees_groups_id" => ['required']
+            "attendees_groups_id" => ['required'],
+            "password" => ['required', 'min:8'],
+            "password_confirmation" => ["required", "same:password"]
         ]);
 
         $oldFilename = $user->profile_path;
         $file = $request->file('avatar');
-
 
         if (isset($file) && $oldFilename != $file->getClientOriginalName()) {
             $filename = uniqid() . time() . $file->getClientOriginalName();
@@ -129,7 +133,7 @@ class AddAttendeesController extends Controller
             ]);
         }
 
-        $user->update([
+        $data = [
             "name"           => $request->name,
             "age"            => $request->age,
             "sex"            => $request->sex,
@@ -142,7 +146,10 @@ class AddAttendeesController extends Controller
             "email"          => $request->email,
             "attendees_types_id" => $request->attendees_types_id,
             "attendees_groups_id" => $request->attendees_groups_id,
-        ]);
+            "password" => Hash::make($password),
+        ];
+
+        $user->update($data);
 
         return to_route('attendees.list.index');
     }
@@ -154,7 +161,7 @@ class AddAttendeesController extends Controller
         $groups = AttendeesGroup::get();
 
         return Inertia::render('AttendeesPage/AttendeesView', [
-            'user' => $user ,
+            'user' => $user,
             'types' => $types,
             'groups' => $groups,
             'baseUrl' => env('APP_URL'),

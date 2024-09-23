@@ -17,12 +17,14 @@ defineComponent({ InstructorForm });
     <AuthenticatedLayout>
       <div class="px-10 py-10">
         <header class="mb-10">
-          <h3 class="text-gray-800 text-2xl pb-1 bold">Event</h3>
+          <h3 class="text-gray-800 text-2xl pb-1 bold dark:text-white">Instructor</h3>
           <div class="w-10 h-1 bg-blue-800"></div>
         </header>
 
-        <div class="w-full bg-white rounded-lg shadow-md">
-          <div class="border-b border-gray-200 px-4">
+        <div
+          class="w-full bg-white rounded-lg shadow-md dark:text-white dark:bg-gray-800"
+        >
+          <div class="border-b border-gray-200 dark:border-none px-4">
             <EventTabLayout></EventTabLayout>
 
             <div class="mt-5">
@@ -68,17 +70,17 @@ defineComponent({ InstructorForm });
                           :key="instructor.id"
                         >
                           <td
-                            class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800"
+                            class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white dark:text-white"
                           >
                             {{ index + 1 }}
                           </td>
                           <td
-                            class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800"
+                            class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white dark:text-white"
                           >
                             {{ instructor.name }}
                           </td>
                           <td
-                            class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800"
+                            class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white dark:text-white"
                           >
                             {{ instructor.created_at.split("T")[0] }}
                           </td>
@@ -87,7 +89,7 @@ defineComponent({ InstructorForm });
                           >
                             <Link
                               :href="`/instructor/view/${instructor.id}`"
-                              class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border text-gray-600 focus:outline-none focus:text-gray-800 disabled:opacity-50 disabled:pointer-events-none dark:text-gray-500 dark:hover:text-gray-400 dark:focus:text-gray-400 p-2 mr-3 hover:bg-green-700 hover:text-white"
+                              class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border text-gray-600 focus:outline-none focus:text-whitedisabled:opacity-50 disabled:pointer-events-none dark:text-gray-500 dark:hover:text-gray-400 dark:focus:text-gray-400 p-2 mr-3 hover:bg-green-700 hover:text-white"
                               aria-haspopup="dialog"
                               aria-expanded="false"
                               aria-controls="hs-scale-animation-modal"
@@ -116,7 +118,7 @@ defineComponent({ InstructorForm });
 
                             <Link
                               :href="`/instructor/edit/${instructor.id}`"
-                              class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border text-gray-600 focus:outline-none focus:text-gray-800 disabled:opacity-50 disabled:pointer-events-none dark:text-gray-500 dark:hover:text-gray-400 dark:focus:text-gray-400 p-2 mr-3 hover:bg-gray-700 hover:text-white"
+                              class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border text-gray-600 focus:outline-none focus:text-whitedisabled:opacity-50 disabled:pointer-events-none dark:text-gray-500 dark:hover:text-gray-400 dark:focus:text-gray-400 p-2 mr-3 hover:bg-gray-700 hover:text-white"
                               aria-haspopup="dialog"
                               aria-expanded="false"
                               aria-controls="hs-scale-animation-modal"
@@ -140,7 +142,7 @@ defineComponent({ InstructorForm });
 
                             <Link
                               :href="`/instructor/delete/${instructor.id}`"
-                              class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border text-gray-600 focus:outline-none focus:text-gray-800 disabled:opacity-50 disabled:pointer-events-none dark:text-gray-500 dark:hover:text-gray-400 dark:focus:text-gray-400 p-2 mr-3 hover:bg-red-700 hover:text-white"
+                              class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border text-gray-600 focus:outline-none focus:text-whitedisabled:opacity-50 disabled:pointer-events-none dark:text-gray-500 dark:hover:text-gray-400 dark:focus:text-gray-400 p-2 mr-3 hover:bg-red-700 hover:text-white"
                               aria-haspopup="dialog"
                               aria-expanded="false"
                               aria-controls="hs-scale-animation-modal"
@@ -176,8 +178,10 @@ defineComponent({ InstructorForm });
                   :href="link.url"
                   v-for="(link, index) in instructors.links"
                   :key="index"
-                  class="border py-2 px-3 text-sm"
-                  :class="{ 'bg-blue-500 text-white': link.active }"
+                  class="border py-2 px-3 text-sm dark:text-white"
+                  :class="{
+                    'bg-blue-500 text-white': link.active,
+                  }"
                 >
                   <span v-html="link.label"></span
                 ></Link>

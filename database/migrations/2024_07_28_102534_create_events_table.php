@@ -9,23 +9,6 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-
-    //  "event_name",
-    //     "description",
-    //     "location",
-    //     "credits",
-    //     "lead_instructor",
-    //     "assit_instructor",
-    //     "event_categories",
-    //     "max_seats",
-    //     "event_reference_id",
-    //     "start_date",
-    //     "end_date",
-    //     "start_time",
-    //     "end_time",
-    //     "early_attandance_min",
-    //     "late_attendance_min",
-    //     "room_number"
     public function up(): void
     {
         Schema::create('events', function (Blueprint $table) {
@@ -39,6 +22,8 @@ return new class extends Migration
             $table->unsignedBigInteger('assist_instructors_id');
             $table->foreign('assist_instructors_id')->references('id')->on('instructors')->onDelete('cascade');
             $table->foreignId('categories_id')->constrained()->cascadeOnDelete();
+            $table->integer('event_type')->default(1); // 1 = type I and 2 = type II
+            $table->string('event_code');
             $table->integer('max_seats');
             $table->string('event_reference_id');
             $table->date('start_date');

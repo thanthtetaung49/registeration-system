@@ -22,6 +22,7 @@ const form = useForm({
   early_attendance_min: "",
   late_attendance_min: "",
   room_numbers_id: "",
+  event_type: false,
 });
 
 const props = defineProps({
@@ -51,7 +52,8 @@ const saveEvent = () =>
         "end_time",
         "early_attendance_min",
         "late_attendance_min",
-        "room_numbers_id"
+        "room_numbers_id",
+        "event_type"
       ),
   });
 </script>
@@ -82,11 +84,9 @@ const saveEvent = () =>
           <InputLabel :value="'Lead instructor'"></InputLabel>
           <select
             v-model="form.lead_instructors_id"
-            class="py-3 px-4 pe-9 block w-full border-gray-200 rounded-lg text-sm focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none mt-3"
+            class="py-3 px-4 pe-9 block w-full border-gray-200 dark:border-none rounded-lg text-sm focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none mt-3 dark:bg-gray-900"
           >
-            <option value="" selected="">
-              Open this select lead instructor
-            </option>
+            <option value="" selected="">Open this select lead instructor</option>
             <option
               v-for="instructor in instructors"
               :key="instructor.id"
@@ -101,11 +101,9 @@ const saveEvent = () =>
           <InputLabel :value="'Assist instructor'"></InputLabel>
           <select
             v-model="form.assist_instructors_id"
-            class="py-3 px-4 pe-9 block w-full border-gray-200 rounded-lg text-sm focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none mt-3"
+            class="py-3 px-4 pe-9 block w-full border-gray-200 dark:border-none rounded-lg text-sm focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none mt-3 dark:bg-gray-900"
           >
-            <option value="" selected="">
-              Open this select assist instructor
-            </option>
+            <option value="" selected="">Open this select assist instructor</option>
             <option
               v-for="instructor in instructors"
               :key="instructor.id"
@@ -120,7 +118,7 @@ const saveEvent = () =>
           <InputLabel :value="'Categories'"></InputLabel>
           <select
             v-model="form.categories_id"
-            class="py-3 px-4 pe-9 block w-full border-gray-200 rounded-lg text-sm focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none mt-3"
+            class="py-3 px-4 pe-9 block w-full border-gray-200 dark:border-none rounded-lg text-sm focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none mt-3 dark:bg-gray-900"
           >
             <option value="" selected="">Open this select categories</option>
             <option
@@ -158,7 +156,7 @@ const saveEvent = () =>
           <InputLabel :value="'Room number'"></InputLabel>
           <select
             v-model="form.room_numbers_id"
-            class="py-3 px-4 pe-9 block w-full border-gray-200 rounded-lg text-sm focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none mt-3"
+            class="py-2 px-4 pe-9 block w-full border-gray-200 dark:border-none rounded-lg text-sm focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none mt-3 dark:bg-gray-900"
           >
             <option value="" selected="">Open this select room number</option>
             <option v-for="room in rooms" :key="room.id" :value="room.id">
@@ -213,7 +211,7 @@ const saveEvent = () =>
           <InputLabel :value="'Early attendance minutes'"></InputLabel>
           <select
             v-model="form.early_attendance_min"
-            class="py-3 px-4 pe-9 block w-full border-gray-200 rounded-lg text-sm focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none mt-3"
+            class="py-3 px-4 pe-9 block w-full border-gray-200 dark:border-none rounded-lg text-sm focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none mt-3 dark:bg-gray-900"
           >
             <option value="" selected="">
               Open this select early attendance minutes
@@ -229,11 +227,9 @@ const saveEvent = () =>
           <InputLabel :value="'Late attendance minutes'"></InputLabel>
           <select
             v-model="form.late_attendance_min"
-            class="py-3 px-4 pe-9 block w-full border-gray-200 rounded-lg text-sm focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none mt-3"
+            class="py-3 px-4 pe-9 block w-full border-gray-200 dark:border-none rounded-lg text-sm focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none mt-3 dark:bg-gray-900"
           >
-            <option value="" selected="">
-              Open this select late attendance minutes
-            </option>
+            <option value="" selected="">Open this select late attendance minutes</option>
             <option value="15">15</option>
             <option value="30">30</option>
             <option value="45">45</option>
@@ -243,9 +239,9 @@ const saveEvent = () =>
         </div>
         <div class="w-1/3 ms-2">
           <InputLabel :value="'Description'"></InputLabel>
-          <div class="max-w-sm space-y-3">
+          <div class="max-w-sm space-y-3 mt-3">
             <textarea
-              class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+              class="py-3 px-4 block w-full border-gray-200 dark:border-none rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-gray-900"
               rows="3"
               placeholder="Description"
               v-model="form.description"
@@ -253,6 +249,17 @@ const saveEvent = () =>
           </div>
           <InputError :message="form.errors.description"></InputError>
         </div>
+      </div>
+
+      <div class="w-full ms-2">
+        <InputLabel :value="'Self check-in'"></InputLabel>
+        <input
+          type="checkbox"
+          id="hs-basic-usage"
+          v-model="form.event_type"
+          class="mt-3 relative w-[3.25rem] h-7 p-px bg-gray-300 border-transparent text-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:ring-blue-600 disabled:opacity-50 disabled:pointer-events-none checked:bg-none checked:text-blue-600 checked:border-blue-600 focus:checked:border-blue-600 dark:bg-neutral-800 dark:border-neutral-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-600 before:inline-block before:size-6 before:bg-white checked:before:bg-blue-200 before:translate-x-0 checked:before:translate-x-full before:rounded-full before:shadow before:transform before:ring-0 before:transition before:ease-in-out before:duration-200 dark:before:bg-neutral-400 dark:checked:before:bg-blue-200"
+        />
+        <InputError :message="form.errors.event_type"></InputError>
       </div>
 
       <div class="mt-10 w-full flex justify-end">

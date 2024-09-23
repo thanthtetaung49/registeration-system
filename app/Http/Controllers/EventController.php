@@ -27,7 +27,7 @@ class EventController extends Controller
 
     public function submitEvent(Request $request)
     {
-        Event::create($request->validate([
+        $validation = $request->validate([
             "event_name" => ['required'],
             "description" => ['required'],
             "location" => ['required'],
@@ -38,13 +38,22 @@ class EventController extends Controller
             "max_seats" => ['required'],
             "event_reference_id" => ['required'],
             "start_date" => ['required', 'date', 'after_or_equal:today'],
-            "end_date" => ['required','date', 'after:start_date'],
+            "end_date" => ['required', 'date', 'after:start_date'],
             "start_time" => ['required'],
             "end_time" => ['required'],
             "early_attendance_min" => ['required'],
             "late_attendance_min" => ['required'],
             "room_numbers_id" => ['required'],
-        ]));
+            "event_type" => ['required'],   
+        ]);
+
+        $letters = chr(rand(65, 90)) . chr(rand(65, 90)) . chr(rand(65, 90));
+        $digits = rand(100, 999);
+        $code = $letters . $digits;
+        $eventCode = ['event_code' => $code, 'event_type' => $request->event_type ? 2 : 1];
+        $mergeEvent = array_merge($validation, $eventCode);
+
+        Event::create($mergeEvent);
 
         return to_route('event.index');
     }
