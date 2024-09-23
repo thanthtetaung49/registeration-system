@@ -24,41 +24,8 @@ const onDetect = async (detectedCodes) => {
   paused.value = true;
   await new Promise((resolve) => setTimeout(resolve, 3000));
 
-<<<<<<< HEAD
-    axios
-        .post("/security/qrcode/scan", { code: code.value })
-        .then((response) => {
-            console.log(response.data);
-            let setSuccessMessage = response.data.successMessage;
-            let setAlreadyRegisterMessage = response.data.alreadyRegisterMessage;
-            let setNotRegisterMessage = response.data.notRegisterMessage;
-            
-            if (setSuccessMessage)
-            
-             successMessage.value = setSuccessMessage;
-                setTimeout(() => {
-                    successMessage.value = null;
-                }, 3000);
-            } else if (setAlreadyRegisterMessage) {
-                alreadyRegisterMessage.value = setAlreadyRegisterMessage;
-
-                setTimeout(() => {
-                    alreadyRegisterMessage.value = null;
-                }, 3000);
-            } else {
-                notRegisterMessage.value = setNotRegisterMessage;
-
-                setTimeout(() => {
-                    notRegisterMessage.value = null;
-                }, 3000);
-            }
-        })
-        .catch((error) => console.error(error));
-    paused.value = false;
-=======
   auth.is_admin == 2 ? securityScan() : selfCheckinUserScan();
   paused.value = false;
->>>>>>> ffe5e67da14b1dd434f5b0539144eae09b1e9381
 };
 
 // security function

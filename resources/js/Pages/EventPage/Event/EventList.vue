@@ -58,7 +58,7 @@ onMounted(() => {
     <AuthenticatedLayout>
       <div class="px-10 py-10">
         <header class="mb-10">
-          <h3 class="text-gray-800 text-2xl pb-1 bold dark:text-white dark:text-white">Event</h3>
+          <h3 class="text-gray-800 text-2xl pb-1 bold dark:text-white">Event</h3>
           <div class="w-10 h-1 bg-blue-800"></div>
         </header>
 
@@ -166,47 +166,47 @@ onMounted(() => {
                       <tbody class="divide-y divide-gray-200">
                         <tr v-for="(event, index) in eventsData" :key="event.id">
                           <td
-                            class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white dark:text-white"
+                            class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white"
                           >
                             {{ index + 1 }}
                           </td>
                           <td
-                            class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white dark:text-white"
+                            class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white"
                           >
                             {{ event.event_name }}
                           </td>
                           <td
-                            class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white dark:text-white"
+                            class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white"
                           >
                             {{ event.event_type == 1 ? "Type I" : "Type II" }}
                           </td>
                           <td
-                            class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white dark:text-white"
+                            class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white"
                           >
                             {{ event.description }}
                           </td>
                           <td
-                            class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white dark:text-white"
+                            class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white"
                           >
                             {{ event.location }}
                           </td>
                           <td
-                            class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white dark:text-white"
+                            class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white"
                           >
                             {{ event.lead_instructors.name }}
                           </td>
                           <td
-                            class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white dark:text-white"
+                            class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white"
                           >
                             {{ event.assists_instructors.name }}
                           </td>
                           <td
-                            class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white dark:text-white"
+                            class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white"
                           >
                             {{ event.categories.category_name }}
                           </td>
                           <td
-                            class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white dark:text-white"
+                            class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white"
                           >
                             {{ event.created_at.split("T")[0] }}
                           </td>
@@ -502,32 +502,32 @@ onMounted(() => {
                             }"
                           >
                             <td
-                              class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white"
+                              class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800"
                             >
                               {{ index + 1 }}
                             </td>
                             <td
-                              class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white"
+                              class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800"
                             >
                               {{ attendee.register_attendees.name }}
                             </td>
                             <td
-                              class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white"
+                              class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800"
                             >
                               {{ attendee.register_attendees.email }}
                             </td>
                             <td
-                              class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white"
+                              class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800"
                             >
                               {{ attendee.register_attendees.department }}
                             </td>
                             <td
-                              class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white"
+                              class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800"
                             >
                               {{ attendee.register_attendees.position }}
                             </td>
                             <td
-                              class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white"
+                              class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800"
                             >
                               <span
                                 v-if="
@@ -540,7 +540,7 @@ onMounted(() => {
                             </td>
 
                             <td
-                              class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white"
+                              class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800"
                             >
                               {{ attendee.register_attendees.created_at.split("T")[0] }}
                             </td>
