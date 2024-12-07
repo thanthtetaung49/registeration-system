@@ -35,6 +35,7 @@
 
 <body style="width: 100%; height: 100vh; display: flex; justify-content: center; align-items: center;">
     <div class="badge-container">
+        <img src="{{ $carImagePath }}" alt="car">
 
         <div class="badge-qr-container">
             <div class="badge-qr">

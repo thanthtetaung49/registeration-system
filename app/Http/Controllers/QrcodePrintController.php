@@ -7,7 +7,6 @@ use App\Models\RegisterEvent;
 use Illuminate\Support\Facades\View;
 use Mpdf\Mpdf;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
-use Spatie\Browsershot\Browsershot;
 
 class QrcodePrintController extends Controller
 {
@@ -19,9 +18,14 @@ class QrcodePrintController extends Controller
 
         $qrCode = QrCode::size(100)->generate($qrCode);
         $qrCode = preg_replace('/<\?xml.*?\?>/', '', $qrCode);
+
+        // $imagePath = base_path('public/img/car.png');
+        // $imageData = 'data:image/png;base64,' . base64_encode(file_get_contents($imagePath));
+
         $data = [
             'nameBadgeData' => $nameBadgeData,
             'qrCode' => $qrCode,
+            'carImagePath' => public_path('img/car.png'),
         ];
 
         $registerAttendeesId = $nameBadgeData->register_attendees->id;
@@ -38,7 +42,10 @@ class QrcodePrintController extends Controller
         $mpdf->Output($filename, \Mpdf\Output\Destination::DOWNLOAD);
     }
 
-    public function eventQrcodeIndex ($eventId) {
+
+
+    public function eventQrcodeIndex($eventId)
+    {
         $event = Event::findOrFail($eventId);
         $eventCode = $event->event_code;
         $eventName = $event->event_name;

@@ -50,9 +50,9 @@ const showingNavigationDropdown = ref(false);
               <div class="shrink-0 flex items-center">
                 <Link :href="route('calendar.index')" class="flex items-center">
                   <ApplicationLogo
-                    class="block h-9 w-auto fill-current text-gray-800 dark:text-white"
+                    class="block h-20 w-20 fill-current text-gray-800 dark:text-white"
                   />
-                  <span class="ps-5 text-gray-800 dark:text-white"
+                  <span class="ps-5 text-gray-800 dark:text-white "
                     >Online registeration system</span
                   >
                 </Link>

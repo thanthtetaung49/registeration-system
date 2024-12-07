@@ -32,6 +32,10 @@ use App\Http\Controllers\UnregisterAttendeesController;
 //     ]);
 // });
 
+Route::get('/test', function () {
+    return '<img src="'.asset('img/car.jpg').'" />';
+});
+
 Route::get('/', function () {
     return Inertia::render('Auth/Login');
 });
