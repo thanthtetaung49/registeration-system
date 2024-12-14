@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\UsersManagementController;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoomController;
@@ -44,6 +45,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // calendar
     Route::get('/calendar', [CalendarController::class, 'index'])->name('calendar.index');
+
+    // users management
+    Route::get('/users/management', [UsersManagementController::class, 'index'])->name('users.management');
+    Route::get('/users/view/{user}', [UsersManagementController::class, 'view'])->name('users.management.view');
+    Route::post('/users/update/role', [UsersManagementController::class, 'updateRole'])->name('users.management.update.role');
 
     Route::prefix('/event')->group(function () {
         // event
