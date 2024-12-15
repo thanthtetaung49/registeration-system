@@ -94,6 +94,7 @@ class AddAttendeesController extends Controller
     public function update($id, Request $request)
     {
         $user = User::where('id', $id)->first();
+        $is_admin = $user->is_admin;
         $password = $request->password;
 
         $request->validate([
@@ -105,10 +106,10 @@ class AddAttendeesController extends Controller
             "position"       => ['required'],
             "address"        => ['required'],
             "email"          => ['required', Rule::unique('users', 'email')->ignore($user->id)],
-            "attendees_types_id" => ['required'],
-            "attendees_groups_id" => ['required'],
-            "password" => ['required', 'min:8'],
-            "password_confirmation" => ["required", "same:password"]
+            "attendees_types_id" => $is_admin != 1 && $is_admin != 4 ? ['required'] : '',
+            "attendees_groups_id" => $is_admin != 1 && $is_admin != 4 ? ['required'] : '',
+            "password" => isset($password) ? ['required', 'min:8'] : '',
+            "password_confirmation" => isset($password) ? ["required", "same:password"] : ''
         ]);
 
         $oldFilename = $user->profile_path;

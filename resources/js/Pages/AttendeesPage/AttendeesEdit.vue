@@ -4,7 +4,7 @@ import InputLabel from "@/Components/InputLabel.vue";
 import TextInput from "@/Components/TextInput.vue";
 import TextInputError from "@/Components/InputError.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
-import { Link, useForm } from "@inertiajs/vue3";
+import { Link, router, useForm } from "@inertiajs/vue3";
 import defaultImage from "@/images/default_profile.png";
 import { defineComponent, ref, onMounted } from "vue";
 
@@ -31,12 +31,10 @@ const form = useForm({
   address: user.address,
   email: user.email,
   avatar: user.profile_path,
-  attendees_types_id:
-    user.attendees_types != null ? user.attendees_types.id : "",
-  attendees_groups_id:
-    user.attendees_groups != null ? user.attendees_groups.id : "",
-    password: user.password,
-    password_confirmation: null,
+  attendees_types_id: user.attendees_types != null ? user.attendees_types.id : "",
+  attendees_groups_id: user.attendees_groups != null ? user.attendees_groups.id : "",
+  password: user.password,
+  password_confirmation: null,
 });
 
 // console.log(form.password_confirmation);
@@ -68,7 +66,9 @@ const updateAttendees = () => form.post(`/attendees/update/${user.id}`);
           <div class="w-10 h-1 bg-blue-800"></div>
         </header>
 
-        <div class="w-full bg-white rounded-lg shadow-md dark:text-white dark:bg-gray-800">
+        <div
+          class="w-full bg-white rounded-lg shadow-md dark:text-white dark:bg-gray-800"
+        >
           <div class="border-b border-gray-200 dark:border-none px-4 py-5 mb-10">
             <div class="mt-5">
               <form v-on:submit.prevent="updateAttendees">
@@ -213,7 +213,8 @@ const updateAttendees = () => form.post(`/attendees/update/${user.id}`);
                     ></TextInput>
                     <TextInputError :message="form.errors.email"></TextInputError>
                   </div>
-                  <div class="w-1/3 ms-3">
+                  <!-- {{ user.is_admin }} -->
+                  <div v-if="user.is_admin != 1 && user.is_admin != 4" class="w-1/3 ms-3">
                     <InputLabel :value="'Attendees type'"></InputLabel>
                     <select
                       v-model="form.attendees_types_id"
@@ -229,7 +230,7 @@ const updateAttendees = () => form.post(`/attendees/update/${user.id}`);
                       :message="form.errors.attendees_types_id"
                     ></TextInputError>
                   </div>
-                  <div class="w-1/3 ms-3">
+                  <div v-if="user.is_admin != 1 && user.is_admin != 4" class="w-1/3 ms-3">
                     <InputLabel :value="'Attendees group'"></InputLabel>
                     <select
                       v-model="form.attendees_groups_id"
@@ -264,16 +265,19 @@ const updateAttendees = () => form.post(`/attendees/update/${user.id}`);
                       v-model="form.password_confirmation"
                       class="w-full mt-3 text-sm"
                     ></TextInput>
-                    <TextInputError :message="form.errors.password_confirmation"></TextInputError>
+                    <TextInputError
+                      :message="form.errors.password_confirmation"
+                    ></TextInputError>
                   </div>
                 </div>
 
                 <div class="w-full flex justify-end">
-                  <Link
+                  <button
                     href="/attendees/list"
                     class="inline-flex items-center px-4 py-2 bg-red-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-700 focus:bg-red-700 active:bg-red-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150 mr-3"
-                    >Back</Link
+                    >Back</button
                   >
+
                   <PrimaryButton type="submit">Save</PrimaryButton>
                 </div>
               </form>

@@ -10,6 +10,11 @@ class CalendarController extends Controller
 {
     public function index () {
         $events = Event::get();
-        return Inertia::render('CalendarPage/CalendarPage', ['events' => $events]);
+        $disable_status = auth()->user()->disable_status;
+
+        return Inertia::render('CalendarPage/CalendarPage', [
+            'events' => $events,
+            'status' => $disable_status
+        ]);
     }
 }

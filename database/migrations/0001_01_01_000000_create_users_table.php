@@ -31,6 +31,7 @@ return new class extends Migration
             $table->foreignId('attendees_groups_id')->nullable()->constrained()->cascadeOnDelete();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password')->nullable();
+            $table->boolean('disable_status')->default(0); // 0 is not disabled , 1 is diabled
             $table->rememberToken();
             $table->timestamps();
         });

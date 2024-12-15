@@ -15,6 +15,9 @@ onMounted(() => {
   }, 100);
 });
 
+const props = defineProps({ disableStatus: Number });
+const disableStatus = props.disableStatus;
+
 const toggleDarkMode = () => {
   const getCurrentTheme = localStorage.getItem("hs_theme");
   const getDocumentHtml = document.getElementsByTagName("html");
@@ -221,7 +224,7 @@ const showingNavigationDropdown = ref(false);
       <!-- Page Heading -->
 
       <!-- Page Content -->
-      <main class="w-full flex">
+      <main v-if="disableStatus != 1" class="w-full flex">
         <div class="w-[20%] bg-white text-left py-10 p-5 dark:bg-gray-800 shadow-lg">
           <NavLink
             class="pb-2 block"
@@ -361,8 +364,19 @@ const showingNavigationDropdown = ref(false);
             Print
           </NavLink>
         </div>
+
         <div class="w-full h-screen overflow-auto">
           <slot />
+        </div>
+      </main>
+      <main class="px-10 py-10">
+        <div
+          class="mt-2 bg-red-500 text-sm text-white rounded-lg p-4"
+          role="alert"
+          tabindex="-1"
+          aria-labelledby="hs-solid-color-danger-label"
+        >
+          <span id="hs-solid-color-danger-label" class="font-bold">Your account is disabled by super admin.</span>
         </div>
       </main>
     </div>

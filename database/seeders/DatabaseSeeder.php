@@ -21,9 +21,25 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 
+
+        User::create([
+            'name' => 'super admin',
+            'age' => rand(20, 30),
+            'sex' => rand(0, 1),
+            'phone_number' => fake()->phoneNumber(),
+            'nrc_number' => fake()->text(),
+            'edu_background'=> fake()->text(),
+            'position' => fake()->text(),
+            'department' => fake()->text(),
+            'address' => fake()->address(),
+            'email' => 'superadmin@gmail.com',
+            'password' => Hash::make('superadmin123'),
+            'is_admin' => 4 // admin
+        ]);
+
         User::create([
             'name' => 'admin',
-            'age' => 25,
+            'age' => rand(20, 30),
             'sex' => rand(0, 1),
             'phone_number' => fake()->phoneNumber(),
             'nrc_number' => fake()->text(),
@@ -32,7 +48,7 @@ class DatabaseSeeder extends Seeder
             'department' => fake()->text(),
             'address' => fake()->address(),
             'email' => 'admin@gmail.com',
-            'password' => Hash::make('123'),
+            'password' => Hash::make('admin123'),
             'is_admin' => 1 // admin
         ]);
     }

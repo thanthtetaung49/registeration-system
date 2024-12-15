@@ -9,7 +9,8 @@ defineComponent({
   FullCalendar,
 });
 
-const props = defineProps({ events: Object });
+const props = defineProps({ events: Object, status: Number});
+const disableStatus = props.status;
 
 const calendarOptions = ref({
   plugins: [dayGridPlugin, interactionPlugin],
@@ -59,13 +60,7 @@ const addOneDay = (date) => {
 </script>
 
 <template>
-  <AuthenticatedLayout>
-    <!-- <template #header>
-      <h2 class="font-semibold text-xl text-gray-800 leading-tight ">
-        Dashboard
-      </h2>
-    </template> -->
-
+  <AuthenticatedLayout :disableStatus="disableStatus">
     <div class="py-12">
       <div class="max-w-full mx-auto sm:px-6 lg:px-8">
         <header class="mb-10">

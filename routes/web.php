@@ -33,10 +33,6 @@ use App\Http\Controllers\UnregisterAttendeesController;
 //     ]);
 // });
 
-Route::get('/test', function () {
-    return '<img src="'.asset('img/car.jpg').'" />';
-});
-
 Route::get('/', function () {
     return Inertia::render('Auth/Login');
 });
@@ -50,6 +46,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/users/management', [UsersManagementController::class, 'index'])->name('users.management');
     Route::get('/users/view/{user}', [UsersManagementController::class, 'view'])->name('users.management.view');
     Route::post('/users/update/role', [UsersManagementController::class, 'updateRole'])->name('users.management.update.role');
+    Route::post('/user/diabled', [UsersManagementController::class, 'disabledUser'])->name('users.management.disabled');
+    Route::post('/user/activate', [UsersManagementController::class, 'activateUser'])->name('users.management.disabled');
+    Route::post('/user/delete', [UsersManagementController::class, 'deleteUser'])->name('users.management.disabled');
 
     Route::prefix('/event')->group(function () {
         // event
