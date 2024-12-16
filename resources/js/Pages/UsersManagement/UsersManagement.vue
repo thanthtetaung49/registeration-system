@@ -204,11 +204,12 @@ const accountDelete = () => {
 };
 
 const accountActivateAndDisable = (message, url) => {
-  window.confirm(message);
+  const userConfirmation = window.confirm(message);
 
   let userId = user.id;
 
-  axios
+  if (userConfirmation) {
+    axios
     .post(url, {
       userId: userId,
     })
@@ -216,6 +217,9 @@ const accountActivateAndDisable = (message, url) => {
       window.location.href = "/users/management";
     })
     .catch((error) => console.error(error));
+  } else {
+    console.log('user clicked cancel button.');
+  }
 };
 </script>
 
@@ -395,7 +399,7 @@ const accountActivateAndDisable = (message, url) => {
                             </button>
 
                             <Link
-                              :href="`/attendees/edit/${user.id}`"
+                              :href="`/users/edit/${user.id}`"
                               class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border text-gray-600 focus:outline-none focus:text-whitedisabled:opacity-50 disabled:pointer-events-none dark:text-gray-500 dark:hover:text-gray-400 dark:focus:text-gray-400 p-2 mr-3 hover:bg-gray-700 hover:text-white"
                               aria-haspopup="dialog"
                               aria-expanded="false"

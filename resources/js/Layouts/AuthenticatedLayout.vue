@@ -250,7 +250,7 @@ const showingNavigationDropdown = ref(false);
           <NavLink
             class="pb-2 block mt-5"
             :href="route('users.management')"
-            :active="route().current('users.management')"
+            :active="route().current('users.management') || route().current('users.management.edit')"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"

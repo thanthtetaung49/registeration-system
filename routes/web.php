@@ -44,6 +44,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // users management
     Route::get('/users/management', [UsersManagementController::class, 'index'])->name('users.management');
+    Route::get('/users/edit/{user}', [UsersManagementController::class, 'edit'])->name('users.management.edit');
+    Route::post('/users/update/{user}', [UsersManagementController::class, 'update'])->name('users.management.update');
     Route::get('/users/view/{user}', [UsersManagementController::class, 'view'])->name('users.management.view');
     Route::post('/users/update/role', [UsersManagementController::class, 'updateRole'])->name('users.management.update.role');
     Route::post('/user/diabled', [UsersManagementController::class, 'disabledUser'])->name('users.management.disabled');

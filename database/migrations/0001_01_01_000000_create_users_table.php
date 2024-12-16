@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -30,7 +31,7 @@ return new class extends Migration
             $table->integer('is_admin')->default(0); // 0 is attendees , 1 is admin, 2 security, 3 seftcheck-in user, 4 super  admin
             $table->foreignId('attendees_groups_id')->nullable()->constrained()->cascadeOnDelete();
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('password')->nullable();
+            $table->string('password')->default(Hash::make('attendees@123'));
             $table->boolean('disable_status')->default(0); // 0 is not disabled , 1 is diabled
             $table->rememberToken();
             $table->timestamps();

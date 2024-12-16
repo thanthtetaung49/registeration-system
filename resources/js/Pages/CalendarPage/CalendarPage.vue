@@ -22,7 +22,7 @@ const calendarOptions = ref({
 
     const el = document.createElement("div");
     el.innerHTML = arg.event.title;
-    el.style.color = "white";
+    el.style.color = "white";   
     el.style.padding = "5px";
     el.style.borderRadius = "3px";
 
