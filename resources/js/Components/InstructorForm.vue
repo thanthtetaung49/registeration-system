@@ -9,7 +9,7 @@ const form = useForm({
     name: null,
 });
 
-const saveInstructor = () => form.post('/instructor/create', {
+const saveInstructor = () => form.post('/instructors/create', {
     onSuccess: () => form.reset('name'),
 });
 
@@ -19,8 +19,8 @@ const saveInstructor = () => form.post('/instructor/create', {
   <div>
     <form v-on:submit.prevent="saveInstructor">
       <div>
-        <InputLabel :value="'Instructor'"></InputLabel>
-        <TextInput v-model="form.name" class="mt-3 w-[30%] text-sm"></TextInput>
+        <InputLabel :value="'Instructors'"></InputLabel>
+        <TextInput placeholder="Instructors" v-model="form.name" class="mt-3 w-[30%] text-sm"></TextInput>
         <InputError :message="form.errors.name"></InputError>
       </div>
       <div class="mt-5 w-full flex justify-end">

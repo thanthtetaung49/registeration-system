@@ -18,7 +18,7 @@ const event = ref(null);
 
 const getRegisterAttendees = (eventId) => {
   axios
-    .get(`/event/attendees/list/${eventId}`)
+    .get(`/event/attendees/${eventId}`)
     .then((response) => {
       registerEvents.value = response.data;
     })
@@ -275,7 +275,7 @@ onMounted(() => {
 
                             <div class="inline-block">
                               <Link
-                                :href="`/event/list/view/${event.id}`"
+                                :href="`/event/view/${event.id}`"
                                 class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border text-gray-600 focus:outline-none focus:text-whitedisabled:opacity-50 disabled:pointer-events-none dark:text-gray-500 dark:hover:text-gray-400 dark:focus:text-gray-400 p-2 mr-3 hover:bg-green-700 hover:text-white hs-tooltip-toogle"
                                 aria-haspopup="dialog"
                                 aria-expanded="false"
@@ -306,7 +306,7 @@ onMounted(() => {
 
                             <div class="hs-tooltip inline-block">
                               <Link
-                                :href="`/event/list/edit/${event.id}`"
+                                :href="`/event/edit/${event.id}`"
                                 class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border text-gray-600 focus:outline-none focus:text-whitedisabled:opacity-50 disabled:pointer-events-none dark:text-gray-500 dark:hover:text-gray-400 dark:focus:text-gray-400 p-2 mr-3 hover:bg-gray-700 hover:text-white hs-tooltip-toggle"
                                 aria-haspopup="dialog"
                                 aria-expanded="false"
@@ -332,7 +332,7 @@ onMounted(() => {
 
                             <div class="hs-tooltip inline-block">
                               <Link
-                                :href="`/event/list/delete/${event.id}`"
+                                :href="`/event/delete/${event.id}`"
                                 class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border text-gray-600 focus:outline-none focus:text-whitedisabled:opacity-50 disabled:pointer-events-none dark:text-gray-500 dark:hover:text-gray-400 dark:focus:text-gray-400 p-2 mr-3 hover:bg-red-700 hover:text-white hs-tooltip-toggle"
                                 aria-haspopup="dialog"
                                 aria-expanded="false"

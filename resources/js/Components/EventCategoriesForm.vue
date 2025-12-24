@@ -20,7 +20,7 @@ const saveCategories = () => form.post('/category/create', {
     <form v-on:submit.prevent="saveCategories">
       <div>
         <InputLabel :value="'Category'"></InputLabel>
-        <TextInput v-model="form.category_name" class="mt-3 w-[30%] text-sm"></TextInput>
+        <TextInput placeholder="Cateogry" v-model="form.category_name" class="mt-3 w-[30%] text-sm"></TextInput>
         <InputError :message="form.errors.category_name"></InputError>
       </div>
       <div class="mt-5 w-full flex justify-end">

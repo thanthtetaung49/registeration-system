@@ -6,11 +6,7 @@ const props = defineProps({ message: Object });
 <template>
   <div>
     <div
-      class="mt-2 bg-teal-500 text-sm text-white rounded-lg p-4"
-      role="alert"
-      tabindex="-1"
-      aria-labelledby="hs-solid-color-success-label"
-    >
+      class="mt-2 bg-teal-100 border border-teal-200 text-sm text-teal-800 rounded-lg p-4 dark:bg-teal-800/10 dark:border-teal-900 dark:text-teal-500" role="alert" tabindex="-1" aria-labelledby="hs-soft-color-success-label">
       {{ props.message }}
     </div>
   </div>

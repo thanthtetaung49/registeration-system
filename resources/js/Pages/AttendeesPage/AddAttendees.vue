@@ -108,216 +108,135 @@ const saveAttendees = () =>
     <AuthenticatedLayout>
       <div class="px-10 py-10">
         <header class="mb-10">
-          <h3 class="text-gray-800 text-2xl pb-1 bold dark:text-white">Attendees</h3>
+          <h3 class="text-gray-800 text-2xl pb-1 bold dark:text-white">Create Attendees</h3>
           <div class="w-10 h-1 bg-blue-800"></div>
         </header>
 
         <div class="w-full bg-white rounded-lg shadow-md dark:text-white dark:bg-gray-800">
           <div class="border-b border-gray-200 dark:border-none px-4 pb-10 mb-10">
-            <AttendeesTabLayout></AttendeesTabLayout>
+            <div class="border-b">
+              <AttendeesTabLayout></AttendeesTabLayout>
+            </div>
 
             <div class="mt-5">
               <form v-on:submit.prevent="saveAttendees">
                 <div class="w-1/3 my-3 flex items-end">
-                  <img
-                    v-if="imageUrl && imageUrl != null"
-                    :src="imageUrl"
-                    alt="preview image"
-                    class="w-20 rounded-md h-20"
-                  />
-                  <img
-                    v-else
-                    :src="defaultImage"
-                    alt="default image"
-                    class="w-20 rounded-md h-20"
-                  />
+                  <img v-if="imageUrl && imageUrl != null" :src="imageUrl" alt="preview image"
+                    class="w-20 rounded-md h-20" />
+                  <img v-else :src="defaultImage" alt="default image" class="w-20 rounded-md h-20" />
                   <div class="ms-5">
-                    <label
-                      for="file-input"
-                      class="mt-3 text-blue-700 underline text-sm font-medium"
-                      >File upload</label
-                    >
-                    <input
-                      @input="previewImage"
-                      type="file"
-                      name="import_file"
-                      id="file-input"
-                      class="hidden w-full border border-gray-200 dark:border-none shadow-sm rounded-lg text-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 file:bg-gray-50 file:border-0 file:me-4 file:py-3 file:px-4 dark:file:bg-neutral-700 dark:file:text-neutral-400 mt-3"
-                    />
-                    <TextInputError
-                      :message="form.errors.avatar"
-                    ></TextInputError>
+                    <label for="file-input" class="mt-3 text-blue-700 underline text-sm font-medium">File upload</label>
+                    <input @input="previewImage" type="file" name="import_file" id="file-input"
+                      class="hidden w-full border border-gray-200 dark:border-none shadow-sm rounded-lg text-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 file:bg-gray-50 file:border-0 file:me-4 file:py-3 file:px-4 dark:file:bg-neutral-700 dark:file:text-neutral-400 mt-3" />
+                    <TextInputError :message="form.errors.avatar"></TextInputError>
                   </div>
                 </div>
                 <div class="w-full flex">
                   <div class="w-1/3">
                     <InputLabel :value="'Name'"></InputLabel>
-                    <TextInput
-                      type="text"
-                      v-model="form.name"
-                      class="w-full mt-3 text-sm"
-                    ></TextInput>
-                    <TextInputError
-                      :message="form.errors.name"
-                    ></TextInputError>
+                    <TextInput placeholder="Name" type="text" v-model="form.name" class="w-full mt-3 text-sm">
+                    </TextInput>
+                    <TextInputError :message="form.errors.name"></TextInputError>
                   </div>
                   <div class="w-1/3 ms-3">
                     <InputLabel :value="'Age'"></InputLabel>
-                    <TextInput
-                      type="number"
-                      v-model="form.age"
-                      class="w-full mt-3 text-sm"
-                    ></TextInput>
+                    <TextInput placeholder="Age" type="number" v-model="form.age" class="w-full mt-3 text-sm">
+                    </TextInput>
                     <TextInputError :message="form.errors.age"></TextInputError>
                   </div>
                   <div class="w-1/3 ms-3">
-                    <InputLabel :value="'Sex'"></InputLabel>
-                    <select
-                      v-model="form.sex"
-                      class="py-3 px-4 pe-9 block w-full border-gray-200 dark:border-none rounded-lg text-sm focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none mt-3 dark:bg-gray-900"
-                    >
-                      <option value="" selected="">Open this select sex</option>
+                    <InputLabel :value="'Gender'"></InputLabel>
+                    <select placeholder="Gender" v-model="form.sex"
+                      class="py-2 px-4 pe-9 block w-full border-gray-200 dark:border-none rounded-lg text-sm focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none mt-3 dark:bg-gray-900">
+                      <option value="" selected="">Open this select Gender</option>
                       <option value="0">Male</option>
                       <option value="1">Female</option>
                     </select>
-                    <TextInputError
-                      :message="form.errors.name"
-                    ></TextInputError>
+                    <TextInputError :message="form.errors.name"></TextInputError>
                   </div>
                 </div>
 
-                <div class="w-full flex my-3">
+                <div class="w-full flex my-7">
                   <div class="w-1/3">
-                    <InputLabel :value="'Phone number'"></InputLabel>
-                    <TextInput
-                      type="text"
-                      v-model="form.phone_number"
-                      class="w-full mt-3 text-sm"
-                    ></TextInput>
-                    <TextInputError
-                      :message="form.errors.phone_number"
-                    ></TextInputError>
+                    <InputLabel :value="'Phone Number'"></InputLabel>
+                    <TextInput placeholder="Phone Number" type="text" v-model="form.phone_number"
+                      class="w-full mt-3 text-sm"></TextInput>
+                    <TextInputError :message="form.errors.phone_number"></TextInputError>
                   </div>
                   <div class="w-1/3 ms-3">
-                    <InputLabel :value="'NRC number'"></InputLabel>
-                    <TextInput
-                      type="text"
-                      v-model="form.nrc_number"
-                      class="w-full mt-3 text-sm"
-                    ></TextInput>
-                    <TextInputError
-                      :message="form.errors.nrc_number"
-                    ></TextInputError>
+                    <InputLabel :value="'NRC Number'"></InputLabel>
+                    <TextInput placeholder="NRC Number" type="text" v-model="form.nrc_number"
+                      class="w-full mt-3 text-sm"></TextInput>
+                    <TextInputError :message="form.errors.nrc_number"></TextInputError>
                   </div>
                   <div class="w-1/3 ms-3">
-                    <InputLabel :value="'Education background'"></InputLabel>
-                    <TextInput
-                      type="text"
-                      v-model="form.edu_background"
-                      class="w-full mt-3 text-sm"
-                    ></TextInput>
-                    <TextInputError
-                      :message="form.errors.edu_background"
-                    ></TextInputError>
+                    <InputLabel :value="'Education Background'"></InputLabel>
+                    <TextInput placeholder="Education Background" type="text" v-model="form.edu_background"
+                      class="w-full mt-3 text-sm"></TextInput>
+                    <TextInputError :message="form.errors.edu_background"></TextInputError>
                   </div>
                 </div>
 
-                <div class="w-full flex my-3">
+                <div class="w-full flex my-7">
                   <div class="w-1/3">
-                    <InputLabel :value="'Positions'"></InputLabel>
-                    <TextInput
-                      type="text"
-                      v-model="form.position"
-                      class="w-full mt-3 text-sm"
-                    ></TextInput>
-                    <TextInputError
-                      :message="form.errors.position"
-                    ></TextInputError>
+                    <InputLabel :value="'Position'"></InputLabel>
+                    <TextInput placeholder="Position" type="text" v-model="form.position" class="w-full mt-3 text-sm">
+                    </TextInput>
+                    <TextInputError :message="form.errors.position"></TextInputError>
                   </div>
                   <div class="w-1/3 ms-3">
                     <InputLabel :value="'Department'"></InputLabel>
-                    <TextInput
-                      type="text"
-                      v-model="form.department"
-                      class="w-full mt-3 text-sm"
-                    ></TextInput>
-                    <TextInputError
-                      :message="form.errors.department"
-                    ></TextInputError>
+                    <TextInput placeholder="Department" type="text" v-model="form.department"
+                      class="w-full mt-3 text-sm"></TextInput>
+                    <TextInputError :message="form.errors.department"></TextInputError>
                   </div>
                   <div class="w-1/3 ms-3">
                     <InputLabel :value="'Address'"></InputLabel>
-                    <TextInput
-                      type="text"
-                      v-model="form.address"
-                      class="w-full mt-3 text-sm"
-                    ></TextInput>
-                    <TextInputError
-                      :message="form.errors.address"
-                    ></TextInputError>
+                    <TextInput placeholder="Address" type="text" v-model="form.address" class="w-full mt-3 text-sm">
+                    </TextInput>
+                    <TextInputError :message="form.errors.address"></TextInputError>
                   </div>
                 </div>
 
-                <div class="w-full flex my-3">
+                <div class="w-full flex my-7">
                   <div class="w-1/3">
                     <InputLabel :value="'Email'"></InputLabel>
-                    <TextInput
-                      type="email"
-                      v-model="form.email"
-                      class="w-full mt-3 text-sm"
-                    ></TextInput>
-                    <TextInputError
-                      :message="form.errors.email"
-                    ></TextInputError>
+                    <TextInput placeholder="Email" type="email" v-model="form.email" class="w-full mt-3 text-sm">
+                    </TextInput>
+                    <TextInputError :message="form.errors.email"></TextInputError>
                   </div>
                   <div class="w-1/3 ms-3">
-                    <InputLabel :value="'Attendees type'"></InputLabel>
-                    <select
-                      v-model="form.attendees_types_id"
-                      class="py-3 px-4 pe-9 block w-full border-gray-200 dark:border-none rounded-lg text-sm focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none mt-3 dark:bg-gray-900"
-                    >
+                    <InputLabel :value="'Attendees Type'"></InputLabel>
+                    <select placeholder="Attendees Type" v-model="form.attendees_types_id"
+                      class="py-2 px-4 pe-9 block w-full border-gray-200 dark:border-none rounded-lg text-sm focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none mt-3 dark:bg-gray-900">
                       <option value="" selected="">
                         Open this attendees type
                       </option>
 
-                      <option
-                        v-for="type in types"
-                        :key="type.id"
-                        :value="type.id"
-                      >
+                      <option v-for="type in types" :key="type.id" :value="type.id">
                         {{ type.name }}
                       </option>
                     </select>
-                    <TextInputError
-                      :message="form.errors.attendees_types_id"
-                    ></TextInputError>
+                    <TextInputError :message="form.errors.attendees_types_id"></TextInputError>
                   </div>
 
                   <div class="w-1/3 ms-3">
-                    <InputLabel :value="'Attendees group'"></InputLabel>
-                    <select
-                      v-model="form.attendees_groups_id"
-                      class="py-3 px-4 pe-9 block w-full border-gray-200 dark:border-none rounded-lg text-sm focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none mt-3 dark:bg-gray-900"
-                    >
+                    <InputLabel :value="'Attendees Group'"></InputLabel>
+                    <select v-model="form.attendees_groups_id"
+                      class="py-2 px-4 pe-9 block w-full border-gray-200 dark:border-none rounded-lg text-sm focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none mt-3 dark:bg-gray-900">
                       <option value="" selected="">
                         Open this attendees group
                       </option>
 
-                      <option
-                        v-for="group in groups"
-                        :key="group.id"
-                        :value="group.id"
-                      >
+                      <option v-for="group in groups" :key="group.id" :value="group.id">
                         {{ group.name }}
                       </option>
                     </select>
-                    <TextInputError
-                      :message="form.errors.attendees_groups_id"
-                    ></TextInputError>
+                    <TextInputError :message="form.errors.attendees_groups_id"></TextInputError>
                   </div>
                 </div>
 
-                <div class="w-full flex justify-end">
+                <div class="w-full flex justify-end py-3 mt-5">
                   <PrimaryButton type="submit">Save</PrimaryButton>
                 </div>
               </form>

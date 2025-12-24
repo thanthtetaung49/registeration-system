@@ -14,11 +14,11 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+                sans: ['Inter', ...defaultTheme.fontFamily.sans],
             },
         },
 
     },
 
-plugins: [forms, require('preline/plugin')],
+    plugins: [forms, require('preline/plugin')],
 };

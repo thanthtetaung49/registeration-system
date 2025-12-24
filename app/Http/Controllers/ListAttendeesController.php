@@ -12,6 +12,10 @@ class ListAttendeesController extends Controller
 {
     public function index()
     {
+        // 1 => superadmin
+        // 4 => admin
+        // 0, 3 => user
+        // 2 => security
         $users = User::with('attendees_types', 'attendees_groups', 'register_events')
             ->orderBy('id', 'desc')
             ->whereIn('is_admin', [0, 3])

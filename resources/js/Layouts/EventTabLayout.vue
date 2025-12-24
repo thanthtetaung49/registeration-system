@@ -11,70 +11,70 @@ import { Link } from "@inertiajs/vue3";
       aria-orientation="horizontal"
     >
      <Link
-        href="/event/list"
-        class="py-4 px-1 inline-flex items-center gap-x-2 border-b-2 border-transparent text-sm whitespace-nowrap hover:text-blue-600 focus:outline-none focus:text-blue-600 disabled:opacity-50 disabled:pointer-events-none"
+        href="/event/eventList"
+        class="py-2 my-3 px-3 inline-flex items-center gap-x-2 border-b-2 border-transparent text-sm whitespace-nowrap  focus:outline-none disabled:opacity-50 disabled:pointer-events-none"
         role="tab"
         :class="{
-          'text-blue-500 font-bold': route().current('event.list.index'),
+          'text-white rounded-md font-bold bg-blue-500': route().current('event.list.index'),
           'text-gray-500 ': !route().current('event.list.index'),
         }"
       >
-        Event list
+        Events List
       </Link>
       <Link
-        href="/instructor"
-        class="py-4 px-1 inline-flex items-center gap-x-2 border-b-2 border-transparent text-sm whitespace-nowrap hover:text-blue-600 focus:outline-none focus:text-blue-600 disabled:opacity-50 disabled:pointer-events-none"
+        href="/instructors"
+        class="py-2 my-3 px-3 inline-flex items-center gap-x-2 border-b-2 border-transparent text-sm whitespace-nowrap  focus:outline-none disabled:opacity-50 disabled:pointer-events-none"
         role="tab"
         :class="{
-          'text-blue-500 font-bold': route().current('instructor.index'),
+          'text-white rounded-md font-bold bg-blue-500': route().current('instructor.index'),
           'text-gray-500 ': !route().current('instructor.index'),
         }"
       >
-        Instructor
+        Instructors
       </Link>
       <Link
         href="/category"
-        class="hs-tab-active:font-semibold hs-tab-active:border-blue-600 hs-tab-active:text-blue-600 py-4 px-1 inline-flex items-center gap-x-2 border-b-2 border-transparent text-sm whitespace-nowrap hover:text-blue-600 focus:outline-none focus:text-blue-600 disabled:opacity-50 disabled:pointer-events-none"
+        class="hs-tab-active:font-semibold hs-tab-active:border-blue-600 py-2 my-3 px-3 inline-flex items-center gap-x-2 border-b-2 border-transparent text-sm whitespace-nowrap  focus:outline-none disabled:opacity-50 disabled:pointer-events-none"
         role="tab"
         :class="{
-          'text-blue-500 font-bold': route().current('category.index'),
+          'text-white rounded-md font-bold bg-blue-500': route().current('category.index'),
           'text-gray-500 ': !route().current('category.index'),
         }"
       >
-        Event categories
+        Event Categories
       </Link>
       <Link
         href="/room"
-        class="hs-tab-active:font-semibold hs-tab-active:border-blue-600 hs-tab-active:text-blue-600 py-4 px-1 inline-flex items-center gap-x-2 border-b-2 border-transparent text-sm whitespace-nowrap  hover:text-blue-600 focus:outline-none focus:text-blue-600 disabled:opacity-50 disabled:pointer-events-none"
+        class="hs-tab-active:font-semibold hs-tab-active:border-blue-600 py-2 my-3 px-3 inline-flex items-center gap-x-2 border-b-2 border-transparent text-sm whitespace-nowrap   focus:outline-none disabled:opacity-50 disabled:pointer-events-none"
         role="tab"
         :class="{
-          'text-blue-500 font-bold': route().current('roomNumber.index'),
+          'text-white rounded-md font-bold bg-blue-500': route().current('roomNumber.index'),
           'text-gray-500 ': !route().current('roomNumber.index'),
         }"
       >
-        Room
+        Event Room Location
       </Link>
       <Link
         href="/event"
-        class="hs-tab-active:font-semibold hs-tab-active:bordsubmitCategoryer-blue-600 hs-tab-active:text-blue-600 py-4 px-1 inline-flex items-center gap-x-2 border-b-2 border-transparent text-sm whitespace-nowrap  hover:text-blue-600 focus:outline-none focus:text-blue-600 disabled:opacity-50 disabled:pointer-events-none"
+        class="hs-tab-active:font-semibold hs-tab-active:bordsubmitCategoryer-blue-600 py-2 my-3 px-3 inline-flex items-center gap-x-2 border-b-2 border-transparent text-sm whitespace-nowrap   focus:outline-none disabled:opacity-50 disabled:pointer-events-none"
         role="tab"
         :class="{
-          'text-blue-500 font-bold': route().current('event.index'),
+          'text-white rounded-md font-bold bg-blue-500': route().current('event.index'),
           'text-gray-500 ': !route().current('event.index'),
         }"
       >
-        Event
+        Create Event
       </Link>
       <Link
         href="/event/report"
-        class="hs-tab-active:font-semibold hs-tab-active:bordsubmitCategoryer-blue-600 hs-tab-active:text-blue-600 py-4 px-1 inline-flex items-center gap-x-2 border-b-2 border-transparent text-sm whitespace-nowrap  hover:text-blue-600 focus:outline-none focus:text-blue-600 disabled:opacity-50 disabled:pointer-events-none"
+        class="hs-tab-active:font-semibold hs-tab-active:bordsubmitCategoryer-blue-600 py-2 my-3 px-3 inline-flex items-center gap-x-2 border-b-2 border-transparent text-sm whitespace-nowrap   focus:outline-none disabled:opacity-50 disabled:pointer-events-none"
         role="tab"
         :class="{
-          'text-blue-500 font-bold': route().current('event.report.index'),
+          'text-white rounded-md font-bold bg-blue-500': route().current('event.report.index'),
           'text-gray-500 ': !route().current('event.report.index'),
         }"
       >
-        Event report
+        Events Report
       </Link>
     </nav>
   </div>

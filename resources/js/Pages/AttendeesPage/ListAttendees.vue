@@ -38,11 +38,11 @@ const duplicateCheck = () => {
 };
 
 const excelExport = () => {
-  window.location.href = "/attendees/list/excel/export";
+  window.location.href = "/attendees/excel/export";
 };
 
 const csvExport = () => {
-  window.location.href = "/attendees/list/csv/export";
+  window.location.href = "/attendees/csv/export";
 };
 </script>
 
@@ -51,13 +51,15 @@ const csvExport = () => {
     <AuthenticatedLayout>
       <div class="px-10 py-10">
         <header class="mb-10">
-          <h3 class="text-gray-800 text-2xl pb-1 bold dark:text-white">Attendees list</h3>
+          <h3 class="text-gray-800 text-2xl pb-1 bold dark:text-white">Attendees Lists</h3>
           <div class="w-10 h-1 bg-blue-800"></div>
         </header>
 
         <div class="w-full bg-white rounded-lg shadow-md dark:text-white dark:bg-gray-800">
           <div class="border-b border-gray-200 dark:border-none px-4">
-            <AttendeesTabLayout></AttendeesTabLayout>
+            <div class="border-b">
+              <AttendeesTabLayout></AttendeesTabLayout>
+            </div>
 
             <div class="flex justify-end mt-5">
               <button

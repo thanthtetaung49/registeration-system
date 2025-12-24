@@ -114,16 +114,36 @@ class UsersManagementController extends Controller
     }
 
     // update role
-    public function updateRole (Request $request) {
+    // public function updateRole (Request $request) {
+    //     return response()->json([
+    //         'message' => 'Success'
+    //     ]);
+    //     // $id = $request->id;
+    //     // $role = $request->role;
+    //     // $user = User::findOrFail($id);
+
+
+
+    //     // $user->update(['is_admin' => $role]);
+
+    //     // return response()->json([
+    //     //     'userId' => $user->id,
+    //     //     'baseUrl' => url('/')
+    //     // ]);
+    // }
+
+    public function roleUpdate(Request $request) {
         $id = $request->id;
-        $is_admin = $request->role;
+        $role = $request->role;
+
         $user = User::findOrFail($id);
 
-        $user->update(['is_admin' => $is_admin]);
+        $user->update(['is_admin' => $role]);
 
         return response()->json([
-            'userId' => $user->id,
-            'baseUrl' => env('APP_URL')
+            'userId' => $id,
+            'baseUrl' => url('/'),
+            'user' => $user
         ]);
     }
 

@@ -37,7 +37,7 @@ const form = useForm({
   event_type: event.event_type == 1 ? false : true,
 });
 
-const updateEvent = () => form.post(`/event/list/update/${event.id}`);
+const updateEvent = () => form.post(`/event/update/${event.id}`);
 </script>
 
 <template>
@@ -270,7 +270,7 @@ const updateEvent = () => form.post(`/event/list/update/${event.id}`);
 
                 <div class="mt-10 w-full flex justify-end">
                   <Link
-                    href="/event/list"
+                    href="/event"
                     class="inline-flex items-center px-4 py-2 bg-red-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-700 focus:bg-red-700 active:bg-red-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150 mr-3"
                     >Back</Link
                   >

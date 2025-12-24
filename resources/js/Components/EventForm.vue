@@ -63,18 +63,18 @@ const saveEvent = () =>
     <form v-on:submit.prevent="saveEvent">
       <div class="w-full flex">
         <div class="w-1/3">
-          <InputLabel :value="'Event name'"></InputLabel>
-          <TextInput v-model="form.event_name" class="mt-3 w-full text-sm"></TextInput>
+          <InputLabel :value="'Event Name'"></InputLabel>
+          <TextInput placeholder="Event Name" v-model="form.event_name" class="mt-3 w-full text-sm"></TextInput>
           <InputError :message="form.errors.event_name"></InputError>
         </div>
         <div class="w-1/3 ms-2">
           <InputLabel :value="'Location'"></InputLabel>
-          <TextInput v-model="form.location" class="mt-3 w-full text-sm"></TextInput>
+          <TextInput placeholder="Location" v-model="form.location" class="mt-3 w-full text-sm"></TextInput>
           <InputError :message="form.errors.location"></InputError>
         </div>
         <div class="w-1/3 ms-2">
           <InputLabel :value="'Credits (e.g. 10.50, 0.50)'"></InputLabel>
-          <TextInput v-model="form.credits" class="mt-3 w-full text-sm"></TextInput>
+          <TextInput placeholder="Credits" v-model="form.credits" class="mt-3 w-full text-sm"></TextInput>
           <InputError :message="form.errors.credits"></InputError>
         </div>
       </div>
@@ -98,7 +98,7 @@ const saveEvent = () =>
           <InputError :message="form.errors.lead_instructors_id"></InputError>
         </div>
         <div class="w-1/3 ms-2">
-          <InputLabel :value="'Assist instructor'"></InputLabel>
+          <InputLabel :value="'Assistance instructor'"></InputLabel>
           <select
             v-model="form.assist_instructors_id"
             class="py-3 px-4 pe-9 block w-full border-gray-200 dark:border-none rounded-lg text-sm focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none mt-3 dark:bg-gray-900"
@@ -135,8 +135,8 @@ const saveEvent = () =>
 
       <div class="w-full flex my-5">
         <div class="w-1/3">
-          <InputLabel :value="'Maximum seats'"></InputLabel>
-          <TextInput
+          <InputLabel :value="'Maximum Seat Number'"></InputLabel>
+          <TextInput placeholder="Maximum Seat Number"
             type="number"
             v-model="form.max_seats"
             class="mt-3 w-full text-sm"
@@ -144,8 +144,8 @@ const saveEvent = () =>
           <InputError :message="form.errors.max_seats"></InputError>
         </div>
         <div class="w-1/3 ms-2">
-          <InputLabel :value="'Event reference id'"></InputLabel>
-          <TextInput
+          <InputLabel :value="'Event Reference ID'"></InputLabel>
+          <TextInput placeholder="Event Reference ID"
             type="number"
             v-model="form.event_reference_id"
             class="mt-3 w-full text-sm"
@@ -153,7 +153,7 @@ const saveEvent = () =>
           <InputError :message="form.errors.event_reference_id"></InputError>
         </div>
         <div class="w-1/3 ms-2">
-          <InputLabel :value="'Room number'"></InputLabel>
+          <InputLabel :value="'Event Room Number'"></InputLabel>
           <select
             v-model="form.room_numbers_id"
             class="py-2 px-4 pe-9 block w-full border-gray-200 dark:border-none rounded-lg text-sm focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none mt-3 dark:bg-gray-900"
@@ -169,7 +169,7 @@ const saveEvent = () =>
 
       <div class="w-full flex my-5">
         <div class="w-1/4">
-          <InputLabel :value="'Start date'"></InputLabel>
+          <InputLabel :value="'Start Date'"></InputLabel>
           <TextInput
             type="date"
             v-model="form.start_date"
@@ -178,7 +178,7 @@ const saveEvent = () =>
           <InputError :message="form.errors.start_date"></InputError>
         </div>
         <div class="w-1/4 ms-2">
-          <InputLabel :value="'End date'"></InputLabel>
+          <InputLabel :value="'End Date'"></InputLabel>
           <TextInput
             type="date"
             v-model="form.end_date"
@@ -187,7 +187,7 @@ const saveEvent = () =>
           <InputError :message="form.errors.end_date"></InputError>
         </div>
         <div class="w-1/4 ms-2">
-          <InputLabel :value="'Start time'"></InputLabel>
+          <InputLabel :value="'Start Time'"></InputLabel>
           <TextInput
             type="time"
             v-model="form.start_time"
@@ -196,7 +196,7 @@ const saveEvent = () =>
           <InputError :message="form.errors.start_time"></InputError>
         </div>
         <div class="w-1/4 ms-2">
-          <InputLabel :value="'End time'"></InputLabel>
+          <InputLabel :value="'End Time'"></InputLabel>
           <TextInput
             type="time"
             v-model="form.end_time"
@@ -208,7 +208,7 @@ const saveEvent = () =>
 
       <div class="w-full flex my-5">
         <div class="w-1/3">
-          <InputLabel :value="'Early attendance minutes'"></InputLabel>
+          <InputLabel :value="'Early Attendance Minutes'"></InputLabel>
           <select
             v-model="form.early_attendance_min"
             class="py-3 px-4 pe-9 block w-full border-gray-200 dark:border-none rounded-lg text-sm focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none mt-3 dark:bg-gray-900"
@@ -224,7 +224,7 @@ const saveEvent = () =>
           <InputError :message="form.errors.early_attendance_min"></InputError>
         </div>
         <div class="w-1/3 ms-2">
-          <InputLabel :value="'Late attendance minutes'"></InputLabel>
+          <InputLabel :value="'Late Attendance Minutes'"></InputLabel>
           <select
             v-model="form.late_attendance_min"
             class="py-3 px-4 pe-9 block w-full border-gray-200 dark:border-none rounded-lg text-sm focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none mt-3 dark:bg-gray-900"
@@ -252,7 +252,7 @@ const saveEvent = () =>
       </div>
 
       <div class="w-full ms-2">
-        <InputLabel :value="'Self check-in'"></InputLabel>
+        <InputLabel :value="'Self Check-in'"></InputLabel>
         <input
           type="checkbox"
           id="hs-basic-usage"

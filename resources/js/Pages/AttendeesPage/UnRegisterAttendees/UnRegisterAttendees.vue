@@ -6,6 +6,7 @@ import { Link, router, useForm } from "@inertiajs/vue3";
 import { onMounted, ref } from "vue";
 import InputError from "@/Components/InputError.vue";
 import TextInput from "@/Components/TextInput.vue";
+import InputLabel from "@/Components/InputLabel.vue";
 
 const props = defineProps({
   registerEvents: Object,
@@ -124,46 +125,32 @@ onMounted(() => {
     <AuthenticatedLayout>
       <div class="px-10 py-5">
         <Transition name="slide-fade">
-          <div
-            v-if="status"
-            class="text-xs bg-red-500 block fixed right-10 top-20 z-10 text-white px-3 py-4 rounded-md"
-          >
+          <div v-if="status"
+            class="text-xs bg-red-500 block fixed right-10 top-20 z-10 text-white px-3 py-4 rounded-md">
             Event registration delete successfully.
           </div>
         </Transition>
 
         <header class="mb-10">
-          <h3 class="text-gray-800 text-2xl pb-1 bold dark:text-white">Unregister attendees</h3>
+          <h3 class="text-gray-800 text-2xl pb-1 bold dark:text-white">Unregister Attendees</h3>
           <div class="w-10 h-1 bg-blue-800"></div>
         </header>
 
         <div class="w-full bg-white shadow-md mb-20 dark:bg-gray-800">
           <div class="border-b border-gray-200 dark:border-none px-4">
-            <AttendeesTabLayout></AttendeesTabLayout>
+            <div class="border-b">
+              <AttendeesTabLayout></AttendeesTabLayout>
+            </div>
 
-            <div class="flex justify-end">
+            <div class="flex justify-end mt-5">
               <div class="relative">
-                <TextInput
-                  ref="input"
-                  v-model="query"
-                  @keydown.enter="searchUser"
-                  placeholder="Search attendees..."
-                  class="text-sm"
-                ></TextInput>
+                <TextInput ref="input" v-model="query" @keydown.enter="searchUser" placeholder="Search attendees..."
+                  class="text-sm"></TextInput>
                 <div class="absolute right-3 top-1/2 -translate-y-1/2">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke-width="1.5"
-                    stroke="currentColor"
-                    class="size-4 dark:text-white"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
-                    />
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="size-4 dark:text-white">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                      d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
                   </svg>
                 </div>
               </div>
@@ -177,10 +164,9 @@ onMounted(() => {
               <div class="">
                 <form v-on:submit.prevent="unregisterEvent">
                   <div class="w-full flex items-center mt-5">
-                    <div class="w-1/3 ms-3">
-                      <select
-                        @change="chooseEvent"
-                        data-hs-select='{
+                    <div class="w-1/3 ms-3 ">
+                      <InputLabel :value="'Events Lists'" class="mb-3"></InputLabel>
+                      <select @change="chooseEvent" data-hs-select='{
                             "hasSearch": true,
                             "searchPlaceholder": "Search...",
                             "searchClasses": "block w-full text-sm border-gray-200 dark:border-none rounded-lg focus:border-blue-500 focus:ring-blue-500 before:absolute before:inset-0 before:z-[1] dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 py-2 px-3",
@@ -192,17 +178,14 @@ onMounted(() => {
                             "optionClasses": "py-2 px-4 w-full text-sm text-gray-800 cursor-pointer hover:bg-gray-100 rounded-lg focus:outline-none focus:bg-gray-100 dark:bg-neutral-900 dark:hover:bg-neutral-800 dark:text-neutral-200 dark:focus:bg-neutral-800",
                             "optionTemplate": "<div><div class=\"flex items-center\"><div class=\"me-2\" data-icon></div><div class=\"text-gray-800 dark:text-neutral-200 \" data-title></div></div></div>",
                             "extraMarkup": "<div class=\"absolute top-1/2 end-3 -translate-y-1/2\"><svg class=\"shrink-0 size-3.5 text-gray-500 dark:text-neutral-500 \" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m7 15 5 5 5-5\"/><path d=\"m7 9 5-5 5 5\"/></svg></div>"
-                        }'
-                        class="hidden"
-                        v-model="form.events_id"
-                      >
+                        }' class="hidden" v-model="form.events_id">
                         <option value="">Choose events</option>
                         <option v-for="event in events" :key="event.id" :value="event.id">
                           {{ event.event_name }}
                         </option>
                       </select>
                     </div>
-                    <div class="w-1/3 ms-5">
+                    <div class="w-1/3 ms-5 mt-7">
                       <PrimaryButton type="submit" class="ms-3">Unregister</PrimaryButton>
                     </div>
                   </div>
@@ -221,67 +204,43 @@ onMounted(() => {
                           <tr>
                             <th scope="col" class="py-1 ps-3 --exclude-from-ordering">
                               <div class="flex items-center h-5">
-                                <input
-                                  ref="checkBoxAll"
-                                  @change="handleSelectAllChackBoxChange(registerEvents)"
-                                  id="hs-table-checkbox-all"
-                                  type="checkbox"
-                                  class="border-gray-300 rounded text-blue-600 focus:ring-blue-500"
-                                />
+                                <input ref="checkBoxAll" @change="handleSelectAllChackBoxChange(registerEvents)"
+                                  id="hs-table-checkbox-all" type="checkbox"
+                                  class="border-gray-300 rounded text-blue-600 focus:ring-blue-500" />
                               </div>
                             </th>
 
-                            <th
-                              scope="col"
-                              class="py-1 group text-start font-normal focus:outline-none"
-                            >
+                            <th scope="col" class="py-1 group text-start font-normal focus:outline-none">
                               <div
-                                class="py-1 px-2.5 inline-flex items-center border border-transparent text-sm text-gray-500 rounded-md hover:border-gray-200 dark:border-none"
-                              >
+                                class="py-1 px-2.5 inline-flex items-center border border-transparent text-sm text-gray-500 rounded-md hover:border-gray-200 dark:border-none">
                                 Name
                               </div>
                             </th>
 
-                            <th
-                              scope="col"
-                              class="py-1 group text-start font-normal focus:outline-none"
-                            >
+                            <th scope="col" class="py-1 group text-start font-normal focus:outline-none">
                               <div
-                                class="py-1 px-2.5 inline-flex items-center border border-transparent text-sm text-gray-500 rounded-md hover:border-gray-200 dark:border-none"
-                              >
+                                class="py-1 px-2.5 inline-flex items-center border border-transparent text-sm text-gray-500 rounded-md hover:border-gray-200 dark:border-none">
                                 Phone number
                               </div>
                             </th>
 
-                            <th
-                              scope="col"
-                              class="py-1 group text-start font-normal focus:outline-none"
-                            >
+                            <th scope="col" class="py-1 group text-start font-normal focus:outline-none">
                               <div
-                                class="py-1 px-2.5 inline-flex items-center border border-transparent text-sm text-gray-500 rounded-md hover:border-gray-200 dark:border-none"
-                              >
+                                class="py-1 px-2.5 inline-flex items-center border border-transparent text-sm text-gray-500 rounded-md hover:border-gray-200 dark:border-none">
                                 Email
                               </div>
                             </th>
 
-                            <th
-                              scope="col"
-                              class="py-1 group text-start font-normal focus:outline-none"
-                            >
+                            <th scope="col" class="py-1 group text-start font-normal focus:outline-none">
                               <div
-                                class="py-1 px-2.5 inline-flex items-center border border-transparent text-sm text-gray-500 rounded-md hover:border-gray-200 dark:border-none"
-                              >
+                                class="py-1 px-2.5 inline-flex items-center border border-transparent text-sm text-gray-500 rounded-md hover:border-gray-200 dark:border-none">
                                 Event name
                               </div>
                             </th>
 
-                            <th
-                              scope="col"
-                              class="py-1 group text-start font-normal focus:outline-none"
-                            >
+                            <th scope="col" class="py-1 group text-start font-normal focus:outline-none">
                               <div
-                                class="py-1 px-2.5 inline-flex items-center border border-transparent text-sm text-gray-500 rounded-md hover:border-gray-200 dark:border-none"
-                              >
+                                class="py-1 px-2.5 inline-flex items-center border border-transparent text-sm text-gray-500 rounded-md hover:border-gray-200 dark:border-none">
                                 created_at
                               </div>
                             </th>
@@ -289,47 +248,30 @@ onMounted(() => {
                         </thead>
 
                         <tbody class="divide-y divide-gray-200">
-                          <tr
-                            v-for="registerEvent in registerEvents.data"
-                            :key="registerEvent.id"
-                          >
+                          <tr v-for="registerEvent in registerEvents.data" :key="registerEvent.id">
                             <td class="py-3 ps-3">
                               <div class="flex items-center h-5">
-                                <input
-                                  :value="registerEvent.id"
-                                  :id="`hs-table-checkbox-${registerEvent.id}`"
+                                <input :value="registerEvent.id" :id="`hs-table-checkbox-${registerEvent.id}`"
                                   type="checkbox"
                                   class="border-gray-300 checkBoxes rounded text-blue-600 focus:ring-blue-500"
-                                  data-hs-datatable-row-selecting-individual=""
-                                  @change="handleCheckboxChange"
-                                />
+                                  data-hs-datatable-row-selecting-individual="" @change="handleCheckboxChange" />
                               </div>
                             </td>
-                            <td
-                              class="p-3 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white"
-                            >
+                            <td class="p-3 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white">
                               {{ registerEvent.register_attendees.name }}
                             </td>
-                            <td
-                              class="p-3 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white"
-                            >
+                            <td class="p-3 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white">
                               {{ registerEvent.register_attendees.phone_number }}
                             </td>
-                            <td
-                              class="p-3 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white"
-                            >
+                            <td class="p-3 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white">
                               {{ registerEvent.register_attendees.email }}
                             </td>
 
-                            <td
-                              class="p-3 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white"
-                            >
+                            <td class="p-3 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white">
                               {{ registerEvent.events.event_name }}
                             </td>
 
-                            <td
-                              class="p-3 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white"
-                            >
+                            <td class="p-3 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white">
                               {{
                                 registerEvent.register_attendees.created_at.split("T")[0]
                               }}
@@ -345,15 +287,12 @@ onMounted(() => {
                   <div class="mb-7 my-5">
                     <Link
                       :href="`${link.url}&data[attendeesGroupId]=${form.attendees_groups_id}&data[eventsId]=${form.events_id}`"
-                      v-for="(link, index) in registerEvents.links"
-                      :key="index"
-                      class="border py-2 px-3 text-sm dark:text-white"
-                      :class="{
+                      v-for="(link, index) in registerEvents.links" :key="index"
+                      class="border py-2 px-3 text-sm dark:text-white" :class="{
                         'bg-blue-500 text-white': link.active,
-                      }"
-                    >
-                      <span v-html="link.label"></span
-                    ></Link>
+                      }">
+                      <span v-html="link.label"></span>
+                    </Link>
                   </div>
                 </div>
               </div>

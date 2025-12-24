@@ -11,88 +11,88 @@ import { Link } from "@inertiajs/vue3";
       aria-orientation="horizontal"
     >
       <Link
-        href="/attendees/list"
-        class="py-4 px-1 inline-flex items-center gap-x-2 border-b-2 border-transparent text-sm whitespace-nowrap hover:text-blue-600 focus:outline-none focus:text-blue-600 disabled:opacity-50 disabled:pointer-events-none"
+        href="/attendees"
+        class="py-2 my-3 px-1 inline-flex items-center gap-x-2 border-b-2 border-transparent text-sm whitespace-nowrap  focus:outline-none disabled:opacity-50 disabled:pointer-events-none"
         role="tab"
         :class="{
-          'text-blue-500 font-bold': route().current('attendees.list.index'),
+          'text-white rounded-md font-bold bg-blue-500': route().current('attendees.list.index'),
           'text-gray-500 ': !route().current('attendees.list.index'),
         }"
       >
-        List attendees
+        Attendees Lists
       </Link>
       <Link
         href="/attendees/type"
-        class="py-4 px-1 inline-flex items-center gap-x-2 border-b-2 border-transparent text-sm whitespace-nowrap hover:text-blue-600 focus:outline-none focus:text-blue-600 disabled:opacity-50 disabled:pointer-events-none"
+        class="py-2 my-3 px-1 inline-flex items-center gap-x-2 border-b-2 border-transparent text-sm whitespace-nowrap  focus:outline-none disabled:opacity-50 disabled:pointer-events-none"
         role="tab"
         :class="{
-          'text-blue-500 font-bold': route().current('attendees.type.index'),
+          'text-white rounded-md font-bold bg-blue-500': route().current('attendees.type.index'),
           'text-gray-500 ': !route().current('attendees.type.index'),
         }"
       >
-        Attendees type
+        Attendees Type
       </Link>
       <Link
         href="/attendees/group"
-        class="py-4 px-1 inline-flex items-center gap-x-2 border-b-2 border-transparent text-sm whitespace-nowrap hover:text-blue-600 focus:outline-none focus:text-blue-600 disabled:opacity-50 disabled:pointer-events-none"
+        class="py-2 my-3 px-1 inline-flex items-center gap-x-2 border-b-2 border-transparent text-sm whitespace-nowrap  focus:outline-none disabled:opacity-50 disabled:pointer-events-none"
         role="tab"
         :class="{
-          'text-blue-500 font-bold': route().current('attendees.group.index'),
+          'text-white rounded-md font-bold bg-blue-500': route().current('attendees.group.index'),
           'text-gray-500 ': !route().current('attendees.group.index'),
         }"
       >
-        Attendees group
+        Attendees Group
       </Link>
       <Link
         href="/attendees/add"
-        class="py-4 px-1 inline-flex items-center gap-x-2 border-b-2 border-transparent text-sm whitespace-nowrap hover:text-blue-600 focus:outline-none focus:text-blue-600 disabled:opacity-50 disabled:pointer-events-none"
+        class="py-2 my-3 px-1 inline-flex items-center gap-x-2 border-b-2 border-transparent text-sm whitespace-nowrap  focus:outline-none disabled:opacity-50 disabled:pointer-events-none"
         role="tab"
         :class="{
-          'text-blue-500 font-bold': route().current('attendees.index'),
+          'text-white rounded-md font-bold bg-blue-500': route().current('attendees.index'),
           'text-gray-500 ': !route().current('attendees.index'),
         }"
       >
-        Attendees
+        Create Attendees
       </Link>
 
       <Link
         href="/attendees/upload"
-        class="hs-tab-active:font-semibold hs-tab-active:border-blue-600 hs-tab-active:text-blue-600 py-4 px-1 inline-flex items-center gap-x-2 border-b-2 border-transparent text-sm whitespace-nowrap hover:text-blue-600 focus:outline-none focus:text-blue-600 disabled:opacity-50 disabled:pointer-events-none"
+        class="py-2 my-3 px-1 inline-flex items-center gap-x-2 border-b-2 border-transparent text-sm whitespace-nowrap  focus:outline-none disabled:opacity-50 disabled:pointer-events-none"
         role="tab"
         :class="{
-          'text-blue-500 font-bold': route().current('attendees.upload.index'),
+          'text-white rounded-md font-bold bg-blue-500': route().current('attendees.upload.index'),
           'text-gray-500 ': !route().current('attendees.upload.index'),
         }"
       >
-        Attendees import
+        Import Attendees
       </Link>
 
       <Link
         href="/attendees/register"
-        class="hs-tab-active:font-semibold hs-tab-active:border-blue-600 hs-tab-active:text-blue-600 py-4 px-1 inline-flex items-center gap-x-2 border-b-2 border-transparent text-sm whitespace-nowrap hover:text-blue-600 focus:outline-none focus:text-blue-600 disabled:opacity-50 disabled:pointer-events-none"
+        class="py-2 my-3 px-1 inline-flex items-center gap-x-2 border-b-2 border-transparent text-sm whitespace-nowrap  focus:outline-none disabled:opacity-50 disabled:pointer-events-none"
         role="tab"
         :class="{
-          'text-blue-500 font-bold': route().current(
+          'text-white rounded-md font-bold bg-blue-500': route().current(
             'attendees.register.index'
           ),
           'text-gray-500 ': !route().current('attendees.register.index'),
         }"
       >
-        Register attendees
+        Register Attendees
       </Link>
 
        <Link
         href="/attendees/unregister"
-        class="hs-tab-active:font-semibold hs-tab-active:border-blue-600 hs-tab-active:text-blue-600 py-4 px-1 inline-flex items-center gap-x-2 border-b-2 border-transparent text-sm whitespace-nowrap hover:text-blue-600 focus:outline-none focus:text-blue-600 disabled:opacity-50 disabled:pointer-events-none"
+        class="py-2 my-3 px-1 inline-flex items-center gap-x-2 border-b-2 border-transparent text-sm whitespace-nowrap  focus:outline-none disabled:opacity-50 disabled:pointer-events-none"
         role="tab"
         :class="{
-          'text-blue-500 font-bold': route().current(
+          'text-white rounded-md font-bold bg-blue-500': route().current(
             'attendees.unregister.index'
           ),
           'text-gray-500 ': !route().current('attendees.unregister.index'),
         }"
       >
-        Unregister attendees
+        Unregister Attendees
       </Link>
     </nav>
 
