@@ -23,7 +23,7 @@ class RedirectIfAuthMiddleware
 
         if (Auth::check() && !Route::currentRouteName('calendar.index')) {
             if (Auth::user()->is_admin == 2 || Auth::user()->is_admin == 3) {
-                return redirect()->route('scan.index');
+                return redirect()->route('selfCheckInUser.index');
             }
             return redirect()->route('calendar.index');
         }

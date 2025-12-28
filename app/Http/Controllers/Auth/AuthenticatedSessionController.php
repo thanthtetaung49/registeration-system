@@ -33,7 +33,7 @@ class AuthenticatedSessionController extends Controller
         $request->session()->regenerate();
 
         if (auth()->user()->is_admin == 2 || auth()->user()->is_admin == 3) {
-            return redirect()->intended(route('scan.index', absolute: false));
+            return redirect()->intended(route('selfCheckInUser.index', absolute: false));
         }
 
         return redirect()->intended(route('calendar.index', absolute: false));

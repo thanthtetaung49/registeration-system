@@ -13,7 +13,8 @@ use Illuminate\Support\Facades\Storage;
 
 class UsersManagementController extends Controller
 {
-    public function index () {
+    public function index()
+    {
         $users = User::orderByDesc('id')->paginate(10);
         $superAdmin = auth()->user()->is_admin;
 
@@ -31,7 +32,7 @@ class UsersManagementController extends Controller
         $types = AttendeesType::get();
         $groups = AttendeesGroup::get();
 
-        return Inertia::render('UsersManagement/EditUsersManagement', [
+        return Inertia::render('UsersManagement/UsersManagementEdit', [
             'user' => $user,
             'types' => $types,
             'groups' => $groups,
@@ -106,33 +107,17 @@ class UsersManagementController extends Controller
 
 
     // view
-    public function  view (User $user) {
+    public function  view(User $user)
+    {
         return response()->json([
             'user' => $user,
             'baseUrl' => env('APP_URL')
         ]);
     }
 
-    // update role
-    // public function updateRole (Request $request) {
-    //     return response()->json([
-    //         'message' => 'Success'
-    //     ]);
-    //     // $id = $request->id;
-    //     // $role = $request->role;
-    //     // $user = User::findOrFail($id);
-
-
-
-    //     // $user->update(['is_admin' => $role]);
-
-    //     // return response()->json([
-    //     //     'userId' => $user->id,
-    //     //     'baseUrl' => url('/')
-    //     // ]);
-    // }
-
-    public function roleUpdate(Request $request) {
+    // role update
+    public function roleUpdate(Request $request)
+    {
         $id = $request->id;
         $role = $request->role;
 
@@ -147,8 +132,31 @@ class UsersManagementController extends Controller
         ]);
     }
 
+    // search
+    public function search(Request $request)
+    {
+        $query = $request->query('query');
+
+        $users = User::when(
+            $query,
+            fn($u) => $u->where('name', 'like', '%' . $query . '%')
+                ->orWhere('email', 'like', '%' . $query . '%')
+                ->orWhere('address', 'like', '%' . $query . '%')
+        )
+            ->orderByDesc('id')
+            ->paginate(10);
+        $superAdmin = auth()->user()->is_admin;
+
+
+        return Inertia::render('UsersManagement/UsersManagement', [
+            'users' => $users,
+            'superAdmin' => $superAdmin
+        ]);
+    }
+
     // disabled users
-    public function disabledUser (Request $request) {
+    public function disabledUser(Request $request)
+    {
         $user = User::findOrFail($request->userId);
 
         $user->update(['disable_status' => 1]); // account is disabled
@@ -159,7 +167,8 @@ class UsersManagementController extends Controller
     }
 
     // activate users
-    public function activateUser (Request $request) {
+    public function activateUser(Request $request)
+    {
         $user = User::findOrFail($request->userId);
 
         $user->update(['disable_status' => 0]); // account is activate
@@ -170,7 +179,8 @@ class UsersManagementController extends Controller
     }
 
     // delete users
-    public function deleteUser (Request $request) {
+    public function deleteUser(Request $request)
+    {
         $user = User::findOrFail($request->userId);
 
         $user->delete(); // account is activate

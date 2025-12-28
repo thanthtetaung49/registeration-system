@@ -70,17 +70,17 @@ defineComponent({ InstructorForm });
                           :key="instructor.id"
                         >
                           <td
-                            class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white dark:text-white"
+                            class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white "
                           >
                             {{ index + 1 }}
                           </td>
                           <td
-                            class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white dark:text-white"
+                            class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white "
                           >
                             {{ instructor.name }}
                           </td>
                           <td
-                            class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white dark:text-white"
+                            class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white "
                           >
                             {{ instructor.created_at.split("T")[0] }}
                           </td>
@@ -88,7 +88,7 @@ defineComponent({ InstructorForm });
                             class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium"
                           >
                             <Link
-                              :href="`/instructor/view/${instructor.id}`"
+                              :href="`/instructors/view/${instructor.id}`"
                               class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border text-gray-600 focus:outline-none focus:text-whitedisabled:opacity-50 disabled:pointer-events-none dark:text-gray-500 dark:hover:text-gray-400 dark:focus:text-gray-400 p-2 mr-3 hover:bg-green-700 hover:text-white"
                               aria-haspopup="dialog"
                               aria-expanded="false"
@@ -117,7 +117,7 @@ defineComponent({ InstructorForm });
                             </Link>
 
                             <Link
-                              :href="`/instructor/edit/${instructor.id}`"
+                              :href="`/instructors/edit/${instructor.id}`"
                               class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border text-gray-600 focus:outline-none focus:text-whitedisabled:opacity-50 disabled:pointer-events-none dark:text-gray-500 dark:hover:text-gray-400 dark:focus:text-gray-400 p-2 mr-3 hover:bg-gray-700 hover:text-white"
                               aria-haspopup="dialog"
                               aria-expanded="false"
@@ -141,7 +141,7 @@ defineComponent({ InstructorForm });
                             </Link>
 
                             <Link
-                              :href="`/instructor/delete/${instructor.id}`"
+                              :href="`/instructors/delete/${instructor.id}`"
                               class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border text-gray-600 focus:outline-none focus:text-whitedisabled:opacity-50 disabled:pointer-events-none dark:text-gray-500 dark:hover:text-gray-400 dark:focus:text-gray-400 p-2 mr-3 hover:bg-red-700 hover:text-white"
                               aria-haspopup="dialog"
                               aria-expanded="false"

@@ -24,7 +24,7 @@ const form = useForm({
     <AuthenticatedLayout>
       <div class="px-10 py-10">
         <header class="mb-10">
-          <h3 class="text-gray-800 text-2xl pb-1 bold dark:text-white">Attendees type</h3>
+          <h3 class="text-gray-800 text-2xl pb-1 bold dark:text-white">Attendees Type Details</h3>
           <div class="w-10 h-1 bg-blue-800"></div>
         </header>
 
@@ -42,8 +42,8 @@ const form = useForm({
                 </div>
                 <div class="mt-5 w-full flex justify-end">
                     <Link
-                    href="/attendees/type"
-                    class="inline-flex items-center px-4 py-2 bg-red-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-700 focus:bg-red-700 active:bg-red-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150"
+                    href="/attendees/attendeesType"
+                    class="inline-flex items-center px-4 py-2 bg-slate-100 border border-transparent rounded-md font-semibold text-xs text-slate-800 uppercase tracking-widest hover:bg-slate-200 focus:bg-slate-200 active:bg-slate-200 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 transition ease-in-out duration-150 mr-3"
                     >Back</Link
                   >
 

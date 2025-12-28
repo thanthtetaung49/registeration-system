@@ -62,7 +62,7 @@ const updateAttendees = () => form.post(`/attendees/update/${user.id}`);
     <AuthenticatedLayout>
       <div class="px-10 py-10">
         <header class="mb-10">
-          <h3 class="text-gray-800 text-2xl pb-1 bold dark:text-white">Attendees list</h3>
+          <h3 class="text-gray-800 text-2xl pb-1 bold dark:text-white">Attendees Edit</h3>
           <div class="w-10 h-1 bg-blue-800"></div>
         </header>
 
@@ -273,11 +273,10 @@ const updateAttendees = () => form.post(`/attendees/update/${user.id}`);
 
                 <div class="w-full flex justify-end">
                   <button
-                    href="/attendees"
-                    class="inline-flex items-center px-4 py-2 bg-red-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-700 focus:bg-red-700 active:bg-red-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150 mr-3"
+                    href="/attendees/attendeesLists"
+                    class="inline-flex items-center px-4 py-2 bg-slate-100 border border-transparent rounded-md font-semibold text-xs text-slate-800 uppercase tracking-widest hover:bg-slate-200 focus:bg-slate-200 active:bg-slate-200 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 transition ease-in-out duration-150 mr-3"
                     >Back</button
                   >
-
                   <PrimaryButton type="submit">Save</PrimaryButton>
                 </div>
               </form>

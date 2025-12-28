@@ -16,7 +16,7 @@ const form = useForm({
 });
 
 const updateAttendeesGroup = () =>
-  form.post(`/attendees/group/update/${props.group.id}`);
+  form.post(`/attendees/attendeesGroup/update/${props.group.id}`);
 </script>
 
 <template>
@@ -24,7 +24,7 @@ const updateAttendeesGroup = () =>
     <AuthenticatedLayout>
       <div class="px-10 py-10">
         <header class="mb-10">
-          <h3 class="text-gray-800 text-2xl pb-1 bold dark:text-white">Attendees group</h3>
+          <h3 class="text-gray-800 text-2xl pb-1 bold dark:text-white">Attendees Group Edit</h3>
           <div class="w-10 h-1 bg-blue-800"></div>
         </header>
 
@@ -33,7 +33,7 @@ const updateAttendeesGroup = () =>
             <div class="mt-5">
               <form v-on:submit.prevent="updateAttendeesGroup">
                 <div>
-                  <InputLabel :value="'Attendees group'"></InputLabel>
+                  <InputLabel :value="'Attendees Group'"></InputLabel>
                   <TextInput
                     v-model="form.name"
                     class="mt-3 w-[30%] text-sm"
@@ -42,8 +42,8 @@ const updateAttendeesGroup = () =>
                 </div>
                 <div class="mt-5 w-full flex justify-end">
                   <Link
-                    href="/attendees/group"
-                    class="inline-flex items-center px-4 py-2 bg-red-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-700 focus:bg-red-700 active:bg-red-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150 mr-3"
+                    href="/attendees/attendeesGroup"
+                    class="inline-flex items-center px-4 py-2 bg-slate-100 border border-transparent rounded-md font-semibold text-xs text-slate-800 uppercase tracking-widest hover:bg-slate-200 focus:bg-slate-200 active:bg-slate-200 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 transition ease-in-out duration-150 mr-3"
                     >Back</Link
                   >
                   <PrimaryButton type="submit">Save</PrimaryButton>

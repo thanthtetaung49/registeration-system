@@ -36,11 +36,11 @@ const form = useForm({
     <AuthenticatedLayout>
       <div class="px-10 py-10">
         <header class="mb-10">
-          <h3 class="text-gray-800 text-2xl pb-1 bold dark:text-white dark:text-white">Event view</h3>
+          <h3 class="text-gray-800 text-2xl pb-1 bold dark:text-white ">Event Details</h3>
           <div class="w-10 h-1 bg-blue-800"></div>
         </header>
 
-        <div class="w-full bg-white rounded-lg shadow-md dark:text-white dark:bg-gray-800 dark:bg-gray-800">
+        <div class="w-full bg-white rounded-lg shadow-md dark:text-white dark:bg-gray-800">
           <div class="border-b border-gray-200 dark:border-none px-4 py-5 mb-10">
             <div class="my-5">
               <form>
@@ -171,7 +171,7 @@ const form = useForm({
                     <InputLabel :value="'Early attendance minutes'"></InputLabel>
                     <select
                       v-model="form.early_attendance_min"
-                      class="py-3 px-4 pe-9 block w-full border-gray-200 dark:border-none rounded-lg text-sm focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none mt-3 dark:bg-gray-900 dark:bg-gray-950 dark:text-white"
+                      class="py-3 px-4 pe-9 block w-full border-gray-200 dark:border-none rounded-lg text-sm focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none mt-3 dark:bg-gray-900  dark:text-white"
                       disabled
                     >
                       <option value="" selected="">
@@ -187,7 +187,7 @@ const form = useForm({
                     <InputLabel :value="'Late attendance minutes'"></InputLabel>
                     <select
                       v-model="form.late_attendance_min"
-                      class="py-3 px-4 pe-9 block w-full border-gray-200 dark:border-none rounded-lg text-sm focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none mt-3 dark:bg-gray-900 dark:bg-gray-950 dark:text-white"
+                      class="py-3 px-4 pe-9 block w-full border-gray-200 dark:border-none rounded-lg text-sm focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none mt-3 dark:bg-gray-900  dark:text-white"
                       disabled
                     >
                       <option value="" selected="">
@@ -203,7 +203,7 @@ const form = useForm({
                     <InputLabel :value="'Description'"></InputLabel>
                     <div class="max-w-sm space-y-3">
                       <textarea
-                        class="py-3 px-4 block w-full border-gray-200 dark:border-none rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-gray-900 dark:bg-gray-950 dark:text-white"
+                        class="py-3 px-4 block w-full border-gray-200 dark:border-none rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-gray-900 dark:text-white"
                         rows="3"
                         placeholder="Description"
                         v-model="form.description"
@@ -219,6 +219,7 @@ const form = useForm({
                     type="checkbox"
                     id="hs-basic-usage"
                     v-model="form.event_type"
+                    disabled
                     class="mt-3 relative w-[3.25rem] h-7 p-px bg-gray-300 border-transparent text-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:ring-blue-600 disabled:opacity-50 disabled:pointer-events-none checked:bg-none checked:text-blue-600 checked:border-blue-600 focus:checked:border-blue-600 dark:bg-neutral-800 dark:border-neutral-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-600 before:inline-block before:size-6 before:bg-white checked:before:bg-blue-200 before:translate-x-0 checked:before:translate-x-full before:rounded-full before:shadow before:transform before:ring-0 before:transition before:ease-in-out before:duration-200 dark:before:bg-neutral-400 dark:checked:before:bg-blue-200"
                   />
                   <InputError :message="form.errors.event_type"></InputError>
@@ -226,8 +227,8 @@ const form = useForm({
 
                 <div class="mt-10 w-full flex justify-end">
                   <Link
-                    href="/event"
-                    class="inline-flex items-center px-4 py-2 bg-red-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-700 focus:bg-red-700 active:bg-red-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150"
+                    href="/event/eventList"
+                    class="inline-flex items-center px-4 py-2 bg-slate-100 border border-transparent rounded-md font-semibold text-xs text-slate-800 uppercase tracking-widest hover:bg-slate-200 focus:bg-slate-200 active:bg-slate-200 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 transition ease-in-out duration-150 mr-3"
                     >Back</Link
                   >
                 </div>

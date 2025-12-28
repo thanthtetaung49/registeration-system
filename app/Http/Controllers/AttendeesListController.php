@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Maatwebsite\Excel\Facades\Excel;
 
-class ListAttendeesController extends Controller
+class AttendeesListController extends Controller
 {
     public function index()
     {
@@ -21,7 +21,7 @@ class ListAttendeesController extends Controller
             ->whereIn('is_admin', [0, 3])
             ->paginate(20);
 
-        return Inertia::render('AttendeesPage/ListAttendees', ['users' => $users]);
+        return Inertia::render('AttendeesPage/AttendeesList', ['users' => $users]);
     }
 
     public function search(Request $request)
@@ -43,7 +43,7 @@ class ListAttendeesController extends Controller
                 ->paginate(20);
         }
 
-        return Inertia::render('AttendeesPage/ListAttendees', ['users' => $users]);
+        return Inertia::render('AttendeesPage/AttendeesList', ['users' => $users]);
     }
 
     public function excelExport()

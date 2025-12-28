@@ -20,7 +20,7 @@ const props = defineProps({
 // console.log(props);
 
 const registerEvents = ref(props.registerEvents);
-const status = ref(false);
+// const status = ref(false);
 const checkBoxAll = ref(null);
 const query = ref(null);
 const input = ref(null);
@@ -31,28 +31,19 @@ const form = useForm({
   attendees_groups_id: props.groupId ? props.groupId : "",
 });
 
+// console.log(form);
+
 const unregisterEvent = () => {
   const checkBoxes = document.querySelectorAll(".checkBoxes");
 
-  form.post("/attendees/event/unregister", {
-    onSuccess: () => {
-      status.value = true;
-
-      setInterval(() => {
-        status.value = false;
-      }, 5000);
-
-      form.registerEvents_id = [];
-      form.events_id = "";
-
-      window.location.href = "/attendees/unregister";
+  form.post("/attendees/event/unregisterAttendees", {
+    preserveScroll: true,
+    onSuccess: (response) => {
+      window.location.href = "/attendees/unregisterAttendees"
     },
   });
 
-  checkBoxAll.value.checked = false;
-  checkBoxes.forEach((checkBox) => {
-    checkBox.checked = false;
-  });
+
 };
 
 const handleCheckboxChange = (event) => {
@@ -90,7 +81,7 @@ const handleSelectAllChackBoxChange = (registerEvents) => {
 };
 
 const chooseEvent = () => {
-  router.get("/attendees/event/unregister/filter", {
+  router.get("/attendees/event/unregisterAttendees/filter", {
     data: {
       eventsId: form.events_id,
     },
@@ -102,7 +93,7 @@ const chooseEvent = () => {
 };
 
 const searchUser = () => {
-  router.visit(`/attendees/event/unregister/search`, {
+  router.visit(`/attendees/event/unregisterAttendees/search`, {
     method: "get",
     data: {
       query: query.value,
@@ -124,12 +115,6 @@ onMounted(() => {
   <div>
     <AuthenticatedLayout>
       <div class="px-10 py-5">
-        <Transition name="slide-fade">
-          <div v-if="status"
-            class="text-xs bg-red-500 block fixed right-10 top-20 z-10 text-white px-3 py-4 rounded-md">
-            Event registration delete successfully.
-          </div>
-        </Transition>
 
         <header class="mb-10">
           <h3 class="text-gray-800 text-2xl pb-1 bold dark:text-white">Unregister Attendees</h3>
@@ -144,7 +129,7 @@ onMounted(() => {
 
             <div class="flex justify-end mt-5">
               <div class="relative">
-                <TextInput ref="input" v-model="query" @keydown.enter="searchUser" placeholder="Search attendees..."
+                <TextInput ref="input" v-model="query" @keydown.enter="searchUser" placeholder="Search Attendees"
                   class="text-sm"></TextInput>
                 <div class="absolute right-3 top-1/2 -translate-y-1/2">
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -194,7 +179,7 @@ onMounted(() => {
               </div>
             </div>
 
-            <div class="">
+            <div v-if="form.events_id">
               <div class="flex flex-col">
                 <div class="overflow-x-auto">
                   <div class="min-w-full inline-block align-middle">
@@ -220,7 +205,7 @@ onMounted(() => {
                             <th scope="col" class="py-1 group text-start font-normal focus:outline-none">
                               <div
                                 class="py-1 px-2.5 inline-flex items-center border border-transparent text-sm text-gray-500 rounded-md hover:border-gray-200 dark:border-none">
-                                Phone number
+                                Phone Number
                               </div>
                             </th>
 
@@ -234,7 +219,7 @@ onMounted(() => {
                             <th scope="col" class="py-1 group text-start font-normal focus:outline-none">
                               <div
                                 class="py-1 px-2.5 inline-flex items-center border border-transparent text-sm text-gray-500 rounded-md hover:border-gray-200 dark:border-none">
-                                Event name
+                                Event Name
                               </div>
                             </th>
 

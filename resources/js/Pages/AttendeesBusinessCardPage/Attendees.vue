@@ -14,7 +14,7 @@ const input = ref(null);
 const query = ref(null);
 
 onMounted(() => {
-  input.value.focus();
+    input.value.focus();
 });
 
 const searchAttendees = () => {
@@ -38,12 +38,19 @@ const searchAttendees = () => {
                 <div>
                     <h3 class="text-2xl">Attendees Business Card</h3>
                 </div>
-                <div class="flex justify-end my-3">
+                <div class="flex justify-end my-3 relative">
                     <TextInput ref="input" v-model="query" @keydown.enter="searchAttendees"
                         placeholder="Search attendees..." class="text-sm"></TextInput>
+                    <div class="absolute right-3 top-1/2 -translate-y-1/2">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="size-4">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                        </svg>
+                    </div>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6 max-w-7xl mx-auto">
+                <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
                     <div class="bg-white rounded-[2rem] p-6 shadow-sm border border-gray-100 flex flex-col items-center text-center transition-transform hover:-translate-y-2"
                         v-for="(user, index) in userData" :key="user.id">
                         <img v-if="user.profile_path" :src="`${baseUrl}/storage/${user.profile_path}`"

@@ -32,7 +32,7 @@ const onDetect = async (detectedCodes) => {
 const securityScan = () => {
   console.log("security scan is working");
   axios
-    .post("/security/qrcode/scan", { code: code.value })
+    .post("/selfCheckInUser/security/QRCode/scan", { code: code.value })
     .then((response) => {
       console.log(response.data);
       let setSuccessMessage = response.data.successMessage;
@@ -66,7 +66,7 @@ const securityScan = () => {
 const selfCheckinUserScan = () => {
   console.log("self check in work");
     axios
-      .post("/student/qrcode/scan", {
+      .post("/selfCheckInUser/attendees/QRCode/scan", {
             code: code.value,
             authId: auth.id,
         })

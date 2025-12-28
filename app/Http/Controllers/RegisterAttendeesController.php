@@ -17,9 +17,11 @@ class RegisterAttendeesController extends Controller
     {
         $users = User::with(['register_events', 'attendees_groups'])
             ->whereNotNull('attendees_groups_id')
-            ->where('is_admin', 0)
+            ->whereIn('is_admin', [0, 3])
             ->whereDoesntHave('register_events')
             ->paginate(20);
+
+        // dd($users->get()->toArray());
 
         $events = Event::get();
         $groups = AttendeesGroup::get();
@@ -62,59 +64,34 @@ class RegisterAttendeesController extends Controller
             ]);
         }
 
-        return redirect()->route('attendees.register.index');
+        return redirect()->route('attendees.registerAttendees.index');
     }
-
-    // public function search(Request $request)
-    // {
-    //     $search = $request->query('query');
-    //     $events = Event::get();
-    //     $groups = AttendeesGroup::get();
-
-    //     if (empty($search)) {
-    //         $users = User::with('register_events')
-    //             ->whereNotNull('attendees_groups_id')
-    //             ->where('is_admin', 0)
-    //             ->whereDoesntHave('register_events')
-    //             ->paginate(20);
-    //     } else {
-    //         $users = User::with('register_events')
-    //             ->when($search, function ($query) use ($search) {
-    //                 $query->where('name', 'like', '%' . $search . '%')
-    //                     ->where('is_admin', 0)
-    //                     ->orWhere('phone_number', 'like', '%' . $search . '%')
-    //                     ->orWhere('email', 'like', '%' . $search . '%');
-    //             })
-    //             ->whereNotNull('attendees_groups_id')
-    //             ->whereDoesntHave('register_events')
-    //             ->paginate(20);
-    //     }
-
-    //     return Inertia::render('AttendeesPage/RegisterAttendees', [
-    //         'users' => $users,
-    //         'events' => $events,
-    //         'groups' => $groups,
-    //     ]);
-    // }
 
     public function filterAttendees(Request $request)
     {
         $groupId = $request['data']['attendeesGroupId'];
 
-        if (!$groupId) {
-            $users = User::with(['register_events', 'attendees_groups'])
-                ->whereNotNull('attendees_groups_id')
-                ->where('is_admin', 0)
-                ->whereDoesntHave('register_events')
-                ->paginate(20);
-        } else {
-            $users = User::with(['register_events', 'attendees_groups'])
-                ->where('is_admin', 0)
-                ->where('attendees_groups_id', $groupId)
-                ->whereNotNull('attendees_groups_id')
-                ->whereDoesntHave('register_events') // not registered
-                ->paginate(20);
-        }
+        $users = User::with(['register_events', 'attendees_groups'])
+            ->whereIn('is_admin', [0, 3])
+            ->when($groupId, fn($u) => $u->where('attendees_groups_id', $groupId))
+            ->whereNotNull('attendees_groups_id')
+            ->whereDoesntHave('register_events')
+            ->paginate(20);
+
+        // if (!$groupId) {
+        //     $users = User::with(['register_events', 'attendees_groups'])
+        //         ->where('is_admin', 0)
+        //         ->whereNotNull('attendees_groups_id')
+        //         ->whereDoesntHave('register_events')
+        //         ->paginate(20);
+        // } else {
+        //     $users = User::with(['register_events', 'attendees_groups'])
+        //         ->where('is_admin', 0)
+        //         ->where('attendees_groups_id', $groupId)
+        //         ->whereNotNull('attendees_groups_id')
+        //         ->whereDoesntHave('register_events') // not registered
+        //         ->paginate(20);
+        // }
 
 
         $events = Event::get();
@@ -128,11 +105,36 @@ class RegisterAttendeesController extends Controller
         ]);
     }
 
+    public function search(Request $request)
+    {
+        $query = $request->query('query');
+        $groupId = $request->query('groupId');
+        $eventsId = $request->query('eventsId');
+
+        $users = User::with(['register_events', 'attendees_groups'])
+            ->whereNotNull('attendees_groups_id')
+            ->whereIn('is_admin', [0, 3])
+            ->whereDoesntHave('register_events')
+            ->when($query, fn($u) => $u->where('name', 'like', '%' . $query . '%'))
+            ->paginate(20);
+
+        $events = Event::get();
+        $groups = AttendeesGroup::get();
+
+        return Inertia::render('AttendeesPage/RegisterAttendees', [
+            'users' => $users,
+            'events' => $events,
+            'groups' => $groups,
+            'groupId' => $groupId,
+            'eventsId' => $eventsId
+        ]);
+    }
+
     public function export()
     {
         $users = User::with(['register_events', 'attendees_types', 'attendees_groups'])
             ->whereHas('register_events')
-            ->where('is_admin', 0)
+            ->whereIn('is_admin', [0, 3]) // 0,3 user
             ->get();
 
         return Excel::download(new RegisterAttendeesExport($users), 'registerAttendeesReport.xlsx');

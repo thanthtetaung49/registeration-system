@@ -130,7 +130,7 @@ class EventListController extends Controller
         ]);
     }
 
-    public function eventType2QrcodeGenerate($eventId)
+    public function selfCheckInUserQRCodeGenerate($eventId)
     {
         $event = Event::findOrFail($eventId);
         $eventCode = $event->event_code;

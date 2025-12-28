@@ -15,7 +15,7 @@ const form = useForm({
 });
 
 const saveAttendeesType = () =>
-    form.post("/attendees/type/create", {
+    form.post("/attendees/attendeesType/create", {
         onSuccess: () => form.reset("name"),
     });
 
@@ -99,7 +99,7 @@ type, index
                                                     </td>
                                                     <td
                                                         class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
-                                                        <Link :href="`/attendees/type/view/${type.id}`"
+                                                        <Link :href="`/attendees/attendeesType/view/${type.id}`"
                                                             class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border text-gray-600 focus:outline-none focus:text-whitedisabled:opacity-50 disabled:pointer-events-none dark:text-gray-500 dark:hover:text-gray-400 dark:focus:text-gray-400 p-2 mr-3 hover:bg-green-700 hover:text-white"
                                                             aria-haspopup="dialog" aria-expanded="false"
                                                             aria-controls="hs-scale-animation-modal"
@@ -114,7 +114,7 @@ type, index
                                                             </svg>
                                                         </Link>
 
-                                                        <Link :href="`/attendees/type/edit/${type.id}`"
+                                                        <Link :href="`/attendees/attendeesType/edit/${type.id}`"
                                                             class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border text-gray-600 focus:outline-none focus:text-whitedisabled:opacity-50 disabled:pointer-events-none dark:text-gray-500 dark:hover:text-gray-400 dark:focus:text-gray-400 p-2 mr-3 hover:bg-gray-700 hover:text-white"
                                                             aria-haspopup="dialog" aria-expanded="false"
                                                             aria-controls="hs-scale-animation-modal"
@@ -131,7 +131,7 @@ type, index
                                                             </svg>
                                                         </Link>
 
-                                                        <Link :href="`/attendees/type/delete/${type.id}`"
+                                                        <Link :href="`/attendees/attendeesType/delete/${type.id}`"
                                                             class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border text-gray-600 focus:outline-none focus:text-whitedisabled:opacity-50 disabled:pointer-events-none dark:text-gray-500 dark:hover:text-gray-400 dark:focus:text-gray-400 p-2 mr-3 hover:bg-red-700 hover:text-white"
                                                             aria-haspopup="dialog" aria-expanded="false"
                                                             aria-controls="hs-scale-animation-modal"

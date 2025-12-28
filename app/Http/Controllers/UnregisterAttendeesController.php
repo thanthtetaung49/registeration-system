@@ -19,7 +19,7 @@ class UnregisterAttendeesController extends Controller
         $events = Event::get();
         $groups = AttendeesGroup::get();
 
-        return Inertia::render('AttendeesPage/UnRegisterAttendees/UnRegisterAttendees', [
+        return Inertia::render('AttendeesPage/UnRegisterAttendees', [
             'registerEvents' => $registerEvents,
             'events' => $events,
             'groups' => $groups,
@@ -28,7 +28,6 @@ class UnregisterAttendeesController extends Controller
 
     public function unregisterEvent(Request $request)
     {
-        // dd($request->all());
         $registerEventsId = $request->registerEvents_id;
 
         $request->validate([
@@ -36,17 +35,13 @@ class UnregisterAttendeesController extends Controller
             'events_id' => ['required'],
         ]);
 
+
         foreach ($registerEventsId as $regEventId) {
             RegisterEvent::where('id', $regEventId)
                 ->delete();
         }
 
-        $registerEvents = RegisterEvent::with('register_attendees')->orderBy('id', 'desc')->paginate(20);
-
-        $events = Event::get();
-        $groups = AttendeesGroup::get();
-
-        return to_route('attendees.unregister.index');
+        return to_route('attendees.unregisterAttendees.index');
     }
 
     public function search(Request $request)
@@ -86,7 +81,7 @@ class UnregisterAttendeesController extends Controller
                 ->paginate(20);
         }
 
-        return Inertia::render('AttendeesPage/UnRegisterAttendees/UnRegisterAttendees', [
+        return Inertia::render('AttendeesPage/UnRegisterAttendees', [
             'registerEvents'  => $registerEvents,
             'events' => $events,
             'groups' => $groups,
@@ -112,7 +107,7 @@ class UnregisterAttendeesController extends Controller
         $events = Event::get();
         $groups = AttendeesGroup::get();
 
-        return Inertia::render('AttendeesPage/UnRegisterAttendees/UnRegisterAttendees', [
+        return Inertia::render('AttendeesPage/UnRegisterAttendees', [
             'registerEvents' => $registerEvents,
             'events' => $events,
             'groups' => $groups,

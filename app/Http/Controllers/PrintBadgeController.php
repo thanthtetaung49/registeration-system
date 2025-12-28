@@ -9,13 +9,13 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
-class PrintController extends Controller
+class PrintBadgeController extends Controller
 {
     public function index()
     {
         $events = Event::get();
 
-        return Inertia::render('PrintingPage/Print', ['events' => $events]);
+        return Inertia::render('PrintingPage/PrintBadge', ['events' => $events]);
     }
 
     public function printEvent($eventId)
@@ -47,7 +47,7 @@ class PrintController extends Controller
 
         $attendees = User::where('is_admin', 0)->get();
 
-        return Inertia::render('PrintingPage/Print', [
+        return Inertia::render('PrintingPage/PrintBadge', [
             'nameBadgeData' => $nameBadgeData,
             'qrCode' => $qrCode,
             'attendees' => $attendees,

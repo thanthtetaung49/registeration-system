@@ -5,6 +5,7 @@ import PrimaryButton from "@/Components/PrimaryButton.vue";
 import { Link, router, useForm } from "@inertiajs/vue3";
 import { onMounted, ref } from "vue";
 import InputError from "@/Components/InputError.vue";
+import TextInput from "@/Components/TextInput.vue";
 
 const props = defineProps({
   users: Object,
@@ -16,7 +17,6 @@ const props = defineProps({
 });
 
 const users = ref(props.users);
-const status = ref(false);
 const checkBoxAll = ref(null);
 const query = ref(null);
 const input = ref(null);
@@ -30,17 +30,12 @@ const form = useForm({
 const registerEvent = () => {
   const checkBoxes = document.querySelectorAll(".checkBoxes");
 
-  form.post("/attendees/event/register", {
+  form.post("/attendees/event/registerAttendees/create", {
     onSuccess: () => {
-      status.value = true;
-      setInterval(() => {
-        status.value = false;
-      }, 5000);
-
       form.users_id = [];
       form.events_id = "";
 
-      window.location.href = "/attendees/register";
+      window.location.href = "/attendees/registerAttendees";
     },
   });
 
@@ -85,7 +80,7 @@ const handleSelectAllChackBoxChange = (users) => {
 };
 
 const filter = () => {
-  router.get("/attendees/event/register/filter", {
+  router.get("/attendees/event/registerAttendees/filter", {
     data: {
       attendeesGroupId: form.attendees_groups_id,
     },
@@ -102,33 +97,31 @@ const excelExport = () => {
 };
 
 const searchUser = () => {
-  router.visit(`/attendees/event/register/search`, {
+  router.visit(`/attendees/event/registerAttendees/search`, {
     method: "get",
     data: {
       query: query.value,
+      groupId: form.attendees_groups_id,
+      eventsId: form.events_id
     },
     onSuccess: (page) => {
       users.value = page.props.users;
-      console.log(users.value);
+      form.attendees_groups_id = page.props.groupId;
+      form.events_id = page.props.eventsId;
     },
   });
 };
 
-// onMounted(() => {
-//     input.value.focus();
-// });
+onMounted(() => {
+  input.value.focus();
+});
+
 </script>
 
 <template>
   <div>
     <AuthenticatedLayout>
       <div class="px-10 py-5">
-        <Transition name="slide-fade">
-          <div v-if="status"
-            class="text-xs bg-green-500 block fixed right-10 top-20 z-10 text-white px-3 py-4 rounded-md">
-            Event registration is successfully.
-          </div>
-        </Transition>
 
         <header class="mb-10">
           <h3 class="text-gray-800 text-2xl pb-1 bold dark:text-white">Register Attendees</h3>
@@ -139,6 +132,20 @@ const searchUser = () => {
           <div class="border-b border-gray-200 dark:border-none px-4">
             <div class="border-b">
               <AttendeesTabLayout></AttendeesTabLayout>
+            </div>
+
+            <div class="flex justify-end mt-5">
+              <div class="relative">
+                <TextInput ref="input" v-model="query" @keydown.enter="searchUser" placeholder="Search Attendees"
+                  class="text-sm"></TextInput>
+                <div class="absolute right-3 top-1/2 -translate-y-1/2">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="size-4 dark:text-white">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                      d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                  </svg>
+                </div>
+              </div>
             </div>
 
             <div class="">
@@ -197,7 +204,7 @@ const searchUser = () => {
               </form>
             </div>
 
-            <div class="">
+            <div v-if="form.events_id && form.attendees_groups_id">
               <div class="flex flex-col">
                 <div class="overflow-x-auto">
                   <div class="min-w-full inline-block align-middle">
@@ -224,14 +231,14 @@ const searchUser = () => {
                             <th scope="col" class="py-1 group text-start font-normal focus:outline-none">
                               <div
                                 class="py-1 px-2.5 inline-flex items-center border border-transparent text-sm text-gray-500 rounded-md hover:border-gray-200 dark:border-none">
-                                Attendees group
+                                Attendees Group
                               </div>
                             </th>
 
                             <th scope="col" class="py-1 group text-start font-normal focus:outline-none">
                               <div
                                 class="py-1 px-2.5 inline-flex items-center border border-transparent text-sm text-gray-500 rounded-md hover:border-gray-200 dark:border-none">
-                                Phone number
+                                Phone Number
                               </div>
                             </th>
 

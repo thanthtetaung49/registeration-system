@@ -19,8 +19,8 @@ const saveRoomNumber = () => form.post('/room/create', {
   <div>
     <form v-on:submit.prevent="saveRoomNumber">
       <div>
-        <InputLabel :value="'Event Room Location'"></InputLabel>
-        <TextInput placeholder="Event Room Location" v-model="form.room_number" class="mt-3 w-[30%] text-sm"></TextInput>
+        <InputLabel :value="'Room Number'"></InputLabel>
+        <TextInput placeholder="Room Number" v-model="form.room_number" class="mt-3 w-[30%] text-sm"></TextInput>
         <InputError  :message="form.errors.room_number"></InputError>
       </div>
       <div class="mt-5 w-full flex justify-end">

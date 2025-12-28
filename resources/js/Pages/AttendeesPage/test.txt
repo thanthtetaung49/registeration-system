@@ -1,2 +1,0 @@
- :id="`hs-table-checkbox-${user.id}`"
-                                  for="`hs-table-checkbox-${user.id}`"

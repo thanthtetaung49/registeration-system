@@ -6,14 +6,13 @@ use App\Models\AttendeesGroup;
 use App\Models\AttendeesType;
 use App\Models\State;
 use App\Models\User;
-use App\Rules\NotSameAsOldPassword;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 
-class AddAttendeesController extends Controller
+class AttendeesCreateController extends Controller
 {
     public function index()
     {
@@ -21,7 +20,7 @@ class AddAttendeesController extends Controller
         $types = AttendeesType::get();
         $groups = AttendeesGroup::get();
 
-        return Inertia::render('AttendeesPage/AddAttendees', [
+        return Inertia::render('AttendeesPage/AttendeesCreate', [
             'states' => $states,
             'types' => $types,
             'groups' => $groups,

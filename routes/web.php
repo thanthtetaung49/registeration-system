@@ -5,7 +5,6 @@ use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\EventController;
-use App\Http\Controllers\PrintController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\CategoryController;
@@ -16,9 +15,13 @@ use App\Http\Controllers\EventReportController;
 use App\Http\Controllers\QrcodePrintController;
 use App\Http\Controllers\AddAttendeesController;
 use App\Http\Controllers\AttendeesBusinessCardController;
+use App\Http\Controllers\AttendeesCreateController;
 use App\Http\Controllers\AttendeesTypeController;
 use App\Http\Controllers\ListAttendeesController;
 use App\Http\Controllers\AttendeesGroupController;
+use App\Http\Controllers\AttendeesListController;
+use App\Http\Controllers\ImportAttendeesController;
+use App\Http\Controllers\PrintBadgeController;
 use App\Http\Controllers\UploadAttendeesController;
 use App\Http\Controllers\RegisterAttendeesController;
 use App\Http\Controllers\ScannerController;
@@ -39,8 +42,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/edit/{user}', [UsersManagementController::class, 'edit'])->name('users.management.edit');
         Route::post('/update/{user}', [UsersManagementController::class, 'update'])->name('users.management.update');
         Route::get('/view/{user}', [UsersManagementController::class, 'view'])->name('users.management.view');
-        // Route::post('/update/role', [UsersManagementController::class, 'updateRole'])->name('users.management.update.role');
         Route::post('/role/update', [UsersManagementController::class, 'roleUpdate'])->name('users.management.role.update');
+        Route::get('/search', [UsersManagementController::class, 'search'])->name('users.management.search');
         Route::post('/user/diabled', [UsersManagementController::class, 'disabledUser'])->name('users.management.disabled');
         Route::post('/user/activate', [UsersManagementController::class, 'activateUser'])->name('users.management.disabled');
         Route::post('/user/delete', [UsersManagementController::class, 'deleteUser'])->name('users.management.disabled');
@@ -57,12 +60,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/eventList/edit/{eventId}', [EventListController::class, 'edit'])->name('event.list.edit');
         Route::post('/eventList/update/{event}', [EventListController::class, 'update'])->name('event.list.update');
         Route::get('/eventList/delete/{event}', [EventListController::class, 'delete'])->name('event.list.delete');
-
         Route::get('/search', [EventListController::class, 'search'])->name('event.search');
 
-        Route::get('/eventAttendeesList/{eventId}', [EventListController::class, 'eventAttendeesList'])->name('event.attendees.list');
-
-        Route::get('/type2/qrcode/generate/{eventId}', [EventListController::class, 'eventType2QrcodeGenerate'])->name('event.type2.qrcode');
+        // event attendees list
+        Route::get('/eventList/eventAttendeesList/{eventId}', [EventListController::class, 'eventAttendeesList'])->name('event.attendees.list');
+        Route::get('/eventList/selfCheckInUser/QRCode/generate/{eventId}', [EventListController::class, 'selfCheckInUserQRCodeGenerate'])->name('event.selfCheckInUser.QRCodeGenerate');
 
         // event report
         Route::get('/report', [EventReportController::class, 'index'])->name('event.report.index');
@@ -102,52 +104,52 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::prefix('/attendees')->group(function () {
         // list
-        Route::get('/', [ListAttendeesController::class, 'index'])->name('attendees.list.index');
-        Route::get('/search', [ListAttendeesController::class, 'search'])->name('attendees.search');
-        Route::get('/excel/export', [ListAttendeesController::class, 'excelExport'])->name('attendees.excel.export');
-        Route::get('/csv/export', [ListAttendeesController::class, 'csvExport'])->name('attendees.csv.export');
+        Route::get('/attendeesLists', [AttendeesListController::class, 'index'])->name('attendees.list.index');
+        Route::get('/search', [AttendeesListController::class, 'search'])->name('attendees.search');
+        Route::get('/excel/export', [AttendeesListController::class, 'excelExport'])->name('attendees.excel.export');
+        Route::get('/csv/export', [AttendeesListController::class, 'csvExport'])->name('attendees.csv.export');
 
         // type
-        Route::get('/type', [AttendeesTypeController::class, 'index'])->name('attendees.type.index');
-        Route::post('/type/create', [AttendeesTypeController::class, 'create'])->name('attendees.type.create');
-        Route::get('/type/edit/{attendeesType}', [AttendeesTypeController::class, 'edit'])->name('attendees.type.edit');
-        Route::post('/type/update/{attendeesType}', [AttendeesTypeController::class, 'update'])->name('attendees.type.update');
-        Route::get('/type/view/{attendeesType}', [AttendeesTypeController::class, 'view'])->name('attendees.type.view');
-        Route::get('/type/delete/{attendeesType}', [AttendeesTypeController::class, 'delete'])->name('attendees.type.delete');
+        Route::get('/attendeesType', [AttendeesTypeController::class, 'index'])->name('attendees.type.index');
+        Route::post('/attendeesType/create', [AttendeesTypeController::class, 'create'])->name('attendees.type.create');
+        Route::get('/attendeesType/edit/{attendeesType}', [AttendeesTypeController::class, 'edit'])->name('attendees.type.edit');
+        Route::post('/attendeesType/update/{attendeesType}', [AttendeesTypeController::class, 'update'])->name('attendees.type.update');
+        Route::get('/attendeesType/view/{attendeesType}', [AttendeesTypeController::class, 'view'])->name('attendees.type.view');
+        Route::get('/attendeesType/delete/{attendeesType}', [AttendeesTypeController::class, 'delete'])->name('attendees.type.delete');
 
         // attendees group
-        Route::get('/group', [AttendeesGroupController::class, 'index'])->name('attendees.group.index');
-        Route::post('/group/create', [AttendeesGroupController::class, 'create'])->name('attendees.group.create');
-        Route::get('/group/edit/{attendeesGroup}', [AttendeesGroupController::class, 'edit'])->name('attendees.group.edit');
-        Route::post('/group/update/{attendeesGroup}', [AttendeesGroupController::class, 'update'])->name('attendees.group.update');
-        Route::get('/group/view/{attendeesGroup}', [AttendeesGroupController::class, 'view'])->name('attendees.group.view');
-        Route::get('/group/delete/{attendeesGroup}', [AttendeesGroupController::class, 'delete'])->name('attendees.group.delete');
+        Route::get('/attendeesGroup', [AttendeesGroupController::class, 'index'])->name('attendees.group.index');
+        Route::post('/attendeesGroup/create', [AttendeesGroupController::class, 'create'])->name('attendees.group.create');
+        Route::get('/attendeesGroup/edit/{attendeesGroup}', [AttendeesGroupController::class, 'edit'])->name('attendees.group.edit');
+        Route::post('/attendeesGroup/update/{attendeesGroup}', [AttendeesGroupController::class, 'update'])->name('attendees.group.update');
+        Route::get('/attendeesGroup/view/{attendeesGroup}', [AttendeesGroupController::class, 'view'])->name('attendees.group.view');
+        Route::get('/attendeesGroup/delete/{attendeesGroup}', [AttendeesGroupController::class, 'delete'])->name('attendees.group.delete');
 
         // add
-        Route::get('/add', [AddAttendeesController::class, 'index'])->name('attendees.index');
-        Route::post('/create', [AddAttendeesController::class, 'submitAttendee'])->name('attendees.create');
-        Route::get('/edit/{user}', [AddAttendeesController::class, 'edit'])->name('attendees.edit');
-        Route::post('/update/{id}', [AddAttendeesController::class, 'update'])->name('attendees.update');
-        Route::get('/view/{id}', [AddAttendeesController::class, 'view'])->name('attendees.view');
-        Route::get('/delete/{id}', [AddAttendeesController::class, 'delete'])->name('attendees.delete');
+        Route::get('/', [AttendeesCreateController::class, 'index'])->name('attendees.index');
+        Route::post('/create', [AttendeesCreateController::class, 'submitAttendee'])->name('attendees.create');
+        Route::get('/edit/{user}', [AttendeesCreateController::class, 'edit'])->name('attendees.edit');
+        Route::post('/update/{id}', [AttendeesCreateController::class, 'update'])->name('attendees.update');
+        Route::get('/view/{id}', [AttendeesCreateController::class, 'view'])->name('attendees.view');
+        Route::get('/delete/{id}', [AttendeesCreateController::class, 'delete'])->name('attendees.delete');
 
         // upload and  import
-        Route::get('/upload', [UploadAttendeesController::class, 'index'])->name('attendees.upload.index');
-        Route::post('/import', [UploadAttendeesController::class, 'importAttendee'])->name('attendees.import');
-        Route::get('/template/export', [UploadAttendeesController::class, 'export'])->name('attendees.template.export');
+        Route::get('/upload/file', [ImportAttendeesController::class, 'index'])->name('attendees.upload.index');
+        Route::post('/import', [ImportAttendeesController::class, 'importAttendee'])->name('attendees.import');
+        Route::get('/template/export', [ImportAttendeesController::class, 'export'])->name('attendees.template.export');
 
         // register
-        Route::get('/register', [RegisterAttendeesController::class, 'index'])->name('attendees.register.index');
-        Route::post('/event/register', [RegisterAttendeesController::class, 'submitAttendeeEvent'])->name('attendees.register.create');
-        Route::get('/event/register/filter', [RegisterAttendeesController::class, 'filterAttendees'])->name('attendees.filter');
-        Route::get('/event/register/search', [RegisterAttendeesController::class, 'search'])->name('event.register.search');
-        Route::get('/event/registerAttendees/Export', [RegisterAttendeesController::class, 'export'])->name('attendees.register.export');
+        Route::get('/registerAttendees', [RegisterAttendeesController::class, 'index'])->name('attendees.registerAttendees.index');
+        Route::post('/event/registerAttendees/create', [RegisterAttendeesController::class, 'submitAttendeeEvent'])->name('attendees.registerAttendees.create');
+        Route::get('/event/registerAttendees/filter', [RegisterAttendeesController::class, 'filterAttendees'])->name('attendees.registerAttendees.filter');
+        Route::get('/event/registerAttendees/search', [RegisterAttendeesController::class, 'search'])->name('event.registerAttendees.search');
+        Route::get('/event/registerAttendees/Export', [RegisterAttendeesController::class, 'export'])->name('attendees.registerAttendees.export');
 
         // unregister
-        Route::get('/unregister', [UnregisterAttendeesController::class, 'index'])->name('attendees.unregister.index');
-        Route::post('/event/unregister', [UnregisterAttendeesController::class, 'unregisterEvent'])->name('attendees.unregister.delete');
-        Route::get('/event/unregister/filter', [UnregisterAttendeesController::class, 'filterAttendees'])->name('unregister.filter');
-        Route::get('/event/unregister/search', [UnregisterAttendeesController::class, 'search'])->name('unregister.search');
+        Route::get('/unregisterAttendees', [UnregisterAttendeesController::class, 'index'])->name('attendees.unregisterAttendees.index');
+        Route::post('/event/unregisterAttendees', [UnregisterAttendeesController::class, 'unregisterEvent'])->name('attendees.unregisterAttendees.unregister');
+        Route::get('/event/unregisterAttendees/filter', [UnregisterAttendeesController::class, 'filterAttendees'])->name('attendees.unregisterAttendees.filter');
+        Route::get('/event/unregisterAttendees/search', [UnregisterAttendeesController::class, 'search'])->name('attendees.unregisterAttendees.search');
     });
 
     // business card
@@ -158,24 +160,22 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
 
     // print
-    Route::prefix('/print')->group(function () {
-        Route::get('', [PrintController::class, 'index'])->name('print.index');
-        Route::get('/event/{eventId}', [PrintController::class, 'printEvent'])->name('print.event');
-        Route::post('', [PrintController::class, 'nameBadgeGenerate'])->name('nameBadge.generate');
+    Route::prefix('/printBadge')->group(function () {
+        Route::get('', [PrintBadgeController::class, 'index'])->name('print.index');
+        Route::get('/event/{eventId}', [PrintBadgeController::class, 'printEvent'])->name('print.event');
+        Route::post('', [PrintBadgeController::class, 'nameBadgeGenerate'])->name('nameBadge.generate');
     });
 
-    // security
-    Route::prefix('/scan')->group(function () {
-        Route::get('', [SecurityController::class, 'index'])->name('scan.index');
+    // self check In user
+    Route::prefix('/selfCheckInUser')->group(function () {
+        Route::get('', [SecurityController::class, 'index'])->name('selfCheckInUser.index');
+        Route::post('/security/QRCode/scan', [ScannerController::class, 'SecurityScanQrCode'])->name('selfCheckInUser.security.scan');
+        Route::post('/attendees/QRCode/scan', [ScannerController::class, 'SelfCheckinScanQrCode'])->name('selfCheckInUser.attendees.scan');
     });
 
-    // qrcode scan
-    Route::post('/security/qrcode/scan', [ScannerController::class, 'SecurityScanQrCode']);
-    Route::post('/student/qrcode/scan', [ScannerController::class, 'SelfCheckinScanQrCode']);
-
-    // qrcode download
-    Route::get('attendees/qrcode/download/{registerEventId}', [QrcodePrintController::class, 'attendeesQrcodeIndex'])->name('attendees.qrcode.print');
-    Route::get('event/qrcode/download/{eventId}', [QrcodePrintController::class, 'eventQrcodeIndex'])->name('event.qrcode.print');
+    // QRCode download
+    Route::get('/attendees/QRCode/download/{registerEventId}', [QrcodePrintController::class, 'attendeesQrcodeIndex'])->name('attendees.QRCode.print');
+    Route::get('event/QRCode/download/{eventId}', [QrcodePrintController::class, 'eventQrcodeIndex'])->name('event.QRCode.print');
 });
 
 Route::middleware('auth')->group(function () {

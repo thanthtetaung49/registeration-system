@@ -18,7 +18,7 @@ const event = ref(null);
 
 const getRegisterAttendees = (eventId) => {
   axios
-    .get(`/event/attendees/${eventId}`)
+    .get(`/event/eventList/eventAttendeesList/${eventId}`)
     .then((response) => {
       registerEvents.value = response.data;
     })
@@ -29,7 +29,7 @@ const getRegisterAttendees = (eventId) => {
 
 const eventType2QrGenerate = (eventId) => {
   axios
-    .get(`/event/type2/qrcode/generate/${eventId}`)
+    .get(`/event/eventList/selfCheckInUser/QRCode/generate/${eventId}`)
     .then((response) => {
       console.log(response);
       qrCode.value = response.data.qrCode;
@@ -39,7 +39,7 @@ const eventType2QrGenerate = (eventId) => {
 };
 
 const searchEvent = () => {
-  router.visit(`/event/search?query=${query.value}`, {
+  router.visit(`/event/eventList/search?query=${query.value}`, {
     method: "get",
     onSuccess: (page) => {
       eventsData.value = page.props.events.data;
@@ -51,6 +51,7 @@ const searchEvent = () => {
 onMounted(() => {
   input.value.focus();
 });
+
 </script>
 
 <template>
@@ -58,7 +59,7 @@ onMounted(() => {
     <AuthenticatedLayout>
       <div class="px-10 py-10">
         <header class="mb-10">
-          <h3 class="text-gray-800 text-2xl pb-1 bold dark:text-white">Event</h3>
+          <h3 class="text-gray-800 text-2xl pb-1 bold dark:text-white">Events</h3>
           <div class="w-10 h-1 bg-blue-800"></div>
         </header>
 
@@ -72,7 +73,7 @@ onMounted(() => {
                   ref="input"
                   v-model.lazy="query"
                   @keydown.enter="searchEvent"
-                  placeholder="Search event..."
+                  placeholder="Search Event"
                   class="text-sm"
                 ></TextInput>
                 <div class="absolute right-3 top-1/2 -translate-y-1/2">
@@ -275,7 +276,7 @@ onMounted(() => {
 
                             <div class="inline-block">
                               <Link
-                                :href="`/event/view/${event.id}`"
+                                :href="`/event/eventList/view/${event.id}`"
                                 class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border text-gray-600 focus:outline-none focus:text-whitedisabled:opacity-50 disabled:pointer-events-none dark:text-gray-500 dark:hover:text-gray-400 dark:focus:text-gray-400 p-2 mr-3 hover:bg-green-700 hover:text-white hs-tooltip-toogle"
                                 aria-haspopup="dialog"
                                 aria-expanded="false"
@@ -306,7 +307,7 @@ onMounted(() => {
 
                             <div class="hs-tooltip inline-block">
                               <Link
-                                :href="`/event/edit/${event.id}`"
+                                :href="`/event/eventList/edit/${event.id}`"
                                 class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border text-gray-600 focus:outline-none focus:text-whitedisabled:opacity-50 disabled:pointer-events-none dark:text-gray-500 dark:hover:text-gray-400 dark:focus:text-gray-400 p-2 mr-3 hover:bg-gray-700 hover:text-white hs-tooltip-toggle"
                                 aria-haspopup="dialog"
                                 aria-expanded="false"
@@ -332,7 +333,7 @@ onMounted(() => {
 
                             <div class="hs-tooltip inline-block">
                               <Link
-                                :href="`/event/delete/${event.id}`"
+                                :href="`/event/eventList/delete/${event.id}`"
                                 class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border text-gray-600 focus:outline-none focus:text-whitedisabled:opacity-50 disabled:pointer-events-none dark:text-gray-500 dark:hover:text-gray-400 dark:focus:text-gray-400 p-2 mr-3 hover:bg-red-700 hover:text-white hs-tooltip-toggle"
                                 aria-haspopup="dialog"
                                 aria-expanded="false"
@@ -392,7 +393,7 @@ onMounted(() => {
         aria-labelledby="hs-scale-animation-modal-label"
       >
         <div
-          class="hs-overlay-animation-target hs-overlay-open:scale-100 hs-overlay-open:opacity-100 scale-95 opacity-0 ease-in-out transition-all duration-200 sm:max-w-2xl sm:w-full m-3 sm:mx-auto min-h-[calc(100%-3.5rem)] flex items-center"
+          class="hs-overlay-animation-target hs-overlay-open:scale-100 hs-overlay-open:opacity-100 scale-95 opacity-0 ease-in-out transition-all duration-200 lg:max-w-6xl sm:w-full m-3 sm:mx-auto min-h-[calc(100%-3.5rem)] flex items-center"
         >
           <div
             class=" dark:text-white w-full flex flex-col bg-white border shadow-sm rounded-xl pointer-events-auto dark:bg-neutral-800 dark:border-neutral-700 dark:shadow-neutral-700/70"
@@ -404,7 +405,7 @@ onMounted(() => {
                 id="register-attendees-modal"
                 class="font-bold text-gray-800 dark:text-white"
               >
-                Attendees list
+                Attendees Lists
               </h3>
               <button
                 type="button"
@@ -576,7 +577,7 @@ onMounted(() => {
         aria-labelledby="hs-scale-animation-modal-label"
       >
         <div
-          class="hs-overlay-animation-target hs-overlay-open:scale-100 hs-overlay-open:opacity-100 scale-95 opacity-0 ease-in-out transition-all duration-200 sm:max-w-2xl sm:w-full m-3 sm:mx-auto min-h-[calc(100%-3.5rem)] flex items-center"
+          class="hs-overlay-animation-target hs-overlay-open:scale-100 hs-overlay-open:opacity-100 scale-95 opacity-0 ease-in-out transition-all duration-200 lg:max-w-sm sm:w-full m-3 sm:mx-auto  flex items-center"
         >
           <div
             class="w-full flex flex-col bg-white border shadow-sm rounded-xl pointer-events-auto dark:bg-neutral-800 dark:border-neutral-700 dark:shadow-neutral-700/70"
@@ -617,7 +618,7 @@ onMounted(() => {
             <div class="p-4 overflow-y-auto">
               <div class="w-full flex justify-end">
                 <a
-                  target="_blank" :href="`/event/qrcode/download/${event?.id}`"
+                  target="_blank" :href="`/event/QRCode/download/${event?.id}`"
                   class="inline-flex items-center px-4 py-2 bg-blue-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700 focus:bg-blue-700 active:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150"
                 >
                   <span>Download</span>
@@ -639,7 +640,7 @@ onMounted(() => {
               </div>
               <div class="flex flex-col mt-5">
                 <div class="-m-1.5 overflow-x-auto">
-                  <div class="p-1.5 min-w-full h-[400px] inline-block align-middle">
+                  <div class="p-1.5 min-w-full inline-block align-middle">
                     <div class="w-full flex justify-center items-center h-full">
                       <div v-html="qrCode"></div>
                     </div>
