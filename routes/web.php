@@ -8,28 +8,27 @@ use App\Http\Controllers\EventController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\SecurityController;
 use App\Http\Controllers\EventListController;
 use App\Http\Controllers\InstructorController;
 use App\Http\Controllers\EventReportController;
 use App\Http\Controllers\QrcodePrintController;
-use App\Http\Controllers\AddAttendeesController;
 use App\Http\Controllers\AttendeesBusinessCardController;
 use App\Http\Controllers\AttendeesCreateController;
 use App\Http\Controllers\AttendeesTypeController;
-use App\Http\Controllers\ListAttendeesController;
 use App\Http\Controllers\AttendeesGroupController;
 use App\Http\Controllers\AttendeesListController;
 use App\Http\Controllers\ImportAttendeesController;
 use App\Http\Controllers\PrintBadgeController;
-use App\Http\Controllers\UploadAttendeesController;
+use App\Http\Controllers\QRTestController;
 use App\Http\Controllers\RegisterAttendeesController;
-use App\Http\Controllers\ScannerController;
+use App\Http\Controllers\SelfCheckInUserController;
 use App\Http\Controllers\UnregisterAttendeesController;
 
 Route::get('/', function () {
     return Inertia::render('Auth/Login');
 });
+
+Route::get('/test', [QRTestController::class, 'index'])->name('qr.test');
 
 Route::middleware(['auth', 'verified'])->group(function () {
 
@@ -103,13 +102,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
 
     Route::prefix('/attendees')->group(function () {
-        // list
+        // attendees list
         Route::get('/attendeesLists', [AttendeesListController::class, 'index'])->name('attendees.list.index');
         Route::get('/search', [AttendeesListController::class, 'search'])->name('attendees.search');
         Route::get('/excel/export', [AttendeesListController::class, 'excelExport'])->name('attendees.excel.export');
         Route::get('/csv/export', [AttendeesListController::class, 'csvExport'])->name('attendees.csv.export');
 
-        // type
+        // attendees type
         Route::get('/attendeesType', [AttendeesTypeController::class, 'index'])->name('attendees.type.index');
         Route::post('/attendeesType/create', [AttendeesTypeController::class, 'create'])->name('attendees.type.create');
         Route::get('/attendeesType/edit/{attendeesType}', [AttendeesTypeController::class, 'edit'])->name('attendees.type.edit');
@@ -125,7 +124,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/attendeesGroup/view/{attendeesGroup}', [AttendeesGroupController::class, 'view'])->name('attendees.group.view');
         Route::get('/attendeesGroup/delete/{attendeesGroup}', [AttendeesGroupController::class, 'delete'])->name('attendees.group.delete');
 
-        // add
+        // attendees create, edit, view, delete
         Route::get('/', [AttendeesCreateController::class, 'index'])->name('attendees.index');
         Route::post('/create', [AttendeesCreateController::class, 'submitAttendee'])->name('attendees.create');
         Route::get('/edit/{user}', [AttendeesCreateController::class, 'edit'])->name('attendees.edit');
@@ -133,33 +132,33 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/view/{id}', [AttendeesCreateController::class, 'view'])->name('attendees.view');
         Route::get('/delete/{id}', [AttendeesCreateController::class, 'delete'])->name('attendees.delete');
 
-        // upload and  import
+        // attendees import
         Route::get('/upload/file', [ImportAttendeesController::class, 'index'])->name('attendees.upload.index');
         Route::post('/import', [ImportAttendeesController::class, 'importAttendee'])->name('attendees.import');
         Route::get('/template/export', [ImportAttendeesController::class, 'export'])->name('attendees.template.export');
 
-        // register
+        // register attendees
         Route::get('/registerAttendees', [RegisterAttendeesController::class, 'index'])->name('attendees.registerAttendees.index');
         Route::post('/event/registerAttendees/create', [RegisterAttendeesController::class, 'submitAttendeeEvent'])->name('attendees.registerAttendees.create');
         Route::get('/event/registerAttendees/filter', [RegisterAttendeesController::class, 'filterAttendees'])->name('attendees.registerAttendees.filter');
         Route::get('/event/registerAttendees/search', [RegisterAttendeesController::class, 'search'])->name('event.registerAttendees.search');
         Route::get('/event/registerAttendees/Export', [RegisterAttendeesController::class, 'export'])->name('attendees.registerAttendees.export');
 
-        // unregister
+        // unregister attendees
         Route::get('/unregisterAttendees', [UnregisterAttendeesController::class, 'index'])->name('attendees.unregisterAttendees.index');
         Route::post('/event/unregisterAttendees', [UnregisterAttendeesController::class, 'unregisterEvent'])->name('attendees.unregisterAttendees.unregister');
         Route::get('/event/unregisterAttendees/filter', [UnregisterAttendeesController::class, 'filterAttendees'])->name('attendees.unregisterAttendees.filter');
         Route::get('/event/unregisterAttendees/search', [UnregisterAttendeesController::class, 'search'])->name('attendees.unregisterAttendees.search');
     });
 
-    // business card
+    // attendees business card
     Route::prefix('/attendess/business/card')->group(function () {
         Route::get('/', [AttendeesBusinessCardController::class, 'index'])->name('businessCard.index');
         Route::get('/view/{id}', [AttendeesBusinessCardController::class, 'view'])->name('businessCard.view');
         Route::get('/search', [AttendeesBusinessCardController::class, 'search'])->name('businessCard.search');
     });
 
-    // print
+    // print badge
     Route::prefix('/printBadge')->group(function () {
         Route::get('', [PrintBadgeController::class, 'index'])->name('print.index');
         Route::get('/event/{eventId}', [PrintBadgeController::class, 'printEvent'])->name('print.event');
@@ -168,9 +167,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // self check In user
     Route::prefix('/selfCheckInUser')->group(function () {
-        Route::get('', [SecurityController::class, 'index'])->name('selfCheckInUser.index');
-        Route::post('/security/QRCode/scan', [ScannerController::class, 'SecurityScanQrCode'])->name('selfCheckInUser.security.scan');
-        Route::post('/attendees/QRCode/scan', [ScannerController::class, 'SelfCheckinScanQrCode'])->name('selfCheckInUser.attendees.scan');
+        Route::get('', [SelfCheckInUserController::class, 'index'])->name('selfCheckInUser.index');
+        Route::post('/security/QRCode/scan', [SelfCheckInUserController::class, 'SecurityScanQrCode'])->name('selfCheckInUser.security.scan');
+        Route::post('/attendees/QRCode/scan', [SelfCheckInUserController::class, 'attendeesScanQrCode'])->name('selfCheckInUser.attendees.scan');
     });
 
     // QRCode download

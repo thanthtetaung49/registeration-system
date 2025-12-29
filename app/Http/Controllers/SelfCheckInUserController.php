@@ -3,12 +3,24 @@
 namespace App\Http\Controllers;
 
 use App\Models\Event;
-use Carbon\Carbon;
 use App\Models\RegisterEvent;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
-class ScannerController extends Controller
+class SelfCheckInUserController extends Controller
 {
+    public function index()
+    {
+        $user = Auth::user();
+
+        return Inertia::render('SelfCheckInUserPage/SelfCheckInUserScanQR', [
+            'user' => $user,
+        ]);
+    }
+
+
     // security scan
     public function SecurityScanQrCode(Request $request)
     {
@@ -21,11 +33,12 @@ class ScannerController extends Controller
         return response()->json($message);
     }
 
-    // student scan
-    public function SelfCheckinScanQrCode(Request $request)
+    // attendees scan
+    public function attendeesScanQrCode(Request $request)
     {
         $code = $request->code;
         $userId = $request->authId;
+
         $event = Event::where('event_code', $code)->first();
         $eventId = $event?->id;
 
@@ -42,7 +55,7 @@ class ScannerController extends Controller
         return response()->json($message);
     }
 
-    // qrcode scan logic
+    // QR code scan logic
     public function qrCodeScan($existsOrNotStatus, $scanQr)
     {
         $message = [];
