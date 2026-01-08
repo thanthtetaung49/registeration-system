@@ -4,8 +4,7 @@ import ApplicationLogo from "@/Components/ApplicationLogo.vue";
 import Dropdown from "@/Components/Dropdown.vue";
 import DropdownLink from "@/Components/DropdownLink.vue";
 import NavLink from "@/Components/NavLink.vue";
-import ResponsiveNavLink from "@/Components/ResponsiveNavLink.vue";
-import { Link } from "@inertiajs/vue3";
+import { Link, router, usePage } from "@inertiajs/vue3";
 import { onMounted } from "vue";
 import { Head } from "@inertiajs/vue3";
 
@@ -18,26 +17,10 @@ onMounted(() => {
 
 const props = defineProps({ disableStatus: Number });
 const disableStatus = props.disableStatus;
-
-const applyTheme = () => {
-  const theme = localStorage.getItem("hs_theme") || "light";
-  const html = document.documentElement;
-
-  html.classList.toggle("dark", theme === "dark");
-};
-
-const toggleDarkMode = () => {
-  const html = document.documentElement;
-  const isDark = html.classList.contains("dark");
-
-  if (isDark) {
-    html.classList.remove("dark");
-    localStorage.setItem("hs_theme", "light");
-  } else {
-    html.classList.add("dark");
-    localStorage.setItem("hs_theme", "dark");
-  }
-};
+const page = usePage();
+const $l = page.props.language;
+const showingNavigationDropdown = ref(false);
+const isEnabled = ref(localStorage.getItem("isEnabled") === "true");
 
 const eventRoutes = [
   'instructor.*',
@@ -50,17 +33,44 @@ const attendeesRoutes = [
   'attendees.*'
 ];
 
+const applyTheme = () => {
+  const theme = localStorage.getItem("hs_theme") || "light";
+  const html = document.documentElement;
+
+  html.classList.toggle("dark", theme === "dark");
+};
+
+const toggleDarkMode = () => {
+  const html = document.querySelector('html');
+  const isLightOrAuto = localStorage.getItem('hs_theme') === 'light' || (localStorage.getItem('hs_theme') === 'auto' && !window.matchMedia('(prefers-color-scheme: dark)').matches);
+  const isDarkOrAuto = localStorage.getItem('hs_theme') === 'dark' || (localStorage.getItem('hs_theme') === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+
+  if (isLightOrAuto && html.classList.contains('dark')) html.classList.remove('dark');
+  else if (isDarkOrAuto && html.classList.contains('light')) html.classList.remove('light');
+  else if (isDarkOrAuto && !html.classList.contains('dark')) html.classList.add('dark');
+  else if (isLightOrAuto && !html.classList.contains('light')) html.classList.add('light');
+};
+
 const isEventActive = computed(() =>
   eventRoutes.some(name => route().current(name))
 );
 
 const isAttendeesActive = computed(() => attendeesRoutes.some(name => route().current(name)));
 
+const toggle = () => {
+  isEnabled.value = !isEnabled.value;
+  localStorage.setItem("isEnabled", isEnabled.value.toString());
 
-const showingNavigationDropdown = ref(false);
+  const locale = isEnabled.value ? 'mm' : 'en';
+  router.get(route('lang', { locale: locale }), {}, {
+    preserveState: false
+  });
+}
 </script>
 
 <template>
+
+  <!-- <h1>{{ $l.hello }}</h1> -->
 
   <Head title="Online Registration System" />
 
@@ -81,7 +91,7 @@ const showingNavigationDropdown = ref(false);
             </div>
 
             <div class="hidden sm:flex sm:items-center sm:ms-6">
-              <button type="button" class="hs-dark-mode hs-dark-mode-active:hidden block"
+              <!-- <button type="button" class="hs-dark-mode hs-dark-mode-active:hidden block"
                 data-hs-theme-click-value="dark" v-on:click="toggleDarkMode">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                   stroke="currentColor" class="size-4">
@@ -89,6 +99,7 @@ const showingNavigationDropdown = ref(false);
                     d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z" />
                 </svg>
               </button>
+
               <button type="button" class="hs-dark-mode hs-dark-mode-active:inline-flex hidden dark:text-white"
                 data-hs-theme-click-value="light" v-on:click="toggleDarkMode">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -96,7 +107,50 @@ const showingNavigationDropdown = ref(false);
                   <path stroke-linecap="round" stroke-linejoin="round"
                     d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" />
                 </svg>
+              </button> -->
+
+              <button type="button" v-on:click="toggleDarkMode"
+                class="hs-dark-mode-active:hidden block hs-dark-mode font-medium text-gray-800 rounded-full hover:bg-gray-200 focus:outline-hidden focus:bg-gray-200 dark:text-neutral-200 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800"
+                data-hs-theme-click-value="dark">
+                <span class="group inline-flex shrink-0 justify-center items-center size-9">
+                  <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+                  </svg>
+                </span>
               </button>
+              <button type="button"
+                class="hs-dark-mode-active:block hidden hs-dark-mode font-medium text-gray-800 rounded-full hover:bg-gray-200 focus:outline-hidden focus:bg-gray-200 dark:text-neutral-200 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800"
+                data-hs-theme-click-value="light">
+                <span class="group inline-flex shrink-0 justify-center items-center size-9">
+                  <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="4"></circle>
+                    <path d="M12 2v2"></path>
+                    <path d="M12 20v2"></path>
+                    <path d="m4.93 4.93 1.41 1.41"></path>
+                    <path d="m17.66 17.66 1.41 1.41"></path>
+                    <path d="M2 12h2"></path>
+                    <path d="M20 12h2"></path>
+                    <path d="m6.34 17.66-1.41 1.41"></path>
+                    <path d="m19.07 4.93-1.41 1.41"></path>
+                  </svg>
+                </span>
+              </button>
+
+              <div class="flex items-center gap-3">
+                <span class="text-sm font-medium text-gray-900">
+                  {{ isEnabled ? 'Burmese (MM)' : 'English (EN)' }}
+                </span>
+
+                <button @click="toggle" :class="isEnabled ? 'bg-blue-600' : 'bg-gray-200'"
+                  class="relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2">
+                  <span :class="isEnabled ? 'translate-x-5' : 'translate-x-0'"
+                    class="pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out" />
+                </button>
+              </div>
 
               <!-- Settings Dropdown -->
               <div class="ms-3 relative">
@@ -186,7 +240,8 @@ const showingNavigationDropdown = ref(false);
             </svg>
             Events
           </NavLink>
-          <NavLink class="pb-2 block mt-5 dark:text-white" :href="route('attendees.list.index')" :active="isAttendeesActive">
+          <NavLink class="pb-2 block mt-5 dark:text-white" :href="route('attendees.list.index')"
+            :active="isAttendeesActive">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
               stroke="currentColor" class="size-4 mr-3">
               <path stroke-linecap="round" stroke-linejoin="round"

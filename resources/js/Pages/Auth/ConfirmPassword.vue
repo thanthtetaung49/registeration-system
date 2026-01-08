@@ -4,15 +4,25 @@ import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
-import { Head, useForm } from '@inertiajs/vue3';
+import { Head, router, useForm } from '@inertiajs/vue3';
 
 const form = useForm({
     password: '',
 });
 
 const submit = () => {
-    form.post(route('password.confirm'), {
+    form.post('/user/confirm-password', {
         onFinish: () => form.reset(),
+        onSuccess: (page) => {
+            const user = page.props.auth.user;
+
+            if (user.is_admin == 2 || user.is_admin == 3) {
+                router.get(route('selfCheckInUser.index'));
+                return;
+            }
+
+            router.get(route('calendar.index'));
+        }
     });
 };
 </script>

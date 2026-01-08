@@ -15,7 +15,7 @@ import { Link } from '@inertiajs/vue3';
             </div>
 
         </div>
-        <div class="w-1/2 h-full">
+        <div class="w-1/2 h-full dark:bg-gray-900">
             <div class="w-full flex items-center justify-center h-full">
                 <!-- <div>
                     <Link href="/">

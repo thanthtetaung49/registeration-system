@@ -1,36 +1,38 @@
 <?php
 
-use App\Http\Controllers\UsersManagementController;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\QRTestController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\EventListController;
 use App\Http\Controllers\InstructorController;
+use App\Http\Controllers\PrintBadgeController;
 use App\Http\Controllers\EventReportController;
 use App\Http\Controllers\QrcodePrintController;
-use App\Http\Controllers\AttendeesBusinessCardController;
-use App\Http\Controllers\AttendeesCreateController;
+use App\Http\Controllers\AttendeesListController;
 use App\Http\Controllers\AttendeesTypeController;
 use App\Http\Controllers\AttendeesGroupController;
-use App\Http\Controllers\AttendeesListController;
+use App\Http\Controllers\AttendeesCreateController;
 use App\Http\Controllers\ImportAttendeesController;
-use App\Http\Controllers\PrintBadgeController;
-use App\Http\Controllers\QRTestController;
-use App\Http\Controllers\RegisterAttendeesController;
 use App\Http\Controllers\SelfCheckInUserController;
+use App\Http\Controllers\UsersManagementController;
+use App\Http\Controllers\RegisterAttendeesController;
 use App\Http\Controllers\UnregisterAttendeesController;
+use App\Http\Controllers\AttendeesBusinessCardController;
+use App\Http\Controllers\LangController;
 
 Route::get('/', function () {
     return Inertia::render('Auth/Login');
 });
 
-Route::get('/test', [QRTestController::class, 'index'])->name('qr.test');
-
 Route::middleware(['auth', 'verified'])->group(function () {
+
+    Route::get('/lang/{locale}', [LangController::class, 'index'])->name('lang');
 
     // calendar
     Route::get('/calendar', [CalendarController::class, 'index'])->name('calendar.index');

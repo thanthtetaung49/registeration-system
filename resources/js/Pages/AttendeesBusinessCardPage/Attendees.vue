@@ -34,9 +34,9 @@ const searchAttendees = () => {
 <template>
     <AuthenticatedLayout>
         <div>
-            <div class="min-h-screen bg-gray-50 p-8">
+            <div class="min-h-screen bg-gray-50 p-8 dark:bg-gray-800">
                 <div>
-                    <h3 class="text-2xl">Attendees Business Card</h3>
+                    <h3 class="text-2xl dark:text-white">Attendees Business Card</h3>
                 </div>
                 <div class="flex justify-end my-3 relative">
                     <TextInput ref="input" v-model="query" @keydown.enter="searchAttendees"
@@ -51,7 +51,7 @@ const searchAttendees = () => {
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
-                    <div class="bg-white rounded-[2rem] p-6 shadow-sm border border-gray-100 flex flex-col items-center text-center transition-transform hover:-translate-y-2"
+                    <div class="bg-white dark:bg-gray-900 dark:border-gray-800 rounded-[2rem] p-6 shadow-sm border border-gray-100 flex flex-col items-center text-center transition-transform hover:-translate-y-2"
                         v-for="(user, index) in userData" :key="user.id">
                         <img v-if="user.profile_path" :src="`${baseUrl}/storage/${user.profile_path}`"
                             alt="preview image" class="w-20 h-20 rounded-2xl object-cover mb-4 grayscale" />

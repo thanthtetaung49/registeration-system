@@ -20,13 +20,13 @@ return new class extends Migration
             $table->foreign('attendees_types_id')->references('id')->on('attendees_types')->cascadeOnDelete();
             $table->string('name');
             $table->integer('age')->nullable();
-            $table->integer('sex'); // 0 is male, 1 is female
-            $table->string('phone_number');
+            $table->integer('sex')->nullable(); // 0 is male, 1 is female
+            $table->string('phone_number')->nullable();
             $table->string('nrc_number')->nullable();
-            $table->string('edu_background');
-            $table->string('position');
+            $table->string('edu_background')->nullable();
+            $table->string('position')->nullable();
             $table->string('department')->nullable();
-            $table->string('address');
+            $table->string('address')->nullable();
             $table->string('email')->unique();
             $table->integer('is_admin')->default(0); // 0 is attendees , 1 is admin, 2 security, 3 seftcheck-in user, 4 super  admin
             $table->foreignId('attendees_groups_id')->nullable()->constrained()->cascadeOnDelete();

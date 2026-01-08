@@ -31,8 +31,22 @@ class HandleInertiaRequests extends Middleware
     {
         return [
             ...parent::share($request),
+            'locale' => app()->getLocale(),
+            'language' => function () {
+                return trans('messages');
+            },
             'auth' => [
-                'user' => $request->user(),
+                'user' => $request->user() ? [
+                    ...$request->user()->toArray(),
+                    'two_factor_qr_code_svg' =>
+                    $request->user()->two_factor_secret
+                        ? $request->user()->twoFactorQrCodeSvg()
+                        : null,
+                    'two_factor_confirmed' => !is_null($request->user()->two_factor_confirmed_at),
+                    'recovery_codes' => ($request->user()->two_factor_secret && $request->user()->two_factor_confirmed_at)
+                        ? $request->user()->recoveryCodes()
+                        : [],
+                ] : null
             ],
         ];
     }

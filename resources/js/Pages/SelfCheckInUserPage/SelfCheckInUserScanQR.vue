@@ -170,10 +170,11 @@ const onCameraOff = () => {
 </script>
 
 <template>
-  <div class="h-screen overflow-hidden">
+  <div class="overflow-hidden">
     <div class="my-5 ms-7 w-full flex items-center">
-      <div class="text-bold text-blue-900 text-center">
-        <span>Scanner</span>
+      <div class="w-full px-5">
+        <h3 class="font-bold text-blue-900 text-xl">Event Check In</h3>
+        <p class="text-xs mt-5 text-gray-600">Simply point your camera at the QR code to log in or register in seconds.</p>
       </div>
     </div>
     <Transition name="slide-fade">
@@ -293,7 +294,7 @@ const onCameraOff = () => {
       </div>
     </Transition>
 
-    <div class="w-full flex justify-center mt-20">
+    <div class="w-full flex justify-center mt-7 px-10">
       <QrcodeStream @detect="onDetect" :paused="paused" :track="paintBoundingBox" @camera-on="onCameraOn"
         @camera-off="onCameraOff" @error="onError" class="w-80 h-80" :constraints="selectedConstraints">
         <div v-if="boundingBox" class="bounding-box"></div>
@@ -301,7 +302,7 @@ const onCameraOff = () => {
     </div>
 
     <div class="px-10 pb-5 mt-10">
-      <p class="text-gray-800 dark:text-neutral-400 text-sm border-b pb-5">
+      <p class="text-gray-800 dark:text-neutral-400 text-xs border-b pb-5">
         Our web application features a powerful QR code scanner integrated seamlessly
         using the latest web technologies. The QR code scanner allows you to quickly and
         accurately scan QR codes directly from your device's camera.

@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\Auth\LoginRequest;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Inertia\Response;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Route;
+use App\Http\Requests\Auth\LoginRequest;
+use Laravel\Fortify\Contracts\LoginResponse;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -27,16 +28,20 @@ class AuthenticatedSessionController extends Controller
     /**
      * Handle an incoming authentication request.
      */
-    public function store(LoginRequest $request): RedirectResponse
+    public function store(LoginRequest $request): LoginResponse
     {
+        // $request->authenticate();
+        // $request->session()->regenerate();
+
+        // if (auth()->user()->is_admin == 2 || auth()->user()->is_admin == 3) {
+        //     return redirect()->intended(route('selfCheckInUser.index', absolute: false));
+        // }
+
         $request->authenticate();
+
         $request->session()->regenerate();
 
-        if (auth()->user()->is_admin == 2 || auth()->user()->is_admin == 3) {
-            return redirect()->intended(route('selfCheckInUser.index', absolute: false));
-        }
-
-        return redirect()->intended(route('calendar.index', absolute: false));
+        return app(LoginResponse::class);
     }
 
     /**
