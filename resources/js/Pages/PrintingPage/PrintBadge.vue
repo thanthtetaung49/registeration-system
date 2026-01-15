@@ -3,7 +3,7 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import TextInputError from "@/Components/InputError.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
-import { useForm } from "@inertiajs/vue3";
+import { useForm, usePage } from "@inertiajs/vue3";
 import axios from "axios";
 import BuildingImage from "@/images/building.jpg";
 import { defineComponent, ref } from "vue";
@@ -15,6 +15,9 @@ const props = defineProps({
     nameBadgeData: Object,
     qrCode: String,
 });
+
+const page = usePage();
+const l = page.props.language;
 
 const form = useForm({
     events_id: "",
@@ -53,7 +56,7 @@ const nameBadgeGenerate = () => {
         <AuthenticatedLayout>
             <div class="px-10 py-10">
                 <header class="mb-10">
-                    <h3 class="text-gray-800 text-2xl pb-1 bold dark:text-white">Print Badge</h3>
+                    <h3 class="text-gray-800 text-2xl pb-1 bold dark:text-white">{{ l.printBadge.title }}</h3>
                     <div class="w-10 h-1 bg-blue-800"></div>
                 </header>
 
@@ -63,7 +66,7 @@ const nameBadgeGenerate = () => {
                             <form v-on:submit.prevent="nameBadgeGenerate">
                                 <div class="w-full flex">
                                     <div class="w-1/2 mr-3">
-                                        <InputLabel :value="'Event name'" class="mb-3"></InputLabel>
+                                        <InputLabel :value="l.printBadge.label.eventName" class="mb-3"></InputLabel>
                                         <select v-model="form.events_id"
                                             class="hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-3 ps-4 pe-9 flex gap-x-2 text-nowrap w-full cursor-pointer bg-white border border-gray-200 dark:border-none rounded-lg text-start text-sm focus:outline-none focus:ring-2 focus:ring-blue-200 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-neutral-600"
                                             v-on:change="selectEvent">
@@ -79,7 +82,7 @@ const nameBadgeGenerate = () => {
                                     </div>
 
                                     <div class="w-1/2">
-                                        <InputLabel :value="'Registered Attendees'" class="mb-3"></InputLabel>
+                                        <InputLabel :value="l.printBadge.label.registeredAttendees" class="mb-3"></InputLabel>
                                         <select
                                             class="hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-3 ps-4 pe-9 flex gap-x-2 text-nowrap w-full cursor-pointer bg-white border border-gray-200 dark:border-none rounded-lg text-start text-sm focus:outline-none focus:ring-2 focus:ring-blue-200 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-neutral-600"
                                             v-model="form.users_id">
@@ -94,7 +97,7 @@ const nameBadgeGenerate = () => {
                                 </div>
 
                                 <div class="w-full flex justify-end mt-5">
-                                    <PrimaryButton type="submit">Generate</PrimaryButton>
+                                    <PrimaryButton type="submit">{{ l.printBadge.button.generate }}</PrimaryButton>
                                 </div>
                             </form>
                         </div>
@@ -102,14 +105,14 @@ const nameBadgeGenerate = () => {
                         <div class="border-t mt-5 pt-5" v-if="nameBadgeData">
                             <header class="mb-5">
                                 <h3 class="text-gray-800 text-lg pb-1 bold dark:text-white">
-                                    Card Design Preview
+                                    {{ l.printBadge.cardDesignPreview }}
                                 </h3>
                                 <div class="w-10 h-1 bg-blue-800"></div>
                             </header>
                             <div class="w-full flex justify-end">
                                 <a target="_blank" :href="`attendees/QRCode/download/${nameBadgeData.id}`"
                                     class="inline-flex items-center px-4 py-2 bg-blue-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700 focus:bg-blue-700 active:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
-                                    <span>Download</span>
+                                    <span>{{ l.printBadge.button.download }}</span>
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                         stroke-width="1.5" stroke="currentColor" class="size-4 inline ms-1">
                                         <path stroke-linecap="round" stroke-linejoin="round"

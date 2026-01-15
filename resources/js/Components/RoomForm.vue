@@ -13,18 +13,24 @@ const saveRoomNumber = () => form.post('/room/create', {
     onSuccess: () => form.reset('room_number'),
 });
 
+const props = defineProps({
+  l: Object,
+});
+
+const l = props.l;
+
 </script>
 
 <template>
   <div>
     <form v-on:submit.prevent="saveRoomNumber">
       <div>
-        <InputLabel :value="'Room Number'"></InputLabel>
-        <TextInput placeholder="Room Number" v-model="form.room_number" class="mt-3 w-[30%] text-sm"></TextInput>
+        <InputLabel :value="l.events.eventRoom.labels.eventRoom"></InputLabel>
+        <TextInput  :placeholder="l.events.eventRoom.placeholder.eventRoom" v-model="form.room_number" class="mt-3 w-[30%] text-sm"></TextInput>
         <InputError  :message="form.errors.room_number"></InputError>
       </div>
       <div class="mt-5 w-full flex justify-end">
-        <PrimaryButton type="submit" class="">Save</PrimaryButton>
+        <PrimaryButton type="submit" >{{ l.events.button.save }}</PrimaryButton>
       </div>
     </form>
   </div>

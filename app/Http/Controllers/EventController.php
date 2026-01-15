@@ -44,7 +44,7 @@ class EventController extends Controller
             "early_attendance_min" => ['required'],
             "late_attendance_min" => ['required'],
             "room_numbers_id" => ['required'],
-            "event_type" => ['required'],   
+            "event_type" => ['required'],
         ]);
 
         $letters = chr(rand(65, 90)) . chr(rand(65, 90)) . chr(rand(65, 90));
@@ -55,6 +55,6 @@ class EventController extends Controller
 
         Event::create($mergeEvent);
 
-        return to_route('event.index');
+        return to_route('event.list.index');
     }
 }

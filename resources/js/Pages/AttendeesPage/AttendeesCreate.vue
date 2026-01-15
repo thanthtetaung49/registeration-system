@@ -5,7 +5,7 @@ import InputLabel from "@/Components/InputLabel.vue";
 import TextInput from "@/Components/TextInput.vue";
 import TextInputError from "@/Components/InputError.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
-import { useForm } from "@inertiajs/vue3";
+import { useForm, usePage } from "@inertiajs/vue3";
 import defaultImage from "@/images/default_profile.png";
 import { defineComponent, onMounted, ref } from "vue";
 
@@ -28,7 +28,8 @@ const form = useForm({
 defineComponent({ defaultImage });
 
 const props = defineProps({ states: Object, types: Object, groups: Object });
-
+const page = usePage();
+const l = page.props.language;
 const imageUrl = ref(null);
 
 const previewImage = (event) => {
@@ -68,14 +69,14 @@ const saveAttendees = () =>
     <AuthenticatedLayout>
       <div class="px-10 py-10">
         <header class="mb-10">
-          <h3 class="text-gray-800 text-2xl pb-1 bold dark:text-white">Create Attendees</h3>
+          <h3 class="text-gray-800 text-2xl pb-1 bold dark:text-white">{{ l.attendees.createAttendees.title }}</h3>
           <div class="w-10 h-1 bg-blue-800"></div>
         </header>
 
         <div class="w-full bg-white rounded-lg shadow-md dark:text-white dark:bg-gray-800">
           <div class="border-b border-gray-200 dark:border-none px-4 pb-10 mb-10">
             <div class="border-b">
-              <AttendeesTabLayout></AttendeesTabLayout>
+              <AttendeesTabLayout :l="l"></AttendeesTabLayout>
             </div>
 
             <div class="mt-5">
@@ -93,19 +94,21 @@ const saveAttendees = () =>
                 </div>
                 <div class="w-full flex">
                   <div class="w-1/3">
-                    <InputLabel :value="'Name'"></InputLabel>
-                    <TextInput placeholder="Name" type="text" v-model="form.name" class="w-full mt-3 text-sm">
+                    <InputLabel :value="l.attendees.createAttendees.labels.attendeesName"></InputLabel>
+                    <TextInput :placeholder="l.attendees.createAttendees.placeholder.attendeesName" type="text"
+                      v-model="form.name" class="w-full mt-3 text-sm">
                     </TextInput>
                     <TextInputError :message="form.errors.name"></TextInputError>
                   </div>
                   <div class="w-1/3 ms-3">
-                    <InputLabel :value="'Age'"></InputLabel>
-                    <TextInput placeholder="Age" type="number" v-model="form.age" class="w-full mt-3 text-sm">
+                    <InputLabel :value="l.attendees.createAttendees.labels.attendeesAge"></InputLabel>
+                    <TextInput :placeholder="l.attendees.createAttendees.placeholder.attendeesAge" type="number"
+                      v-model="form.age" class="w-full mt-3 text-sm">
                     </TextInput>
                     <TextInputError :message="form.errors.age"></TextInputError>
                   </div>
                   <div class="w-1/3 ms-3">
-                    <InputLabel :value="'Gender'"></InputLabel>
+                    <InputLabel :value="l.attendees.createAttendees.labels.attendeesSex"></InputLabel>
                     <select placeholder="Gender" v-model="form.sex"
                       class="py-2 px-4 pe-9 block w-full border-gray-200 dark:border-none rounded-lg text-sm focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none mt-3 dark:bg-gray-900">
                       <option value="" selected="">Open this select Gender</option>
@@ -118,41 +121,43 @@ const saveAttendees = () =>
 
                 <div class="w-full flex my-7">
                   <div class="w-1/3">
-                    <InputLabel :value="'Phone Number'"></InputLabel>
-                    <TextInput placeholder="Phone Number" type="text" v-model="form.phone_number"
-                      class="w-full mt-3 text-sm"></TextInput>
+                    <InputLabel :value="l.attendees.createAttendees.labels.attendeesPhoneNumber"></InputLabel>
+                    <TextInput :placeholder="l.attendees.createAttendees.placeholder.attendeesPhoneNumber" type="text"
+                      v-model="form.phone_number" class="w-full mt-3 text-sm"></TextInput>
                     <TextInputError :message="form.errors.phone_number"></TextInputError>
                   </div>
                   <div class="w-1/3 ms-3">
-                    <InputLabel :value="'NRC Number'"></InputLabel>
-                    <TextInput placeholder="NRC Number" type="text" v-model="form.nrc_number"
-                      class="w-full mt-3 text-sm"></TextInput>
+                    <InputLabel :value="l.attendees.createAttendees.labels.attendeesNRCNumber"></InputLabel>
+                    <TextInput :placeholder="l.attendees.createAttendees.placeholder.attendeesNRCNumber" type="text"
+                      v-model="form.nrc_number" class="w-full mt-3 text-sm"></TextInput>
                     <TextInputError :message="form.errors.nrc_number"></TextInputError>
                   </div>
                   <div class="w-1/3 ms-3">
-                    <InputLabel :value="'Education Background'"></InputLabel>
-                    <TextInput placeholder="Education Background" type="text" v-model="form.edu_background"
-                      class="w-full mt-3 text-sm"></TextInput>
+                    <InputLabel :value="l.attendees.createAttendees.labels.attendeesEducationBackground"></InputLabel>
+                    <TextInput :placeholder="l.attendees.createAttendees.placeholder.attendeesEducationBackground"
+                      type="text" v-model="form.edu_background" class="w-full mt-3 text-sm"></TextInput>
                     <TextInputError :message="form.errors.edu_background"></TextInputError>
                   </div>
                 </div>
 
                 <div class="w-full flex my-7">
                   <div class="w-1/3">
-                    <InputLabel :value="'Position'"></InputLabel>
-                    <TextInput placeholder="Position" type="text" v-model="form.position" class="w-full mt-3 text-sm">
+                    <InputLabel :value="l.attendees.createAttendees.labels.attendeesPosition"></InputLabel>
+                    <TextInput :placeholder="l.attendees.createAttendees.placeholder.attendeesPosition" type="text"
+                      v-model="form.position" class="w-full mt-3 text-sm">
                     </TextInput>
                     <TextInputError :message="form.errors.position"></TextInputError>
                   </div>
                   <div class="w-1/3 ms-3">
-                    <InputLabel :value="'Department'"></InputLabel>
-                    <TextInput placeholder="Department" type="text" v-model="form.department"
-                      class="w-full mt-3 text-sm"></TextInput>
+                    <InputLabel :value="l.attendees.createAttendees.labels.attendeesDepartment"></InputLabel>
+                    <TextInput :placeholder="l.attendees.createAttendees.placeholder.attendeesDepartment" type="text"
+                      v-model="form.department" class="w-full mt-3 text-sm"></TextInput>
                     <TextInputError :message="form.errors.department"></TextInputError>
                   </div>
                   <div class="w-1/3 ms-3">
-                    <InputLabel :value="'Address'"></InputLabel>
-                    <TextInput placeholder="Address" type="text" v-model="form.address" class="w-full mt-3 text-sm">
+                    <InputLabel :value="l.attendees.createAttendees.labels.attendeesAddress"></InputLabel>
+                    <TextInput :placeholder="l.attendees.createAttendees.placeholder.attendeesAddress" type="text"
+                      v-model="form.address" class="w-full mt-3 text-sm">
                     </TextInput>
                     <TextInputError :message="form.errors.address"></TextInputError>
                   </div>
@@ -160,13 +165,14 @@ const saveAttendees = () =>
 
                 <div class="w-full flex my-7">
                   <div class="w-1/3">
-                    <InputLabel :value="'Email'"></InputLabel>
-                    <TextInput placeholder="Email" type="email" v-model="form.email" class="w-full mt-3 text-sm">
+                    <InputLabel :value="l.attendees.createAttendees.labels.attendeesEmail"></InputLabel>
+                    <TextInput :placeholder="l.attendees.createAttendees.placeholder.attendeesEmail" type="email"
+                      v-model="form.email" class="w-full mt-3 text-sm">
                     </TextInput>
                     <TextInputError :message="form.errors.email"></TextInputError>
                   </div>
                   <div class="w-1/3 ms-3">
-                    <InputLabel :value="'Attendees Type'"></InputLabel>
+                    <InputLabel :value="l.attendees.createAttendees.labels.attendeesType"></InputLabel>
                     <select placeholder="Attendees Type" v-model="form.attendees_types_id"
                       class="py-2 px-4 pe-9 block w-full border-gray-200 dark:border-none rounded-lg text-sm focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none mt-3 dark:bg-gray-900">
                       <option value="" selected="">
@@ -181,7 +187,7 @@ const saveAttendees = () =>
                   </div>
 
                   <div class="w-1/3 ms-3">
-                    <InputLabel :value="'Attendees Group'"></InputLabel>
+                    <InputLabel :value="l.attendees.createAttendees.labels.attendeesGroup"></InputLabel>
                     <select v-model="form.attendees_groups_id"
                       class="py-2 px-4 pe-9 block w-full border-gray-200 dark:border-none rounded-lg text-sm focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none mt-3 dark:bg-gray-900">
                       <option value="" selected="">
@@ -197,7 +203,7 @@ const saveAttendees = () =>
                 </div>
 
                 <div class="w-full flex justify-end py-3 mt-5">
-                  <PrimaryButton type="submit">Save</PrimaryButton>
+                  <PrimaryButton type="submit">{{ l.attendees.button.save }}</PrimaryButton>
                 </div>
               </form>
             </div>

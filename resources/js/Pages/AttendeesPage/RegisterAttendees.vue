@@ -2,10 +2,11 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import AttendeesTabLayout from "@/Layouts/AttendeesTabLayout.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
-import { Link, router, useForm } from "@inertiajs/vue3";
+import { Link, router, useForm, usePage } from "@inertiajs/vue3";
 import { onMounted, ref } from "vue";
 import InputError from "@/Components/InputError.vue";
 import TextInput from "@/Components/TextInput.vue";
+import InputLabel from "@/Components/InputLabel.vue";
 
 const props = defineProps({
   users: Object,
@@ -15,6 +16,9 @@ const props = defineProps({
   groupId: String,
   eventsId: String,
 });
+
+const page = usePage();
+const l = page.props.language;
 
 const users = ref(props.users);
 const checkBoxAll = ref(null);
@@ -124,20 +128,20 @@ onMounted(() => {
       <div class="px-10 py-5">
 
         <header class="mb-10">
-          <h3 class="text-gray-800 text-2xl pb-1 bold dark:text-white">Register Attendees</h3>
+          <h3 class="text-gray-800 text-2xl pb-1 bold dark:text-white">{{ l.attendees.registerAttendees.title }}</h3>
           <div class="w-10 h-1 bg-blue-800"></div>
         </header>
 
         <div class="w-full bg-white shadow-md mb-20 dark:bg-gray-800">
           <div class="border-b border-gray-200 dark:border-none px-4">
             <div class="border-b">
-              <AttendeesTabLayout></AttendeesTabLayout>
+              <AttendeesTabLayout :l="l"></AttendeesTabLayout>
             </div>
 
             <div class="flex justify-end mt-5">
               <div class="relative">
-                <TextInput ref="input" v-model="query" @keydown.enter="searchUser" placeholder="Search Attendees"
-                  class="text-sm"></TextInput>
+                <TextInput ref="input" v-model="query" @keydown.enter="searchUser"
+                  :placeholder="l.attendees.registerAttendees.searchPlaceholder" class="text-sm"></TextInput>
                 <div class="absolute right-3 top-1/2 -translate-y-1/2">
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                     stroke="currentColor" class="size-4 dark:text-white">
@@ -156,6 +160,7 @@ onMounted(() => {
               <form v-on:submit.prevent="registerEvent">
                 <div class="w-full flex items-center mt-5">
                   <div class="w-1/3 ms-3">
+                    <InputLabel :value="l.attendees.registerAttendees.label.attendeesGroup" class="mb-3"></InputLabel>
                     <select
                       class="hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-2 ps-4 pe-9 flex gap-x-2 text-nowrap w-full cursor-pointer bg-white border border-gray-200 dark:border-none rounded-lg text-start text-sm focus:outline-none focus:ring-2 focus:ring-blue-200 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-neutral-600"
                       v-model="form.attendees_groups_id" @change="filter">
@@ -167,6 +172,8 @@ onMounted(() => {
                   </div>
 
                   <div class="w-1/3 ms-3">
+                    <InputLabel :value="l.attendees.registerAttendees.label.event" class="mb-3"></InputLabel>
+
                     <select data-hs-select='{
                     "hasSearch": true,
                     "searchPlaceholder": "Search...",
@@ -187,17 +194,17 @@ onMounted(() => {
                     </select>
                   </div>
 
-                  <div class="w-1/3 ms-5 inline-flex">
+                  <div class="w-1/3 ms-5 inline-flex mt-7">
                     <button type="button" v-on:click="excelExport"
                       class="inline-flex items-center px-4 py-2 bg-green-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-green-700 focus:bg-green-700 active:bg-green-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
-                      Excel
+                      {{ l.attendees.button.excel }}
                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="size-4 ms-2">
                         <path stroke-linecap="round" stroke-linejoin="round"
                           d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
                       </svg>
                     </button>
-                    <PrimaryButton type="submit" class="ms-3">Save</PrimaryButton>
+                    <PrimaryButton type="submit" class="ms-3">{{ l.attendees.button.register }}</PrimaryButton>
                   </div>
                 </div>
                 <div class="w-full flex justify-end mt-5"></div>
@@ -224,35 +231,35 @@ onMounted(() => {
                             <th scope="col" class="py-1 group text-start font-normal focus:outline-none">
                               <div
                                 class="py-1 px-2.5 inline-flex items-center border border-transparent text-sm text-gray-500 rounded-md hover:border-gray-200 dark:border-none">
-                                Name
+                                {{ l.attendees.registerAttendees.table.name }}
                               </div>
                             </th>
 
                             <th scope="col" class="py-1 group text-start font-normal focus:outline-none">
                               <div
                                 class="py-1 px-2.5 inline-flex items-center border border-transparent text-sm text-gray-500 rounded-md hover:border-gray-200 dark:border-none">
-                                Attendees Group
+                                {{ l.attendees.registerAttendees.table.attendanceGroup }}
                               </div>
                             </th>
 
                             <th scope="col" class="py-1 group text-start font-normal focus:outline-none">
                               <div
                                 class="py-1 px-2.5 inline-flex items-center border border-transparent text-sm text-gray-500 rounded-md hover:border-gray-200 dark:border-none">
-                                Phone Number
+                                {{ l.attendees.registerAttendees.table.phoneNumber }}
                               </div>
                             </th>
 
                             <th scope="col" class="py-1 group text-start font-normal focus:outline-none">
                               <div
                                 class="py-1 px-2.5 inline-flex items-center border border-transparent text-sm text-gray-500 rounded-md hover:border-gray-200 dark:border-none">
-                                Email
+                                {{ l.attendees.registerAttendees.table.email }}
                               </div>
                             </th>
 
                             <th scope="col" class="py-1 group text-start font-normal focus:outline-none">
                               <div
                                 class="py-1 px-2.5 inline-flex items-center border border-transparent text-sm text-gray-500 rounded-md hover:border-gray-200 dark:border-none">
-                                created_at
+                                {{ l.attendees.registerAttendees.table.createAt }}
                               </div>
                             </th>
                           </tr>

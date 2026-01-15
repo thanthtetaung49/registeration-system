@@ -2,7 +2,7 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import InstructorForm from "@/Components/InstructorForm.vue";
 import { defineComponent } from "vue";
-import { Link } from "@inertiajs/vue3";
+import { Link, usePage } from "@inertiajs/vue3";
 import EventTabLayout from "@/Layouts/EventTabLayout.vue";
 
 const props = defineProps({
@@ -10,6 +10,9 @@ const props = defineProps({
 });
 
 defineComponent({ InstructorForm });
+
+const page = usePage();
+const l = page.props.language;
 </script>
 
 <template>
@@ -17,7 +20,7 @@ defineComponent({ InstructorForm });
     <AuthenticatedLayout>
       <div class="px-10 py-10">
         <header class="mb-10">
-          <h3 class="text-gray-800 text-2xl pb-1 bold dark:text-white">Instructors</h3>
+          <h3 class="text-gray-800 text-2xl pb-1 bold dark:text-white">{{ l.events.instructors.title }}</h3>
           <div class="w-10 h-1 bg-blue-800"></div>
         </header>
 
@@ -25,10 +28,10 @@ defineComponent({ InstructorForm });
           class="w-full bg-white rounded-lg shadow-md dark:text-white dark:bg-gray-800"
         >
           <div class="border-b border-gray-200 dark:border-none px-4">
-            <EventTabLayout></EventTabLayout>
+            <EventTabLayout :l="l"></EventTabLayout>
 
             <div class="mt-5">
-              <InstructorForm></InstructorForm>
+              <InstructorForm :l="l"></InstructorForm>
             </div>
 
             <div class="flex flex-col mt-5">
@@ -40,27 +43,27 @@ defineComponent({ InstructorForm });
                         <tr>
                           <th
                             scope="col"
-                            class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase"
+                            class="py-3 text-start text-xs font-medium text-gray-500 uppercase"
                           >
-                            No
+                            {{ l.events.instructors.table.no  }}
                           </th>
                           <th
                             scope="col"
-                            class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase"
+                            class="py-3 text-start text-xs font-medium text-gray-500 uppercase"
                           >
-                            Instructor name
+                            {{ l.events.instructors.table.instructor }}
                           </th>
                           <th
                             scope="col"
-                            class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase"
+                            class="py-3 text-start text-xs font-medium text-gray-500 uppercase"
                           >
-                            Created at
+                            {{ l.events.instructors.table.createdAt }}
                           </th>
                           <th
                             scope="col"
-                            class="px-6 py-3 text-end text-xs font-medium text-gray-500 uppercase"
+                            class="py-3 text-end text-xs font-medium text-gray-500 uppercase"
                           >
-                            Action
+                            {{ l.events.instructors.table.actions }}
                           </th>
                         </tr>
                       </thead>

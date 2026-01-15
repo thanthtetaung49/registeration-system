@@ -1,7 +1,7 @@
 <script setup>
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import EventTabLayout from "@/Layouts/EventTabLayout.vue";
-import { Link, router } from "@inertiajs/vue3";
+import { Link, router, usePage } from "@inertiajs/vue3";
 import axios from "axios";
 import { ref } from "vue";
 import TextInput from "@/Components/TextInput.vue";
@@ -9,6 +9,8 @@ import TextInput from "@/Components/TextInput.vue";
 const props = defineProps({ registerEvents: Object });
 const registerEvents = ref(props.registerEvents);
 const query = ref(null);
+const page = usePage();
+const l = page.props.language;
 
 const searchEvent = () =>
 {
@@ -41,13 +43,13 @@ const excelExport = () =>
     <AuthenticatedLayout>
       <div class="px-10 py-10">
         <header class="mb-10">
-          <h3 class="text-gray-800 text-2xl pb-1 bold dark:text-white">Events Report</h3>
+          <h3 class="text-gray-800 text-2xl pb-1 bold dark:text-white">{{ l.events.eventReport.title }}</h3>
           <div class="w-10 h-1 bg-blue-800"></div>
         </header>
 
         <div class="w-full bg-white rounded-lg shadow-md dark:text-white dark:bg-gray-800">
           <div class="border-b border-gray-200 dark:border-none px-4 pb-5 mb-10">
-            <EventTabLayout></EventTabLayout>
+            <EventTabLayout :l="l"></EventTabLayout>
 
             <div class="flex justify-end mt-5">
                 <button
@@ -55,7 +57,7 @@ const excelExport = () =>
                 v-on:click="excelExport"
                 class="inline-flex items-center px-4 py-2 bg-green-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-green-700 focus:bg-green-700 active:bg-green-900 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition ease-in-out duration-150 mr-3"
               >
-                Excel
+                {{ l.events.button.excel }}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -76,7 +78,7 @@ const excelExport = () =>
                 <TextInput
                   v-model="query"
                   @keydown.enter="searchEvent"
-                  placeholder="Search Event"
+                  :placeholder="l.events.eventReport.searchPlaceholder"
                   class="text-sm"
                 ></TextInput>
                 <div class="absolute right-3 top-1/2 -translate-y-1/2">
@@ -109,31 +111,31 @@ const excelExport = () =>
                             scope="col"
                             class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase"
                           >
-                            No
+                            {{ l.events.eventReport.table.no }}
                           </th>
                           <th
                             scope="col"
                             class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase"
                           >
-                            Event name
+                            {{ l.events.eventReport.table.eventName }}
                           </th>
                           <th
                             scope="col"
                             class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase"
                           >
-                            Attendees name
+                            {{ l.events.eventReport.table.attendeeName }}
                           </th>
                           <th
                             scope="col"
                             class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase"
                           >
-                            Attendees type
+                            {{ l.events.eventReport.table.attendeeType }}
                           </th>
                           <th
                             scope="col"
                             class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase"
                           >
-                            Check in time
+                            {{ l.events.eventReport.table.checkInTime }}
                           </th>
                         </tr>
                       </thead>

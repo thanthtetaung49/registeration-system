@@ -3,7 +3,7 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import AttendeesTabLayout from "@/Layouts/AttendeesTabLayout.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
-import { Link, useForm } from "@inertiajs/vue3";
+import { Link, useForm, usePage } from "@inertiajs/vue3";
 import SuccessAlert from "@/Components/SuccessAlert.vue";
 import { ref } from "vue";
 import InputError from "@/Components/InputError.vue";
@@ -13,6 +13,8 @@ const form = useForm({
 });
 
 const alertStatus = ref(false);
+const page = usePage();
+const l = page.props.language;
 
 const importFile = () => {
   form.post("/attendees/import", {
@@ -33,14 +35,14 @@ const excelExport = () => {
     <AuthenticatedLayout>
       <div class="px-10 py-10">
         <header class="mb-10">
-          <h3 class="text-gray-800 text-2xl pb-1 bold dark:text-white">Import Attendees</h3>
+          <h3 class="text-gray-800 text-2xl pb-1 bold dark:text-white">{{ l.attendees.importAttendeesLists.title }}</h3>
           <div class="w-10 h-1 bg-blue-800"></div>
         </header>
 
         <div class="w-full bg-white rounded-lg shadow-md dark:text-white dark:bg-gray-800 pb-5">
           <div class="dark:border-none px-4">
             <div class="border-b">
-              <AttendeesTabLayout></AttendeesTabLayout>
+              <AttendeesTabLayout :l="l"></AttendeesTabLayout>
             </div>
 
             <div class="mt-5">
@@ -50,7 +52,7 @@ const excelExport = () => {
                 <div class="w-full flex justify-end">
                   <button type="button" v-on:click="excelExport"
                     class="inline-flex items-center px-4 py-2 bg-green-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-green-700 focus:bg-green-700 active:bg-green-900 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition ease-in-out duration-150">
-                    Sample template
+                    {{ l.attendees.button.sampleTemplate }}
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                       stroke="currentColor" class="size-4 ms-2">alert
                       <path stroke-linecap="round" stroke-linejoin="round"
@@ -61,7 +63,7 @@ const excelExport = () => {
 
                 <div class="w-full flex mt-5">
                   <div class="w-1/2">
-                    <InputLabel for="import_file" class="mb-3">Import Attendees Lists</InputLabel>
+                    <InputLabel for="import_file" class="mb-3">{{ l.attendees.importAttendeesLists.label.importAttendeesLists }}</InputLabel>
                     <input @input="form.import_file = $event.target.files[0]" type="file" name="import_file"
                       id="file-input"
                       class="block w-full border border-gray-200 dark:border-none shadow-sm rounded-lg text-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 file:bg-gray-50 file:border-0 file:me-4 file:py-3 file:px-4 dark:file:bg-neutral-700 dark:file:text-neutral-400" />
@@ -69,7 +71,7 @@ const excelExport = () => {
                 </div>
                 <InputError :message="form.errors.import_file"></InputError>
                 <div class="flex w-full justify-end mt-5 py-3">
-                  <PrimaryButton type="submit">Save</PrimaryButton>
+                  <PrimaryButton type="submit">{{ l.attendees.button.save }}</PrimaryButton>
                 </div>
               </form>
             </div>

@@ -2,7 +2,7 @@
 import TextInput from '@/Components/TextInput.vue';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import defaultImage from "@/images/default_profile.png";
-import { Link, router } from '@inertiajs/vue3';
+import { Link, router, usePage } from '@inertiajs/vue3';
 import { onMounted, ref } from 'vue';
 
 const props = defineProps({ users: Object, baseUrl: String });
@@ -12,6 +12,8 @@ const userLink = ref(props.users.links);
 const baseUrl = ref(props.baseUrl).value;
 const input = ref(null);
 const query = ref(null);
+const page = usePage();
+const l = page.props.language;
 
 onMounted(() => {
     input.value.focus();
@@ -36,11 +38,11 @@ const searchAttendees = () => {
         <div>
             <div class="min-h-screen bg-gray-50 p-8 dark:bg-gray-800">
                 <div>
-                    <h3 class="text-2xl dark:text-white">Attendees Business Card</h3>
+                    <h3 class="text-2xl dark:text-white">{{ l.businessCards.title }}</h3>
                 </div>
                 <div class="flex justify-end my-3 relative">
                     <TextInput ref="input" v-model="query" @keydown.enter="searchAttendees"
-                        placeholder="Search attendees..." class="text-sm"></TextInput>
+                        :placeholder="l.businessCards.searchPlaceholder" class="text-sm"></TextInput>
                     <div class="absolute right-3 top-1/2 -translate-y-1/2">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                             stroke="currentColor" class="size-4">

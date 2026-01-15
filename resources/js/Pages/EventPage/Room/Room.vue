@@ -3,13 +3,17 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import RoomForm from "@/Components/RoomForm.vue";
 import EventTabLayout from "@/Layouts/EventTabLayout.vue";
 import { defineComponent } from "vue";
-import { Link } from "@inertiajs/vue3";
+import { Link, usePage } from "@inertiajs/vue3";
 
 const props = defineProps({
     rooms: Object,
 });
 
 defineComponent({ RoomForm });
+
+const page = usePage();
+const l = page.props.language;
+
 </script>
 
 <template>
@@ -17,16 +21,16 @@ defineComponent({ RoomForm });
         <AuthenticatedLayout>
             <div class="px-10 py-10">
                 <header class="mb-10">
-                    <h3 class="text-gray-800 text-2xl pb-1 bold dark:text-white">Event Room Location</h3>
+                    <h3 class="text-gray-800 text-2xl pb-1 bold dark:text-white">{{ l.events.eventRoom.title }}</h3>
                     <div class="w-10 h-1 bg-blue-800"></div>
                 </header>
 
                 <div class="w-full bg-white rounded-lg shadow-md dark:text-white dark:bg-gray-800">
                     <div class="border-b border-gray-200 dark:border-none px-4">
-                        <EventTabLayout></EventTabLayout>
+                        <EventTabLayout :l="l"></EventTabLayout>
 
                         <div class="mt-5">
-                            <RoomForm></RoomForm>
+                            <RoomForm :l="l"></RoomForm>
                         </div>
 
                         <div class="flex flex-col mt-5">
@@ -42,27 +46,27 @@ defineComponent({ RoomForm });
                                                 <tr>
                                                     <th
                                                         scope="col"
-                                                        class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase"
+                                                        class="py-3 text-start text-xs font-medium text-gray-500 uppercase"
                                                     >
-                                                        No
+                                                        {{ l.events.eventRoom.table.no }}
                                                     </th>
                                                     <th
                                                         scope="col"
-                                                        class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase"
+                                                        class="py-3 text-start text-xs font-medium text-gray-500 uppercase"
                                                     >
-                                                        Room number
+                                                         {{ l.events.eventRoom.table.eventRoom }}
                                                     </th>
                                                     <th
                                                         scope="col"
-                                                        class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase"
+                                                        class="py-3 text-start text-xs font-medium text-gray-500 uppercase"
                                                     >
-                                                        Created at
+                                                         {{ l.events.eventRoom.table.createdAt }}
                                                     </th>
                                                     <th
                                                         scope="col"
-                                                        class="px-6 py-3 text-end text-xs font-medium text-gray-500 uppercase"
+                                                        class="py-3 text-end text-xs font-medium text-gray-500 uppercase"
                                                     >
-                                                        Action
+                                                         {{ l.events.eventRoom.table.actions }}
                                                     </th>
                                                 </tr>
                                             </thead>

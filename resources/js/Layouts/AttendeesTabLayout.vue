@@ -10,6 +10,10 @@ const isRegisterAttendeesActive = computed(() =>
   registerAttendeesRoutes.some(name => route().current(name))
 );
 
+const props = defineProps({ l: Object });
+const l = props.l;
+
+// console.log(l.attendees.tabs.attendee);
 </script>
 
 <template>
@@ -22,7 +26,7 @@ const isRegisterAttendeesActive = computed(() =>
           'text-white rounded-md font-bold bg-blue-700': route().current('attendees.list.index'),
           'text-gray-500 ': !route().current('attendees.list.index'),
         }">
-        Attendees Lists
+        {{ l.attendees.tabs.attendeesList }}
       </Link>
       <Link href="/attendees/attendeesType"
         class="py-2 my-3 px-4 inline-flex items-center gap-x-2 border-b-2 border-transparent text-sm whitespace-nowrap  focus:outline-none disabled:opacity-50 disabled:pointer-events-none"
@@ -30,7 +34,7 @@ const isRegisterAttendeesActive = computed(() =>
           'text-white rounded-md font-bold bg-blue-700': route().current('attendees.type.index'),
           'text-gray-500 ': !route().current('attendees.type.index'),
         }">
-        Attendees Type
+        {{ l.attendees.tabs.attendeesType }}
       </Link>
       <Link href="/attendees/attendeesGroup"
         class="py-2 my-3 px-4 inline-flex items-center gap-x-2 border-b-2 border-transparent text-sm whitespace-nowrap  focus:outline-none disabled:opacity-50 disabled:pointer-events-none"
@@ -38,7 +42,7 @@ const isRegisterAttendeesActive = computed(() =>
           'text-white rounded-md font-bold bg-blue-700': route().current('attendees.group.index'),
           'text-gray-500 ': !route().current('attendees.group.index'),
         }">
-        Attendees Group
+        {{ l.attendees.tabs.attendeesGroup }}
       </Link>
       <Link href="/attendees"
         class="py-2 my-3 px-4 inline-flex items-center gap-x-2 border-b-2 border-transparent text-sm whitespace-nowrap  focus:outline-none disabled:opacity-50 disabled:pointer-events-none"
@@ -46,7 +50,7 @@ const isRegisterAttendeesActive = computed(() =>
           'text-white rounded-md font-bold bg-blue-700': route().current('attendees.index'),
           'text-gray-500 ': !route().current('attendees.index'),
         }">
-        Create Attendees
+       {{ l.attendees.tabs.createAttendees }}
       </Link>
 
       <Link href="/attendees/upload/file"
@@ -55,7 +59,7 @@ const isRegisterAttendeesActive = computed(() =>
           'text-white rounded-md font-bold bg-blue-700': route().current('attendees.upload.index'),
           'text-gray-500 ': !route().current('attendees.upload.index'),
         }">
-        Import Attendees
+        {{ l.attendees.tabs.importAttendees }}
       </Link>
 
       <Link href="/attendees/registerAttendees"
@@ -64,7 +68,7 @@ const isRegisterAttendeesActive = computed(() =>
           'text-white rounded-md font-bold bg-blue-700': route().current('attendees.registerAttendees.index') || route().current('attendees.registerAttendees.search') || route().current('attendees.registerAttendees.filter'),
           'text-gray-500 ': !route().current('attendees.registerAttendees.index') || !route().current('attendees.registerAttendees.search') || !route().current('attendees.registerAttendees.filter'),
         }">
-        Register Attendees
+        {{ l.attendees.tabs.registerAttendees }}
       </Link>
 
       <Link href="/attendees/unregisterAttendees"
@@ -75,7 +79,7 @@ const isRegisterAttendeesActive = computed(() =>
           ),
           'text-gray-500 ': !route().current('attendees.unregisterAttendees.index'),
         }">
-        Unregister Attendees
+        {{ l.attendees.tabs.unregisterAttendees }}
       </Link>
     </nav>
   </div>

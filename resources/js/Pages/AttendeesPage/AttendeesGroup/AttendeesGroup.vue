@@ -2,7 +2,7 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import CategoryForm from "@/Components/EventCategoriesForm.vue";
 import AttendeesTabLayout from "@/Layouts/AttendeesTabLayout.vue";
-import { Link } from "@inertiajs/vue3";
+import { Link, usePage } from "@inertiajs/vue3";
 
 import InputLabel from "@/Components/InputLabel.vue";
 import TextInput from "@/Components/TextInput.vue";
@@ -13,6 +13,9 @@ import { useForm } from "@inertiajs/vue3";
 const form = useForm({
     name: null,
 });
+
+const page = usePage();
+const l = page.props.language;
 
 const saveAttendeesGroup = () =>
     form.post("/attendees/attendeesGroup/create", {
@@ -30,7 +33,7 @@ const props = defineProps({
             <div class="px-10 py-10">
                 <header class="mb-10">
                     <h3 class="text-gray-800 text-2xl pb-1 bold dark:text-white">
-                        Attendees Group
+                        {{ l.attendees.attendeesGroup.title }}
                     </h3>
                     <div class="w-10 h-1 bg-blue-800"></div>
                 </header>
@@ -38,18 +41,18 @@ const props = defineProps({
                 <div class="w-full bg-white rounded-lg shadow-md dark:text-white dark:bg-gray-800">
                     <div class="border-b border-gray-200 dark:border-none px-4">
                         <div class="border-b">
-                            <AttendeesTabLayout></AttendeesTabLayout>
+                            <AttendeesTabLayout :l="l"></AttendeesTabLayout>
                         </div>
 
                         <div class="mt-5">
                             <form v-on:submit.prevent="saveAttendeesGroup">
                                 <div>
-                                    <InputLabel :value="'Attendees Group'"></InputLabel>
-                                    <TextInput placeholder="Attendees Group" v-model="form.name" class="mt-3 w-[30%] text-sm"></TextInput>
+                                    <InputLabel :value="l.attendees.attendeesGroup.labels.attendeesGroup"></InputLabel>
+                                    <TextInput :placeholder="l.attendees.attendeesGroup.placeholder.attendeesGroup" v-model="form.name" class="mt-3 w-[30%] text-sm"></TextInput>
                                     <InputError :message="form.errors.name"></InputError>
                                 </div>
                                 <div class="mt-5 w-full flex justify-end">
-                                    <PrimaryButton type="submit" class="">Save</PrimaryButton>
+                                    <PrimaryButton type="submit" class="">{{ l.attendees.button.save }}</PrimaryButton>
                                 </div>
                             </form>
                         </div>
@@ -62,20 +65,20 @@ const props = defineProps({
                                             <thead>
                                                 <tr>
                                                     <th scope="col"
-                                                        class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">
-                                                        No
+                                                        class="py-3 text-start text-xs font-medium text-gray-500 uppercase">
+                                                        {{ l.attendees.attendeesGroup.table.no }}
                                                     </th>
                                                     <th scope="col"
-                                                        class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">
-                                                        Attendees type
+                                                        class="py-3 text-start text-xs font-medium text-gray-500 uppercase">
+                                                        {{ l.attendees.attendeesGroup.table.attendeesGroup }}
                                                     </th>
                                                     <th scope="col"
-                                                        class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">
-                                                        Created at
+                                                        class="py-3 text-start text-xs font-medium text-gray-500 uppercase">
+                                                        {{ l.attendees.attendeesGroup.table.createdAt }}
                                                     </th>
                                                     <th scope="col"
-                                                        class="px-6 py-3 text-end text-xs font-medium text-gray-500 uppercase">
-                                                        Action
+                                                        class="py-3 text-end text-xs font-medium text-gray-500 uppercase">
+                                                        {{ l.attendees.attendeesGroup.table.actions }}
                                                     </th>
                                                 </tr>
                                             </thead>
@@ -84,15 +87,15 @@ const props = defineProps({
 group, index
                                                     ) in groups.data" :key="group.id">
                                                     <td
-                                                        class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white">
+                                                        class="py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white">
                                                         {{ index + 1 }}
                                                     </td>
                                                     <td
-                                                        class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white">
+                                                        class="py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white">
                                                         {{ group.name }}
                                                     </td>
                                                     <td
-                                                        class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white">
+                                                        class="py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white">
                                                         {{
                                                             group.created_at.split(
                                                                 "T"
@@ -100,7 +103,7 @@ group, index
                                                         }}
                                                     </td>
                                                     <td
-                                                        class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
+                                                        class="py-4 whitespace-nowrap text-end text-sm font-medium">
                                                         <Link :href="`/attendees/attendeesGroup/view/${group.id}`"
                                                             class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border text-gray-600 focus:outline-none focus:text-whitedisabled:opacity-50 disabled:pointer-events-none dark:text-gray-500 dark:hover:text-gray-400 dark:focus:text-gray-400 p-2 mr-3 hover:bg-green-700 hover:text-white"
                                                             aria-haspopup="dialog" aria-expanded="false"

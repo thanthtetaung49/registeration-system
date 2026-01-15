@@ -1,12 +1,11 @@
 <script setup>
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import { Link, router } from "@inertiajs/vue3";
+import { Link, router, usePage } from "@inertiajs/vue3";
 import defaultImage from "@/images/default_profile.png";
 import axios from "axios";
 import SuccessAlert from "@/Components/SuccessAlert.vue";
 import { onMounted, onUpdated, ref } from "vue";
 import TextInput from "@/Components/TextInput.vue";
-import InputLabel from "@/Components/InputLabel.vue";
 
 const props = defineProps({
   users: Object,
@@ -21,8 +20,8 @@ let links = props.users.links;
 let showAlertStatus = ref(false);
 let input = ref(null);
 let query = ref(null);
-let gender = ref(null);
-let role = ref(null);
+const page = usePage();
+const l = page.props.language;
 
 const userView = (userId) => {
   axios
@@ -117,7 +116,7 @@ onMounted(() => {
         <div class="max-w-full mx-auto sm:px-6 lg:px-8">
           <header class="mb-5">
             <h3 class="text-gray-800 text-2xl pb-1 bold dark:text-white">
-              Users
+              {{ l.users.title }}
             </h3>
             <div class="w-10 h-1 bg-blue-800"></div>
           </header>
@@ -125,8 +124,8 @@ onMounted(() => {
           <div class="mb-5">
             <div class="flex justify-end mt-5">
               <div class="relative">
-                <TextInput ref="input" v-model="query" placeholder="Search Attendees" @keydown.enter="searchUser"
-                  class="text-sm"></TextInput>
+                <TextInput ref="input" v-model="query" :placeholder="l.users.searchPlaceholder"
+                  @keydown.enter="searchUser" class="text-sm"></TextInput>
                 <div class="absolute right-3 top-1/2 -translate-y-1/2">
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                     stroke="currentColor" class="size-4 dark:text-white">
@@ -137,34 +136,6 @@ onMounted(() => {
               </div>
             </div>
           </div>
-
-
-          <!-- Update Later -->
-          <!-- <div>
-            <div class="ms-3">
-              <InputLabel :value="'Gender'"></InputLabel>
-              <select placeholder="Gender" v-model="gender"
-                class="py-2 px-4 pe-9 block w-full border-gray-200 dark:border-none rounded-lg text-sm focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none mt-3 dark:bg-gray-900">
-                <option value="" selected="">Open this select Gender</option>
-                <option value="0">Male</option>
-                <option value="1">Female</option>
-              </select>
-            </div>
-
-            <div class="ms-3">
-              <InputLabel :value="'Role'"></InputLabel>
-              <select placeholder="Role" v-model="gender"
-                class="py-2 px-4 pe-9 block w-full border-gray-200 dark:border-none rounded-lg text-sm focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none mt-3 dark:bg-gray-900">
-                <option value="" selected="">Open this select Role</option>
-                <option value="superAdmin">Super Admin</option>
-                <option value="admin">Admin</option>
-                <option value="security">Security</option>
-                <option value="selfCheckInUser">Self Checkin User</option>
-              </select>
-            </div>
-          </div> -->
-
-
           <div
             class="bg-white text-sm overflow-hidden shadow-sm sm:rounded-lg p-10 w-full dark:bg-gray-800 dark:text-white">
             <div class="flex flex-col">
@@ -176,35 +147,35 @@ onMounted(() => {
                         <tr>
                           <th scope="col"
                             class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">
-                            No
+                            {{ l.users.table.no }}
                           </th>
                           <th scope="col"
                             class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">
-                            Name
+                            {{ l.users.table.name }}
                           </th>
                           <th scope="col"
                             class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">
-                            Age
+                            {{ l.users.table.age }}
                           </th>
                           <th scope="col"
                             class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">
-                            Address
+                            {{ l.users.table.address }}
                           </th>
                           <th scope="col"
                             class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">
-                            Email
+                            {{ l.users.table.email }}
                           </th>
                           <th scope="col"
                             class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">
-                            Role
+                            {{ l.users.table.role }}
                           </th>
                           <th scope="col"
                             class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">
-                            Account status
+                            {{ l.users.table.accountStatus }}
                           </th>
                           <th scope="col"
                             class="px-6 py-3 text-end text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">
-                            Action
+                            {{ l.users.table.actions }}
                           </th>
                         </tr>
                       </thead>
@@ -255,19 +226,7 @@ onMounted(() => {
                                 <path stroke-linecap="round" stroke-linejoin="round"
                                   d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
                               </svg>
-
                             </button>
-
-                            <!-- <Link :href="`/users/edit/${user.id}`"
-                              class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border text-gray-600 focus:outline-none focus:text-whitedisabled:opacity-50 disabled:pointer-events-none dark:text-gray-500 dark:hover:text-gray-400 dark:focus:text-gray-400 p-2 mr-3 hover:bg-gray-700 hover:text-white"
-                              aria-haspopup="dialog" aria-expanded="false" aria-controls="hs-scale-animation-modal"
-                              data-hs-overlay="#hs-scale-animation-modal">
-                              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                stroke="currentColor" class="size-4">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                  d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
-                              </svg>
-                            </Link> -->
                           </td>
                         </tr>
                       </tbody>
@@ -311,7 +270,7 @@ onMounted(() => {
 
             <div class="flex justify-between items-center py-4 px-6 border-b border-gray-50 dark:border-neutral-800">
               <h3 id="hs-basic-modal-label" class="text-xl font-extrabold text-gray-800 dark:text-white tracking-tight">
-                User Profile
+                {{ l.users.userProfile }}
               </h3>
               <button type="button"
                 class="size-8 inline-flex justify-center items-center gap-x-2 rounded-full border border-transparent bg-gray-100 text-gray-800 hover:bg-gray-200 focus:outline-hidden focus:bg-gray-200 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-700 dark:hover:bg-neutral-600 dark:text-neutral-400 dark:focus:bg-neutral-600"
@@ -336,7 +295,7 @@ onMounted(() => {
                     <path
                       d="M15.75 5.25a3 3 0 013 3m3 0a6 6 0 01-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1121.75 8.25Z" />
                   </svg>
-                  <div class="text-xs ms-2">Account Disabled</div>
+                  <div class="text-xs ms-2">{{ l.users.button.accountDisabled }}</div>
                 </button>
 
                 <button v-on:click="accountActivate" type="button"
@@ -345,7 +304,7 @@ onMounted(() => {
                     <path
                       d="M8.25 9V5.25A2.25 2.25 0 0110.5 3h6a2.25 2.25 0 012.25 2.25v13.5A2.25 2.25 0 0116.5 21h-6a2.25 2.25 0 01-2.25-2.25V15M12 9l3 3m0 0-3 3m3-3H2.25" />
                   </svg>
-                  <div class="text-xs ms-2">Account Active</div>
+                  <div class="text-xs ms-2">{{ l.users.button.accountActive }}</div>
                 </button>
 
                 <button v-on:click="accountDelete" type="button"
@@ -354,7 +313,7 @@ onMounted(() => {
                     <path
                       d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 01 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
                   </svg>
-                  <div class="text-xs ms-2">Account Delete</div>
+                  <div class="text-xs ms-2">{{ l.users.button.accountDeleted }}</div>
                 </button>
               </div>
 
@@ -368,11 +327,11 @@ onMounted(() => {
                       class="relative w-52 h-52 object-cover rounded-3xl border-4 border-white shadow-sm" alt="Profile">
                     <div
                       class="absolute -bottom-3 left-1/2 -translate-x-1/2 px-4 py-2 bg-indigo-600 text-white text-[10px] font-black uppercase rounded-full shadow-lg w-3/4 text-center">
-                      <span v-if="user?.is_admin == 0">Attendees</span>
-                      <span v-else-if="user?.is_admin == 1">Admin</span>
-                      <span v-else-if="user?.is_admin == 2">Security</span>
-                      <span v-else-if="user?.is_admin == 3">Self-check in user</span>
-                      <span v-else>Super user</span>
+                      <span v-if="user?.is_admin == 0">{{ l.roles.attendees }}</span>
+                      <span v-else-if="user?.is_admin == 1">{{ l.roles.admin }}</span>
+                      <span v-else-if="user?.is_admin == 2">{{ l.roles.security }}</span>
+                      <span v-else-if="user?.is_admin == 3">{{ l.roles.selfCheckinUser }}</span>
+                      <span v-else>{{ l.roles.superAdmin }}</span>
                     </div>
                   </div>
                 </div>
@@ -396,7 +355,7 @@ onMounted(() => {
                     <p class="text-[10px] font-black uppercase text-gray-400 tracking-widest mb-1">Update Role</p>
                     <div class="flex flex-wrap gap-2 mt-2">
                       <label
-                        v-for="(r, index) in ['Attendees', 'Admin', 'Security', 'Self Check-in User', 'Super Admin']"
+                        v-for="(r, index) in [l.roles.attendees, l.roles.admin, l.roles.security, l.roles.selfCheckinUser, l.roles.superAdmin]"
                         :key="r" class="cursor-pointer group">
                         <input type="checkbox" class="peer hidden" :checked="user?.is_admin === index"
                           @change="updateUserRole(user.id, index)">

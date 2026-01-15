@@ -3,10 +3,13 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import EventForm from "@/Components/EventForm.vue";
 import { defineComponent } from "vue";
 import EventTabLayout from "@/Layouts/EventTabLayout.vue";
+import { usePage } from "@inertiajs/vue3";
 
 defineComponent({ EventForm });
 
 const props = defineProps({ instructors: Object, categories: Object, rooms: Object })
+const page = usePage();
+const l = page.props.language;
 
 </script>
 
@@ -22,11 +25,11 @@ const props = defineProps({ instructors: Object, categories: Object, rooms: Obje
         <div class="w-full bg-white rounded-lg shadow-md dark:text-white dark:bg-gray-800">
           <div class="border-b border-gray-200 dark:border-none px-4 pb-5 mb-10">
             <div class="border-b">
-              <EventTabLayout></EventTabLayout>
+              <EventTabLayout :l="l"></EventTabLayout>
             </div>
 
             <div class="my-5">
-              <EventForm :instructors="instructors" :categories="categories" :rooms="rooms"></EventForm>
+              <EventForm :instructors="instructors" :categories="categories" :rooms="rooms" :l="l"></EventForm>
             </div>
 
           </div>

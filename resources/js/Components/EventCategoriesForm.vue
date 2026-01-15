@@ -9,6 +9,9 @@ const form = useForm({
     category_name: null,
 });
 
+const props = defineProps({ l: Object });
+const l = props.l;
+
 const saveCategories = () => form.post('/category/create', {
     onSuccess: () => form.reset('category_name')
 });
@@ -19,12 +22,12 @@ const saveCategories = () => form.post('/category/create', {
   <div>
     <form v-on:submit.prevent="saveCategories">
       <div>
-        <InputLabel :value="'Category'"></InputLabel>
-        <TextInput placeholder="Cateogry" v-model="form.category_name" class="mt-3 w-[30%] text-sm"></TextInput>
+        <InputLabel :value="l.events.category.labels.category"></InputLabel>
+        <TextInput :placeholder="l.events.category.placeholder.category" v-model="form.category_name" class="mt-3 w-[30%] text-sm"></TextInput>
         <InputError :message="form.errors.category_name"></InputError>
       </div>
       <div class="mt-5 w-full flex justify-end">
-        <PrimaryButton type="submit" class="">Save</PrimaryButton>
+        <PrimaryButton type="submit" class="">{{ l.events.button.save }}</PrimaryButton>
       </div>
     </form>
   </div>

@@ -2,7 +2,7 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import AttendeesTabLayout from "@/Layouts/AttendeesTabLayout.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
-import { Link, router, useForm } from "@inertiajs/vue3";
+import { Link, router, useForm, usePage } from "@inertiajs/vue3";
 import { onMounted, ref } from "vue";
 import InputError from "@/Components/InputError.vue";
 import TextInput from "@/Components/TextInput.vue";
@@ -17,21 +17,18 @@ const props = defineProps({
   eventsId: String,
 });
 
-// console.log(props);
-
 const registerEvents = ref(props.registerEvents);
-// const status = ref(false);
 const checkBoxAll = ref(null);
 const query = ref(null);
 const input = ref(null);
+const page = usePage();
+const l = page.props.language;
 
 const form = useForm({
   registerEvents_id: [],
   events_id: props.eventsId ? props.eventsId : "",
   attendees_groups_id: props.groupId ? props.groupId : "",
 });
-
-// console.log(form);
 
 const unregisterEvent = () => {
   const checkBoxes = document.querySelectorAll(".checkBoxes");
@@ -42,8 +39,6 @@ const unregisterEvent = () => {
       window.location.href = "/attendees/unregisterAttendees"
     },
   });
-
-
 };
 
 const handleCheckboxChange = (event) => {
@@ -117,19 +112,19 @@ onMounted(() => {
       <div class="px-10 py-5">
 
         <header class="mb-10">
-          <h3 class="text-gray-800 text-2xl pb-1 bold dark:text-white">Unregister Attendees</h3>
+          <h3 class="text-gray-800 text-2xl pb-1 bold dark:text-white">{{ l.attendees.unregisterAttendees.title }}</h3>
           <div class="w-10 h-1 bg-blue-800"></div>
         </header>
 
         <div class="w-full bg-white shadow-md mb-20 dark:bg-gray-800">
           <div class="border-b border-gray-200 dark:border-none px-4">
             <div class="border-b">
-              <AttendeesTabLayout></AttendeesTabLayout>
+              <AttendeesTabLayout :l="l"></AttendeesTabLayout>
             </div>
 
             <div class="flex justify-end mt-5">
               <div class="relative">
-                <TextInput ref="input" v-model="query" @keydown.enter="searchUser" placeholder="Search Attendees"
+                <TextInput ref="input" v-model="query" @keydown.enter="searchUser" :placeholder="l.attendees.unregisterAttendees.searchPlaceholder"
                   class="text-sm"></TextInput>
                 <div class="absolute right-3 top-1/2 -translate-y-1/2">
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -150,7 +145,7 @@ onMounted(() => {
                 <form v-on:submit.prevent="unregisterEvent">
                   <div class="w-full flex items-center mt-5">
                     <div class="w-1/3 ms-3 ">
-                      <InputLabel :value="'Events Lists'" class="mb-3"></InputLabel>
+                      <InputLabel :value="l.attendees.unregisterAttendees.label.event" class="mb-3"></InputLabel>
                       <select @change="chooseEvent" data-hs-select='{
                             "hasSearch": true,
                             "searchPlaceholder": "Search...",
@@ -170,8 +165,8 @@ onMounted(() => {
                         </option>
                       </select>
                     </div>
-                    <div class="w-1/3 ms-5 mt-7">
-                      <PrimaryButton type="submit" class="ms-3">Unregister</PrimaryButton>
+                    <div class="w-1/3 ms-5 mt-3">
+                      <PrimaryButton type="submit" class="ms-3">{{ l.attendees.button.unregister }}</PrimaryButton>
                     </div>
                   </div>
                   <div class="w-full flex justify-end mt-5"></div>
@@ -198,35 +193,35 @@ onMounted(() => {
                             <th scope="col" class="py-1 group text-start font-normal focus:outline-none">
                               <div
                                 class="py-1 px-2.5 inline-flex items-center border border-transparent text-sm text-gray-500 rounded-md hover:border-gray-200 dark:border-none">
-                                Name
+                                {{ l.attendees.unregisterAttendees.table.eventName }}
                               </div>
                             </th>
 
                             <th scope="col" class="py-1 group text-start font-normal focus:outline-none">
                               <div
                                 class="py-1 px-2.5 inline-flex items-center border border-transparent text-sm text-gray-500 rounded-md hover:border-gray-200 dark:border-none">
-                                Phone Number
+                                {{ l.attendees.unregisterAttendees.table.phoneNumber }}
                               </div>
                             </th>
 
                             <th scope="col" class="py-1 group text-start font-normal focus:outline-none">
                               <div
                                 class="py-1 px-2.5 inline-flex items-center border border-transparent text-sm text-gray-500 rounded-md hover:border-gray-200 dark:border-none">
-                                Email
+                                {{ l.attendees.unregisterAttendees.table.email }}
                               </div>
                             </th>
 
                             <th scope="col" class="py-1 group text-start font-normal focus:outline-none">
                               <div
                                 class="py-1 px-2.5 inline-flex items-center border border-transparent text-sm text-gray-500 rounded-md hover:border-gray-200 dark:border-none">
-                                Event Name
+                                {{ l.attendees.unregisterAttendees.table.eventName }}
                               </div>
                             </th>
 
                             <th scope="col" class="py-1 group text-start font-normal focus:outline-none">
                               <div
                                 class="py-1 px-2.5 inline-flex items-center border border-transparent text-sm text-gray-500 rounded-md hover:border-gray-200 dark:border-none">
-                                created_at
+                                {{ l.attendees.unregisterAttendees.table.createdAt }}
                               </div>
                             </th>
                           </tr>

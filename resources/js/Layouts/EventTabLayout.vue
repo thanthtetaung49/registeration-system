@@ -1,5 +1,8 @@
 <script setup>
 import { Link } from "@inertiajs/vue3";
+
+const props = defineProps({ l: Object });
+const l = props.l;
 </script>
 
 <template>
@@ -19,7 +22,7 @@ import { Link } from "@inertiajs/vue3";
           'text-gray-500 ': !route().current('event.list.index'),
         }"
       >
-        Events List
+        {{ l.events.tabs.eventLists }}
       </Link>
        <Link
         href="/event"
@@ -30,7 +33,7 @@ import { Link } from "@inertiajs/vue3";
           'text-gray-500 ': !route().current('event.index'),
         }"
       >
-        Create Event
+        {{ l.events.tabs.createEvent }}
       </Link>
 
       <Link
@@ -42,7 +45,7 @@ import { Link } from "@inertiajs/vue3";
           'text-gray-500 ': !route().current('instructor.index'),
         }"
       >
-        Instructors
+        {{ l.events.tabs.instructors }}
       </Link>
       <Link
         href="/category"
@@ -53,7 +56,7 @@ import { Link } from "@inertiajs/vue3";
           'text-gray-500 ': !route().current('category.index'),
         }"
       >
-        Event Categories
+        {{ l.events.tabs.eventCategories }}
       </Link>
       <Link
         href="/room"
@@ -64,7 +67,7 @@ import { Link } from "@inertiajs/vue3";
           'text-gray-500 ': !route().current('roomNumber.index'),
         }"
       >
-        Event Room Location
+        {{ l.events.tabs.eventRoomLocations }}
       </Link>
 
       <Link
@@ -76,7 +79,7 @@ import { Link } from "@inertiajs/vue3";
           'text-gray-500 ': !route().current('event.report.index'),
         }"
       >
-        Events Report
+        {{ l.events.tabs.eventReports }}
       </Link>
     </nav>
   </div>

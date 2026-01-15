@@ -4,7 +4,7 @@ import InputLabel from "@/Components/InputLabel.vue";
 import TextInput from "@/Components/TextInput.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import InputError from "@/Components/InputError.vue";
-import { Link, useForm } from "@inertiajs/vue3";
+import { Link, useForm, usePage } from "@inertiajs/vue3";
 
 const props = defineProps({
   room: Object,
@@ -17,6 +17,10 @@ const form = useForm({
 });
 
 const updateRoomNumber = () => form.post(`/room/update/${room.id}`);
+
+const page = usePage();
+const l = page.props.language;
+
 </script>
 
 <template>
@@ -24,7 +28,7 @@ const updateRoomNumber = () => form.post(`/room/update/${room.id}`);
     <AuthenticatedLayout>
       <div class="px-10 py-10">
         <header class="mb-10">
-          <h3 class="text-gray-800 text-2xl pb-1 bold dark:text-white">Event's Room Edit</h3>
+          <h3 class="text-gray-800 text-2xl pb-1 bold dark:text-white">{{ l.events.eventRoom.eventRoomEditTitle }}</h3>
           <div class="w-10 h-1 bg-blue-800"></div>
         </header>
 
@@ -33,8 +37,9 @@ const updateRoomNumber = () => form.post(`/room/update/${room.id}`);
             <div class="mt-5">
               <form v-on:submit.prevent="updateRoomNumber">
                 <div>
-                  <InputLabel :value="'Room Number'"></InputLabel>
+                  <InputLabel :value="l.events.eventRoom.labels.eventRoom"></InputLabel>
                   <TextInput
+                    :placeholder="l.events.eventRoom.placeholder.eventRoom"
                     v-model="form.room_number "
                     class="mt-3 w-[30%] text-sm"
                   ></TextInput>
@@ -44,9 +49,9 @@ const updateRoomNumber = () => form.post(`/room/update/${room.id}`);
                      <Link
                     href="/room"
                     class="inline-flex items-center px-4 py-2 bg-slate-100 border border-transparent rounded-md font-semibold text-xs text-slate-800 uppercase tracking-widest hover:bg-slate-200 focus:bg-slate-200 active:bg-slate-200 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 transition ease-in-out duration-150 mr-3"
-                    >Back</Link
+                    >{{ l.events.button.back }}</Link
                   >
-                  <PrimaryButton type="submit" class="">Save</PrimaryButton>
+                  <PrimaryButton type="submit" class="">{{ l.events.button.save }}</PrimaryButton>
                 </div>
               </form>
             </div>
