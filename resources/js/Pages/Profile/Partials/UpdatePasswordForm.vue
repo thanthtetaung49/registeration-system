@@ -3,11 +3,13 @@ import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
-import { useForm } from '@inertiajs/vue3';
+import { useForm, usePage } from '@inertiajs/vue3';
 import { ref } from 'vue';
 
 const passwordInput = ref(null);
 const currentPasswordInput = ref(null);
+const page = usePage();
+const l = page.props.language;
 
 const form = useForm({
     current_password: '',
@@ -36,10 +38,10 @@ const updatePassword = () => {
 <template>
     <section>
         <header>
-            <h2 class="text-lg font-medium text-gray-900 dark:text-white">Update Password</h2>
+            <h2 class="text-lg font-medium text-gray-900 dark:text-white">{{ l.updatePassword.title }}</h2>
 
             <p class="mt-1 text-sm text-gray-600 dark:text-white">
-                Ensure your account is using a long, random password to stay secure.
+                {{ l.updatePassword.description }}
             </p>
         </header>
 
@@ -89,7 +91,7 @@ const updatePassword = () => {
             </div>
 
             <div class="flex items-center gap-4">
-                <PrimaryButton :disabled="form.processing">Save</PrimaryButton>
+                <PrimaryButton :disabled="form.processing">{{ l.updatePassword.buttons.save }}</PrimaryButton>
 
                 <Transition
                     enter-active-class="transition ease-in-out"
@@ -97,7 +99,7 @@ const updatePassword = () => {
                     leave-active-class="transition ease-in-out"
                     leave-to-class="opacity-0"
                 >
-                    <p v-if="form.recentlySuccessful" class="text-sm text-gray-600">Saved.</p>
+                    <p v-if="form.recentlySuccessful" class="text-sm text-gray-600">{{ l.updatePassword.status.saved }}</p>
                 </Transition>
             </div>
         </form>

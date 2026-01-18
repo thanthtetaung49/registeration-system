@@ -17,7 +17,7 @@ class RegisterAttendeesController extends Controller
     {
         $users = User::with(['register_events', 'attendees_groups'])
             ->whereNotNull('attendees_groups_id')
-            ->whereIn('is_admin', [0, 3])
+            ->whereIn('role', ['attendees', 'self_checkin_user'])
             ->whereDoesntHave('register_events')
             ->paginate(20);
 
@@ -48,7 +48,7 @@ class RegisterAttendeesController extends Controller
 
         if ($event->event_type == 2) {
             User::whereIn('id', $usersId)->update([
-                'is_admin' => 3 // change user type to self check-in user
+                'role' => 'self_checkin_user' // change user type to self check-in user
             ]);
         }
 
@@ -72,26 +72,11 @@ class RegisterAttendeesController extends Controller
         $groupId = $request['data']['attendeesGroupId'];
 
         $users = User::with(['register_events', 'attendees_groups'])
-            ->whereIn('is_admin', [0, 3])
+            ->whereIn('role', ['attendees', 'self_checkin_user'])
             ->when($groupId, fn($u) => $u->where('attendees_groups_id', $groupId))
             ->whereNotNull('attendees_groups_id')
             ->whereDoesntHave('register_events')
             ->paginate(20);
-
-        // if (!$groupId) {
-        //     $users = User::with(['register_events', 'attendees_groups'])
-        //         ->where('is_admin', 0)
-        //         ->whereNotNull('attendees_groups_id')
-        //         ->whereDoesntHave('register_events')
-        //         ->paginate(20);
-        // } else {
-        //     $users = User::with(['register_events', 'attendees_groups'])
-        //         ->where('is_admin', 0)
-        //         ->where('attendees_groups_id', $groupId)
-        //         ->whereNotNull('attendees_groups_id')
-        //         ->whereDoesntHave('register_events') // not registered
-        //         ->paginate(20);
-        // }
 
 
         $events = Event::get();
@@ -113,7 +98,7 @@ class RegisterAttendeesController extends Controller
 
         $users = User::with(['register_events', 'attendees_groups'])
             ->whereNotNull('attendees_groups_id')
-            ->whereIn('is_admin', [0, 3])
+            ->whereIn('role', ['attendees', 'self_checkin_user'])
             ->whereDoesntHave('register_events')
             ->when($query, fn($u) => $u->where('name', 'like', '%' . $query . '%'))
             ->paginate(20);
@@ -134,7 +119,7 @@ class RegisterAttendeesController extends Controller
     {
         $users = User::with(['register_events', 'attendees_types', 'attendees_groups'])
             ->whereHas('register_events')
-            ->whereIn('is_admin', [0, 3]) // 0,3 user
+            ->whereIn('role', ['attendees', 'self_checkin_user'])
             ->get();
 
         return Excel::download(new RegisterAttendeesExport($users), 'registerAttendeesReport.xlsx');

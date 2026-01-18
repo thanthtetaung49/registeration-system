@@ -10,7 +10,7 @@ class LoginResponse implements LoginResponseContract
     {
         $user = auth()->user();
 
-        if ($user->is_admin == 2 || $user->is_admin == 3) {
+        if ($user->role == 'security' || $user->role == 'self_checkin_user') {
             return redirect()->intended(route('selfCheckInUser.index'));
         }
 

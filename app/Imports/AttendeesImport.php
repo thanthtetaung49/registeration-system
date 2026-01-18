@@ -21,7 +21,7 @@ class AttendeesImport implements ToModel, WithHeadingRow, SkipsEmptyRows
         return new User([
             'name' => $row['name'],
             'age' => $row['age'] ? $row['age'] : null,
-            'sex' => $row['sex'],
+            'gender' => $row['gender'],
             'phone_number' => $row['phone_number'],
             'nrc_number' => $row['nrc_number'] ?? $row['nrc_number'],
             'edu_background' => $row['edu_background'],
@@ -30,7 +30,7 @@ class AttendeesImport implements ToModel, WithHeadingRow, SkipsEmptyRows
             'address' => $row['address'],
             'email' => $row['email'],
             'attendees_types_id' => $row['attendees_types_id'] ?? $row['attendees_types_id'],
-            'is_admin' => $row['is_admin'] ? $row['is_admin'] : 0,
+            'role' => $row['role'] ? $row['role'] : 'attendees',
             'attendees_groups_id' => $row['attendees_groups_id'] ?? $row['attendees_groups_id']
         ]);
     }

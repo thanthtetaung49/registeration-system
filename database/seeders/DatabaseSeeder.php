@@ -14,18 +14,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
-        // User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
-
 
         User::create([
             'name' => 'super admin',
             'age' => rand(20, 30),
-            'sex' => rand(0, 1),
+            'gender' => 'male',
             'phone_number' => fake()->phoneNumber(),
             'nrc_number' => fake()->text(),
             'edu_background'=> fake()->text(),
@@ -34,13 +27,13 @@ class DatabaseSeeder extends Seeder
             'address' => fake()->address(),
             'email' => 'superadmin@gmail.com',
             'password' => Hash::make('superadmin123'),
-            'is_admin' => 4 // admin
+            'role' => 'super_admin' // super admin
         ]);
 
         User::create([
             'name' => 'admin',
             'age' => rand(20, 30),
-            'sex' => rand(0, 1),
+            'gender' => 'male',
             'phone_number' => fake()->phoneNumber(),
             'nrc_number' => fake()->text(),
             'edu_background'=> fake()->text(),
@@ -49,7 +42,11 @@ class DatabaseSeeder extends Seeder
             'address' => fake()->address(),
             'email' => 'admin@gmail.com',
             'password' => Hash::make('admin123'),
-            'is_admin' => 1 // admin
+            'role' => 'admin' // admin
+        ]);
+
+        $this->call([
+            SecuritySeeder::class
         ]);
     }
 }

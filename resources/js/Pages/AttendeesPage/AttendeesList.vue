@@ -164,7 +164,7 @@ const csvExport = () => {
                               {{ user.age }}
                             </td>
                             <td class="px-5 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white">
-                              {{ user.sex == 0 ? "male" : "female" }}
+                              {{ user.gender }}
                             </td>
                             <td class="px-5 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white">
                               {{ user.phone_number }}
@@ -199,19 +199,11 @@ const csvExport = () => {
                               <span v-else class="text-red-900 px-3 py-1 rounded-md bg-red-100 inline-block">-</span>
                             </td>
                             <td class="px-5 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white">
-                              <span v-if="user.is_admin == 3" class="text-green-900 px-3 py-1 rounded-md inline-block">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                  stroke-width="1.5" stroke="currentColor" class="size-6">
-                                  <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                                </svg>
+                              <span v-if="user.role == 'self_checkin_user'" class="text-green-900 px-3 py-1 rounded-md inline-block">
+                                {{ l.attendees.table.selfCheckinEnabled }}
                               </span>
                               <span v-else class="text-red-900 px-3 py-1 rounded-md inline-block">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                  stroke-width="1.5" stroke="currentColor" class="size-6">
-                                  <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                                </svg>
+                                {{ l.attendees.table.selfCheckinDisabled }}
                               </span>
                             </td>
                             <td class="px-5 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white">

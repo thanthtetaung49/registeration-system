@@ -11,11 +11,17 @@ import { Link } from '@inertiajs/vue3';
 
             <div class="relative z-10 p-6 text-white top-1/2 -translate-y-1/2">
                 <h1 class="text-5xl font-bold text-blue-400">Welcome to Your Event Registration Portal !</h1>
-                <p class="mt-10 max-w-md">Log in to your account and get started with a smooth and secure registration experience.</p>
+                <p class="mt-10 max-w-md">Log in to your account and get started with a smooth and secure registration
+                    experience.</p>
             </div>
 
         </div>
         <div class="w-1/2 h-full dark:bg-gray-900">
+            <div>
+                <Link :href="route('businessCard.public.index')" class="absolute top-6 right-6 flex items-center space-x-2 text-sm dark:text-white underline">
+                    Business Card
+                </Link>
+            </div>
             <div class="w-full flex items-center justify-center h-full">
                 <!-- <div>
                     <Link href="/">
@@ -30,17 +36,4 @@ import { Link } from '@inertiajs/vue3';
             </div>
         </div>
     </div>
-    <!-- <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100 dark:bg-gray-900">
-        <div>
-            <Link href="/">
-                <ApplicationLogo class="w-20 h-20 fill-current text-gray-500" />
-            </Link>
-        </div>
-
-        <div
-            class="dark:bg-gray-800 w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg"
-        >
-            <slot />
-        </div>
-    </div> -->
 </template>

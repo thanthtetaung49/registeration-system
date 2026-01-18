@@ -32,7 +32,7 @@ class AttendeesCreateController extends Controller
         // dd($request->all());
         $request->validate([
             "name"           => ['required'],
-            "sex"            => ['required'],
+            "gender"            => ['required'],
             "phone_number"   => ['required'],
             "edu_background" => ['required'],
             "nrc_number" => ['unique:users,nrc_number'],
@@ -40,7 +40,19 @@ class AttendeesCreateController extends Controller
             "address"        => ['required'],
             "email"          => ['required', 'email', 'unique:users,email'],
             "attendees_types_id" => ['required'],
-            "attendees_groups_id" => ['required']
+            "attendees_groups_id" => ['required'],
+            "teacher_id" => ['required'],
+            "parent_name" => ['required'],
+            "birth_date" => ['required'],
+            "nation" => ['required'],
+            "join_date" => ['required'],
+            "place_of_duty" => ['required'],
+            "service_year" => ['required'],
+            "service_year_benefit" => ['required'],
+            "monthly_benefit" => ['required'],
+            "current_address" => ['required'],
+            "grade_assigned" => ['required'],
+            "subject_assigned" => ['required'],
         ]);
 
         $file = $request->file('avatar');
@@ -57,7 +69,7 @@ class AttendeesCreateController extends Controller
         $array = [
             "name"               => $request->name,
             "age"                => $request->age,
-            "sex"                => $request->sex,
+            "gender"                => $request->gender,
             "phone_number"       => $request->phone_number,
             "nrc_number"         => $request->nrc_number,
             "edu_background"     => $request->edu_background,
@@ -67,6 +79,21 @@ class AttendeesCreateController extends Controller
             "email"              => $request->email,
             "attendees_types_id" => $request->attendees_types_id,
             "attendees_groups_id" => $request->attendees_groups_id,
+            "teacher_id" => $request->teacher_id,
+            "parent_name" => $request->parent_name,
+            "birth_date" => $request->birth_date,
+            "nation" => $request->nation,
+            "join_date" => $request->join_date,
+            "place_of_duty" => $request->place_of_duty,
+            "service_year" => $request->service_year,
+            "service_year_benefit" => $request->service_year_benefit,
+            "monthly_benefit" => $request->monthly_benefit,
+            "last_place_of_duty" => $request->last_place_of_duty,
+            "current_address" => $request->current_address,
+            "training_conference" => $request->training_conference,
+            "type_of_teacher" => $request->type_of_teacher,
+            "grade_assigned" => $request->grade_assigned,
+            "subject_assigned" => $request->subject_assigned,
         ];
 
         $mergeArray = array_merge($array, $imageArray);
@@ -93,22 +120,31 @@ class AttendeesCreateController extends Controller
     public function update($id, Request $request)
     {
         $user = User::where('id', $id)->first();
-        $is_admin = $user->is_admin;
-        $password = $request->password;
+        $role = $user->role;
 
         $request->validate([
             "name"           => ['required'],
-            "sex"            => ['required'],
+            "gender"            => ['required'],
             "phone_number"   => ['required'],
             "edu_background" => ['required'],
             "nrc_number" => [Rule::unique('users', 'nrc_number')->ignore($user->id)],
             "position"       => ['required'],
             "address"        => ['required'],
             "email"          => ['required', Rule::unique('users', 'email')->ignore($user->id)],
-            "attendees_types_id" => $is_admin != 1 && $is_admin != 4 ? ['required'] : '',
-            "attendees_groups_id" => $is_admin != 1 && $is_admin != 4 ? ['required'] : '',
-            "password" => isset($password) ? ['required', 'min:8'] : '',
-            "password_confirmation" => isset($password) ? ["required", "same:password"] : ''
+            "attendees_types_id" => $role != 'admin' && $role != 'super_admin' ? ['required'] : '',
+            "attendees_groups_id" => $role != 'admin' && $role != 'super_admin' ? ['required'] : '',
+            "teacher_id" => ['required'],
+            "parent_name" => ['required'],
+            "birth_date" => ['required'],
+            "nation" => ['required'],
+            "join_date" => ['required'],
+            "place_of_duty" => ['required'],
+            "service_year" => ['required'],
+            "service_year_benefit" => ['required'],
+            "monthly_benefit" => ['required'],
+            "current_address" => ['required'],
+            "grade_assigned" => ['required'],
+            "subject_assigned" => ['required'],
         ]);
 
         $oldFilename = $user->profile_path;
@@ -136,7 +172,7 @@ class AttendeesCreateController extends Controller
         $data = [
             "name"           => $request->name,
             "age"            => $request->age,
-            "sex"            => $request->sex,
+            "gender"            => $request->gender,
             "phone_number"   => $request->phone_number,
             "nrc_number"     => $request->nrc_number,
             "edu_background" => $request->edu_background,
@@ -146,7 +182,21 @@ class AttendeesCreateController extends Controller
             "email"          => $request->email,
             "attendees_types_id" => $request->attendees_types_id,
             "attendees_groups_id" => $request->attendees_groups_id,
-            "password" => Hash::make($password),
+            "teacher_id" => $request->teacher_id,
+            "parent_name" => $request->parent_name,
+            "birth_date" => $request->birth_date,
+            "nation" => $request->nation,
+            "join_date" => $request->join_date,
+            "place_of_duty" => $request->place_of_duty,
+            "service_year" => $request->service_year,
+            "service_year_benefit" => $request->service_year_benefit,
+            "monthly_benefit" => $request->monthly_benefit,
+            "last_place_of_duty" => $request->last_place_of_duty,
+            "current_address" => $request->current_address,
+            "training_conference" => $request->training_conference,
+            "type_of_teacher" => $request->type_of_teacher,
+            "grade_assigned" => $request->grade_assigned,
+            "subject_assigned" => $request->subject_assigned,
         ];
 
         $user->update($data);

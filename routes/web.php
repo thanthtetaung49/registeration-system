@@ -24,10 +24,17 @@ use App\Http\Controllers\UsersManagementController;
 use App\Http\Controllers\RegisterAttendeesController;
 use App\Http\Controllers\UnregisterAttendeesController;
 use App\Http\Controllers\AttendeesBusinessCardController;
+use App\Http\Controllers\AttendeesBusinessCardPublicController;
 use App\Http\Controllers\LangController;
 
 Route::get('/', function () {
     return Inertia::render('Auth/Login');
+});
+
+Route::prefix('/attendess/business/card/public')->group(function () {
+    Route::get('/', [AttendeesBusinessCardPublicController::class, 'index'])->name('businessCard.public.index');
+    Route::get('/search', [AttendeesBusinessCardPublicController::class, 'search'])->name('businessCard.search');
+    Route::get('/view/{id}', [AttendeesBusinessCardController::class, 'viewPublic'])->name('businessCard.view.public');
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -157,6 +164,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::prefix('/attendess/business/card')->group(function () {
         Route::get('/', [AttendeesBusinessCardController::class, 'index'])->name('businessCard.index');
         Route::get('/view/{id}', [AttendeesBusinessCardController::class, 'view'])->name('businessCard.view');
+        Route::get('/change/url/status/{id}', [AttendeesBusinessCardController::class, 'changePublicStatus'])->name('businessCard.change.url.status');
         Route::get('/search', [AttendeesBusinessCardController::class, 'search'])->name('businessCard.search');
     });
 

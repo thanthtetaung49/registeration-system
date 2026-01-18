@@ -16,12 +16,12 @@ class UsersManagementController extends Controller
     public function index()
     {
         $users = User::orderByDesc('id')->paginate(10);
-        $superAdmin = auth()->user()->is_admin;
+        $role = auth()->user()->role;
 
 
         return Inertia::render('UsersManagement/UsersManagement', [
             'users' => $users,
-            'superAdmin' => $superAdmin
+            'role' => $role
         ]);
     }
 
@@ -44,20 +44,20 @@ class UsersManagementController extends Controller
     public function update($id, Request $request)
     {
         $user = User::where('id', $id)->first();
-        $is_admin = $user->is_admin;
+        $role = $user->role;
         $password = $request->password;
 
         $request->validate([
             "name"           => ['required'],
-            "sex"            => ['required'],
+            "gender"            => ['required'],
             "phone_number"   => ['required'],
             "edu_background" => ['required'],
             "nrc_number" => [Rule::unique('users', 'nrc_number')->ignore($user->id)],
             "position"       => ['required'],
             "address"        => ['required'],
             "email"          => ['required', Rule::unique('users', 'email')->ignore($user->id)],
-            "attendees_types_id" => $is_admin != 1 && $is_admin != 4 ? ['required'] : '',
-            "attendees_groups_id" => $is_admin != 1 && $is_admin != 4 ? ['required'] : '',
+            "attendees_types_id" => $role != 'admin' && $role != 'super_admin' ? ['required'] : '',
+            "attendees_groups_id" => $role != 'admin' && $role != 'super_admin' ? ['required'] : '',
             "password" => isset($password) ? ['required', 'min:8'] : '',
             "password_confirmation" => isset($password) ? ["required", "same:password"] : ''
         ]);
@@ -87,7 +87,7 @@ class UsersManagementController extends Controller
         $data = [
             "name"           => $request->name,
             "age"            => $request->age,
-            "sex"            => $request->sex,
+            "gender"            => $request->gender,
             "phone_number"   => $request->phone_number,
             "nrc_number"     => $request->nrc_number,
             "edu_background" => $request->edu_background,
@@ -122,13 +122,15 @@ class UsersManagementController extends Controller
         $role = $request->role;
 
         $user = User::findOrFail($id);
+        // $users = User::orderByDesc('id')->paginate(10);
 
-        $user->update(['is_admin' => $role]);
+        $user->update(['role' => $role]);
 
         return response()->json([
             'userId' => $id,
             'baseUrl' => url('/'),
-            'user' => $user
+            'user' => $user,
+            // 'users' => $users
         ]);
     }
 
@@ -145,12 +147,12 @@ class UsersManagementController extends Controller
         )
             ->orderByDesc('id')
             ->paginate(10);
-        $superAdmin = auth()->user()->is_admin;
+        $role = auth()->user()->role;
 
 
         return Inertia::render('UsersManagement/UsersManagement', [
             'users' => $users,
-            'superAdmin' => $superAdmin
+            'role' => $role
         ]);
     }
 

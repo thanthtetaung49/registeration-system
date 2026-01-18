@@ -16,7 +16,7 @@ const submit = () => {
         onSuccess: (page) => {
             const user = page.props.auth.user;
 
-            if (user.is_admin == 2 || user.is_admin == 3) {
+            if (user.role == 'security' || user.role == 'self_checkin_user') {
                 router.get(route('selfCheckInUser.index'));
                 return;
             }

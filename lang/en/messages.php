@@ -6,7 +6,7 @@ return [
     ],
     "users" => [
         "title" => "Users",
-        "searchPlaceholder" => "Search by name, email, or role",
+        "searchPlaceholder" => "Search by name",
         "userProfile" => "User Profile",
         "button" => [
             "accountDisabled" => "Account Disabled",
@@ -149,7 +149,7 @@ return [
         ],
         "attendeesList" => [
             "title" => "Attendees List",
-            "searchPlaceholder" => "Search by attendees name",
+            "searchPlaceholder" => "Search by Name",
             "register" => "Register Attendee",
             "unregister" => "Unregister Attendee",
             "table" => [
@@ -167,7 +167,7 @@ return [
         "title" => "Attendees",
         "attendeesViewTitle" => "Attendees Details",
         "attendeesEditTitle" => "Attendees Edit",
-        "searchPlaceholder" => "Search by Attendees Name",
+        "searchPlaceholder" => "Search by Name",
         "tabs" => [
             "attendeesList" => "Attendees Lists",
             "attendeesType" => "Attendee Types",
@@ -192,7 +192,7 @@ return [
             "no" => "No.",
             "attendeesName" => "Name",
             "attendeesAge" => "Age",
-            "attendeesSex" => "Sex",
+            "attendeesGender" => "Gender",
             "attendeesPhoneNumber" => "Phone Number",
             "attendeesNRCNumber" => "NRC Number",
             "attendeesEducationBackground" => "Education Background",
@@ -203,6 +203,8 @@ return [
             "attendeesType" => "Attendees Type",
             "attendeesGroup" => "Attendees Group",
             "selfCheckinStatus" => "Self Check-In Status",
+            "selfCheckinEnabled" => "Enabled",
+            "selfCheckinDisabled" => "Disabled",
             "createdAt" => "Created At",
             "actions" => "Actions",
         ],
@@ -245,22 +247,37 @@ return [
             "labels" => [
                 "attendeesName" => "Name",
                 "attendeesAge" => "Age",
-                "attendeesSex" => "Sex",
+                "attendeesGender" => "Gender",
                 "attendeesPhoneNumber" => "Phone Number",
                 "attendeesNRCNumber" => "NRC Number",
                 "attendeesEducationBackground" => "Education Background",
                 "attendeesPosition" => "Position",
                 "attendeesDepartment" => "Department",
-                "attendeesAddress" => "Address",
+                "attendeesAddress" => "Permanent Address",
                 "attendeesEmail" => "Email",
                 "attendeesType" => "Attendees Type",
                 "attendeesGroup" => "Attendees Group",
                 "selfCheckinStatus" => "Self Check-In Status",
+                "teacherID" => "Teacher ID",
+                "parentName" => "Parent Name",
+                "birthDate" => "Birth Date",
+                "Nationality" => "Nationality",
+                "joinDate" => "Join Date",
+                "placeOfDuty" => "Place of Duty",
+                "serviceYear" => "Service Year",
+                "serviceYearBenefit" => "Service Year Benefit",
+                "monthlyBenefit" => "Monthly Benefit",
+                "lastPlaceOfDuty" => "Last Place of Duty",
+                "currentAddress" => "Current Address",
+                "trainingConference" => "Training/Conference",
+                "typeOfTeacher" => "Type of Teacher",
+                "gradeAssigned" => "Grade Assigned",
+                "subjectAssigned" => "Subject Assigned",
             ],
             "placeholder" => [
                 "attendeesName" => "Name",
                 "attendeesAge" => "Age",
-                "attendeesSex" => "Sex",
+                "attendeesGender" => "Gender",
                 "attendeesPhoneNumber" => "Phone Number",
                 "attendeesNRCNumber" => "NRC Number",
                 "attendeesEducationBackground" => "Education Background",
@@ -271,6 +288,21 @@ return [
                 "attendeesType" => "Attendees Type",
                 "attendeesGroup" => "Attendees Group",
                 "selfCheckinStatus" => "Self Check-In Status",
+                "teacherID" => "Teacher ID",
+                "parentName" => "Parent Name",
+                "birthDate" => "Birth Date",
+                "Nationality" => "Nationality",
+                "joinDate" => "Join Date",
+                "placeOfDuty" => "Place of Duty",
+                "serviceYear" => "Service Year",
+                "serviceYearBenefit" => "Service Year Benefit",
+                "monthlyBenefit" => "Monthly Benefit",
+                "lastPlaceOfDuty" => "Last Place of Duty",
+                "currentAddress" => "Current Address",
+                "trainingConference" => "Training/Conference",
+                "typeOfTeacher" => "Type of Teacher",
+                "gradeAssigned" => "Grade Assigned",
+                "subjectAssigned" => "Subject Assigned",
             ],
         ],
         "importAttendeesLists" => [
@@ -281,7 +313,7 @@ return [
         ],
         "registerAttendees" => [
             "title" => "Register Attendees",
-            "searchPlaceholder" => "Search by Attendees Name",
+            "searchPlaceholder" => "Search by Name",
             "label" => [
                 "attendeesGroup" => "Attendees Group",
                 "event" => "Event"
@@ -296,7 +328,7 @@ return [
         ],
         "unregisterAttendees" => [
             "title" => "Unregister Attendees",
-            "searchPlaceholder" => "Search by Attendees Name",
+            "searchPlaceholder" => "Search by Name",
             "label" => [
                 "eventLists" => "Event Lists"
             ],
@@ -310,7 +342,7 @@ return [
     ],
     "businessCards" => [
         "title" => "Business Cards",
-        "searchPlaceholder" => "Search by Attendees Name",
+        "searchPlaceholder" => "Search by Name",
     ],
     "printBadge" => [
         "title" => "Print Badge",
@@ -330,5 +362,62 @@ return [
         "security" => "Security",
         "selfCheckinUser" => "Self Check-in User",
         "superAdmin" => "Super Admin",
-    ]
+    ],
+    "profileInformation" => [
+        "title" => "Profile Information",
+        "description" => "Update your account's profile information and email address.",
+        "labels" => [
+            "name" => "Name",
+            "email" => "Email",
+        ],
+        "verification" => [
+            "unverified" => "Your email address is unverified.",
+            "resend" => "Click here to re-send the verification email.",
+            "sent" => "A new verification link has been sent to your email address.",
+        ],
+        "buttons" => [
+            "save" => "Save",
+        ],
+        "status" => [
+            "saved" => "Saved.",
+        ],
+    ],
+    "updatePassword" => [
+        "title" => "Update Password",
+        "description" => "Ensure your account is using a long, random password to stay secure.",
+        "labels" => [
+            "currentPassword" => "Current Password",
+            "newPassword" => "New Password",
+            "confirmPassword" => "Confirm Password",
+        ],
+        "buttons" => [
+            "save" => "Save",
+        ],
+        "status" => [
+            "saved" => "Saved.",
+        ],
+    ],
+    "twoFactor" => [
+        "title" => "Two Factor Authentication",
+        "description" => "Add additional security to your account using an authenticator app.",
+        "qrCodeInstruction" => "Scan this QR code using Google Authenticator or Microsoft Authenticator.",
+        "recoveryTitle" => "Recovery Code",
+        "recoveryWarning" => "Please Copy and don't forget",
+        "buttons" => [
+            "enable" => "Enable",
+            "disable" => "Disable",
+            "showCodes" => "Show Recovery Codes",
+        ],
+    ],
+    "deleteAccount" => [
+        "title" => "Delete Account",
+        "description" => "Once your account is deleted, all of its resources and data will be permanently deleted. Before deleting your account, please download any data or information that you wish to retain.",
+        "confirmTitle" => "Are you sure you want to delete your account?",
+        "confirmDescription" => "Once your account is deleted, all of its resources and data will be permanently deleted. Please enter your password to confirm you would like to permanently delete your account.",
+        "placeholder" => "Password",
+        "buttons" => [
+            "cancel" => "Cancel",
+            "delete" => "Delete Account",
+        ],
+    ],
 ];

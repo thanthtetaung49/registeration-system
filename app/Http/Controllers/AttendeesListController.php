@@ -18,7 +18,7 @@ class AttendeesListController extends Controller
         // 2 => security
         $users = User::with('attendees_types', 'attendees_groups', 'register_events')
             ->orderBy('id', 'desc')
-            ->whereIn('is_admin', [0, 3])
+            ->whereIn('role', ['attendees', 'self_checkin_user'])
             ->paginate(20);
 
         return Inertia::render('AttendeesPage/AttendeesList', ['users' => $users]);
@@ -31,14 +31,14 @@ class AttendeesListController extends Controller
         if ($search == 'null') {
             $users = User::with('attendees_types', 'attendees_groups', 'register_events')
                 ->orderBy('id', 'desc')
-                ->whereIn('is_admin', [0, 3])
+                ->whereIn('role', ['attendees', 'self_checkin_user'])
                 ->paginate(20);
         } else {
             $users = User::with('attendees_types', 'attendees_groups', 'register_events')
                 ->when($search, function ($query) use ($search) {
                     return $query->where('name', 'LIKE', '%' . $search . '%');
                 })
-                ->whereIn('is_admin', [0, 3])
+                ->whereIn('role', ['attendees', 'self_checkin_user'])
                 ->orderBy('id', 'desc')
                 ->paginate(20);
         }
@@ -61,7 +61,7 @@ class AttendeesListController extends Controller
     private function exportAttendees()
     {
         $attendees = User::with(['attendees_types', 'register_events'])
-            ->whereIn('is_admin', [0, 3])
+            ->whereIn('role', ['attendees', 'self_checkin_user'])
             ->get();
         return $attendees;
     }

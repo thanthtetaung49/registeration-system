@@ -13,6 +13,7 @@ const disableForm = useForm({})
 
 const recoveryCodes = ref([]);
 const showingCodes = ref(false);
+const l = page.props.language;
 
 
 const enable2FA = () => {
@@ -46,19 +47,19 @@ const showRecoveryCodes = () => {
     <section class="border rounded p-6 w-full flex">
         <div class="w-1/2">
             <h2 class="text-lg font-semibold mb-2">
-                Two Factor Authentication
+                {{ l.twoFactor.title }}
             </h2>
 
             <p class="text-sm text-gray-600 mb-4">
-                Add additional security to your account using an authenticator app.
+                {{ l.twoFactor.description }}
             </p>
 
-            <PrimaryButton @click="enable2FA" v-if="!user.two_factor_secret" :disabled="enableForm.processing">Enable
+            <PrimaryButton @click="enable2FA" v-if="!user.two_factor_secret" :disabled="enableForm.processing">{{ l.twoFactor.buttons.enable }}
             </PrimaryButton>
 
             <div v-else>
                 <p class="text-sm text-gray-600 mb-2">
-                    Scan this QR code using Google Authenticator or Microsoft Authenticator.
+                    {{ l.twoFactor.qrCodeInstruction }}
                 </p>
 
                 <div v-html="user.two_factor_qr_code_svg"></div>
@@ -66,7 +67,7 @@ const showRecoveryCodes = () => {
                 <div class="mt-5">
                     <DangerButton :class="{ 'opacity-25': disableForm.processing }" :disabled="disableForm.processing"
                         @click="disable2FA">
-                        Disable
+                        {{ l.twoFactor.buttons.disable }}
                     </DangerButton>
                 </div>
             </div>
@@ -74,13 +75,13 @@ const showRecoveryCodes = () => {
 
         <div class="w-1/2">
             <h2 class="text-lg font-semibold mb-2">
-                Recovery Code
+                {{ l.twoFactor.recoveryTitle }}
             </h2>
 
 
             <div v-if="showingCodes" class="bg-gray-100 p-4 rounded">
                 <p class="text-sm text-red-500 mb-4">
-                    Please Copy and don't forget
+                    {{ l.twoFactor.recoveryWarning }}
                 </p>
                 <div class="grid grid-cols-2 gap-2">
                     <p v-for="code in recoveryCodes" :key="code" class="text-sm">
@@ -90,7 +91,7 @@ const showRecoveryCodes = () => {
             </div>
 
             <div v-else>
-                <PrimaryButton @click="showRecoveryCodes">Show Recovery Codes
+                <PrimaryButton @click="showRecoveryCodes">{{ l.twoFactor.buttons.showCodes }}
                 </PrimaryButton>
             </div>
         </div>

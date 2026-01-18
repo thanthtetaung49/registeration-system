@@ -30,13 +30,6 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): LoginResponse
     {
-        // $request->authenticate();
-        // $request->session()->regenerate();
-
-        // if (auth()->user()->is_admin == 2 || auth()->user()->is_admin == 3) {
-        //     return redirect()->intended(route('selfCheckInUser.index', absolute: false));
-        // }
-
         $request->authenticate();
 
         $request->session()->regenerate();

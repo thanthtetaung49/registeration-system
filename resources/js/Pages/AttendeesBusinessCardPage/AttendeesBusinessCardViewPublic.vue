@@ -74,70 +74,15 @@ const baseUrl = ref(props.baseUrl).value;
                             </div>
 
                             <div>
-                                <span class="block text-gray-400 font-bold uppercase text-xs">TLEC တွင် လုပ်သက်</span>
-                                <p class="text-gray-700">{{ user.service_year }}</p>
-                            </div>
-
-                            <div>
-                                <span class="block text-gray-400 font-bold uppercase text-xs">လုပ်သက်ခံစားခွင့်</span>
-                                <p class="text-gray-700">{{ user.service_year_benefit }}</p>
-                            </div>
-
-                            <div>
-                                <span class="block text-gray-400 font-bold uppercase text-xs">လစဉ်
-                                    အကျိုးခံစားခွင့်</span>
-                                <p class="text-gray-700">{{ user.monthly_benefit }}</p>
-                            </div>
-
-                            <div>
                                 <span class="block text-gray-400 font-bold uppercase text-xs">တာဝန်ကျသည့် ကျောင်း
                                 </span>
                                 <p class="text-gray-700">{{ user.place_of_duty }}</p>
                             </div>
 
                             <div>
-                                <span class="block text-gray-400 font-bold uppercase text-xs">ယခင်နှစ်တွင်
-                                    တာဝန်ထမ်းဆောင်ခဲ့သည့်နေရာ </span>
-                                <p class="text-gray-700">{{ user.last_place_of_duty }}</p>
-                            </div>
-
-                            <div>
                                 <span class="block text-gray-400 font-bold uppercase text-xs">အမြဲတမ်းနေထိုင်သည့် လိပ်စာ
                                     အပြည့်အစုံ </span>
                                 <p class="text-gray-700">{{ user.address }}</p>
-                            </div>
-
-                            <div>
-                                <span class="block text-gray-400 font-bold uppercase text-xs">လက်ရှိနေထိုင်သည့်
-                                    နေရပ်လိပ်စာ အပြည့်အစုံ </span>
-                                <p class="text-gray-700">{{ user.current_address }}</p>
-                            </div>
-
-                            <div>
-                                <span class="block text-gray-400 font-bold uppercase text-xs">ပညာအရည်အချင်း </span>
-                                <p class="text-gray-700">{{ user.edu_background }}</p>
-                            </div>
-
-                            <div>
-                                <span class="block text-gray-400 font-bold uppercase text-xs">ပညာရေးနှင့် ပတ်သက်၍
-                                    တက်ရောက်ခဲ့သည့် သင်တန်းများနှင့် ဆွေးနွေးပွဲများ </span>
-                                <p class="text-gray-700">{{ user.traning_conference }}</p>
-                            </div>
-
-                            <div>
-                                <span class="block text-gray-400 font-bold uppercase text-xs">အမျိုးအစား (Type of
-                                    teacher)</span>
-                                <p class="text-gray-700">{{ user.type_of_teacher }}</p>
-                            </div>
-
-                            <div>
-                                <span class="block text-gray-400 font-bold uppercase text-xs">သင်ကြားသည့်အတန်း</span>
-                                <p class="text-gray-700">{{ user.grade_assigned }}</p>
-                            </div>
-
-                            <div>
-                                <span class="block text-gray-400 font-bold uppercase text-xs">သင်ကြားသည့် ဘာသာရပ်</span>
-                                <p class="text-gray-700">{{ user.subject_assigned }}</p>
                             </div>
 
                             <div>

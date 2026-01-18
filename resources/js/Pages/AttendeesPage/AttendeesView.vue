@@ -20,7 +20,7 @@ const l = page.props.language;
 const form = useForm({
   name: user.name,
   age: user.age,
-  sex: user.sex,
+  gender: user.gender,
   phone_number: user.phone_number,
   nrc_number: user.nrc_number,
   edu_background: user.edu_background,
@@ -35,9 +35,22 @@ const form = useForm({
     props.user.attendees_groups !== null
       ? props.user.attendees_groups_id
       : null,
+  teacher_id: user.teacher_id,
+  parent_name: user.parent_name,
+  birth_date: user.birth_date,
+  nation: user.nation,
+  join_date: user.join_date,
+  place_of_duty: user.place_of_duty,
+  service_year: user.service_year,
+  service_year_benefit: user.service_year_benefit,
+  monthly_benefit: user.monthly_benefit,
+  last_place_of_duty: user.last_place_of_duty,
+  current_address: user.current_address,
+  training_conference: user.training_conference,
+  type_of_teacher: user.type_of_teacher,
+  grade_assigned: user.grade_assigned,
+  subject_assigned: user.subject_assigned,
 });
-
-const updateAttendees = () => form.post(`/attendees/update/${user.id}`);
 </script>
 
 <template>
@@ -64,14 +77,143 @@ const updateAttendees = () => form.post(`/attendees/update/${user.id}`);
                     <TextInputError :message="form.errors.avatar"></TextInputError>
                   </div>
                 </div>
-                <div class="w-full flex">
+
+                <div class="w-full flex my-7">
                   <div class="w-1/3">
+                    <InputLabel :value="l.attendees.createAttendees.labels.teacherID"></InputLabel>
+                    <TextInput :placeholder="l.attendees.createAttendees.placeholder.teacherID" type="text"
+                      v-model="form.teacher_id" class="w-full mt-3 text-sm">
+                    </TextInput>
+                    <TextInputError :message="form.errors.teacher_id"></TextInputError>
+                  </div>
+
+                  <div class="w-1/3 ms-3">
                     <InputLabel :value="l.attendees.createAttendees.labels.attendeesName"></InputLabel>
                     <TextInput :placeholder="l.attendees.createAttendees.placeholder.attendeesName" type="text"
                       v-model="form.name" class="w-full mt-3 text-sm">
                     </TextInput>
                     <TextInputError :message="form.errors.name"></TextInputError>
                   </div>
+
+                  <div class="w-1/3 ms-3">
+                    <InputLabel :value="l.attendees.createAttendees.labels.parentName"></InputLabel>
+                    <TextInput :placeholder="l.attendees.createAttendees.placeholder.parentName" type="text"
+                      v-model="form.parent_name" class="w-full mt-3 text-sm">
+                    </TextInput>
+                    <TextInputError :message="form.errors.parent_name"></TextInputError>
+                  </div>
+                </div>
+
+                <div class="w-full flex my-7">
+                  <div class="w-1/3">
+                    <InputLabel :value="l.attendees.createAttendees.labels.birthDate"></InputLabel>
+                    <TextInput type="date" v-model="form.birth_date" class="mt-3 w-full text-sm"></TextInput>
+                    <TextInputError :message="form.errors.birth_date"></TextInputError>
+                  </div>
+
+                  <div class="w-1/3 ms-3">
+                    <InputLabel :value="l.attendees.createAttendees.labels.Nationality"></InputLabel>
+                    <TextInput :placeholder="l.attendees.createAttendees.placeholder.Nationality" type="text"
+                      v-model="form.nation" class="w-full mt-3 text-sm">
+                    </TextInput>
+                    <TextInputError :message="form.errors.nation"></TextInputError>
+                  </div>
+
+                  <div class="w-1/3 ms-3">
+                    <InputLabel :value="l.attendees.createAttendees.labels.joinDate"></InputLabel>
+                    <TextInput type="date" v-model="form.join_date" class="mt-3 w-full text-sm"></TextInput>
+                    <TextInputError :message="form.errors.join_date"></TextInputError>
+                  </div>
+                </div>
+
+                <div class="w-full flex my-7">
+                  <div class="w-1/3">
+                    <InputLabel :value="l.attendees.createAttendees.labels.placeOfDuty"></InputLabel>
+                    <TextInput :placeholder="l.attendees.createAttendees.placeholder.placeOfDuty" type="text"
+                      v-model="form.place_of_duty" class="w-full mt-3 text-sm">
+                    </TextInput>
+                    <TextInputError :message="form.errors.place_of_duty"></TextInputError>
+                  </div>
+
+                  <div class="w-1/3 ms-3">
+                    <InputLabel :value="l.attendees.createAttendees.labels.serviceYear"></InputLabel>
+                    <TextInput :placeholder="l.attendees.createAttendees.placeholder.serviceYear" type="text"
+                      v-model="form.service_year" class="w-full mt-3 text-sm">
+                    </TextInput>
+                    <TextInputError :message="form.errors.service_year"></TextInputError>
+                  </div>
+
+                  <div class="w-1/3 ms-3">
+                    <InputLabel :value="l.attendees.createAttendees.labels.serviceYearBenefit"></InputLabel>
+                    <TextInput :placeholder="l.attendees.createAttendees.placeholder.serviceYearBenefit" type="text"
+                      v-model="form.service_year_benefit" class="w-full mt-3 text-sm">
+                    </TextInput>
+                    <TextInputError :message="form.errors.service_year_benefit"></TextInputError>
+                  </div>
+                </div>
+
+                <div class="w-full flex my-7">
+                  <div class="w-1/3">
+                    <InputLabel :value="l.attendees.createAttendees.labels.monthlyBenefit"></InputLabel>
+                    <TextInput :placeholder="l.attendees.createAttendees.placeholder.monthlyBenefit" type="text"
+                      v-model="form.monthly_benefit" class="w-full mt-3 text-sm">
+                    </TextInput>
+                    <TextInputError :message="form.errors.monthly_benefit"></TextInputError>
+                  </div>
+
+                  <div class="w-1/3 ms-3">
+                    <InputLabel :value="l.attendees.createAttendees.labels.lastPlaceOfDuty"></InputLabel>
+                    <TextInput :placeholder="l.attendees.createAttendees.placeholder.lastPlaceOfDuty" type="text"
+                      v-model="form.last_place_of_duty" class="w-full mt-3 text-sm">
+                    </TextInput>
+                    <TextInputError :message="form.errors.last_place_of_duty"></TextInputError>
+                  </div>
+
+                  <div class="w-1/3 ms-3">
+                    <InputLabel :value="l.attendees.createAttendees.labels.currentAddress"></InputLabel>
+                    <TextInput :placeholder="l.attendees.createAttendees.placeholder.currentAddress" type="text"
+                      v-model="form.current_address" class="w-full mt-3 text-sm">
+                    </TextInput>
+                    <TextInputError :message="form.errors.current_address"></TextInputError>
+                  </div>
+                </div>
+
+                <div class="w-full flex my-7">
+                  <div class="w-1/3">
+                    <InputLabel :value="l.attendees.createAttendees.labels.trainingConference"></InputLabel>
+                    <TextInput :placeholder="l.attendees.createAttendees.placeholder.trainingConference" type="text"
+                      v-model="form.training_conference" class="w-full mt-3 text-sm">
+                    </TextInput>
+                    <TextInputError :message="form.errors.training_conference"></TextInputError>
+                  </div>
+
+                  <div class="w-1/3 ms-3">
+                    <InputLabel :value="l.attendees.createAttendees.labels.typeOfTeacher"></InputLabel>
+                    <TextInput :placeholder="l.attendees.createAttendees.placeholder.typeOfTeacher" type="text"
+                      v-model="form.type_of_teacher" class="w-full mt-3 text-sm">
+                    </TextInput>
+                    <TextInputError :message="form.errors.type_of_teacher"></TextInputError>
+                  </div>
+
+                  <div class="w-1/3 ms-3">
+                    <InputLabel :value="l.attendees.createAttendees.labels.gradeAssigned"></InputLabel>
+                    <TextInput :placeholder="l.attendees.createAttendees.placeholder.gradeAssigned" type="text"
+                      v-model="form.grade_assigned" class="w-full mt-3 text-sm">
+                    </TextInput>
+                    <TextInputError :message="form.errors.grade_assigned"></TextInputError>
+                  </div>
+                </div>
+
+                <div class="w-full flex my-7">
+                  <div class="w-1/3">
+                    <InputLabel :value="l.attendees.createAttendees.labels.subjectAssigned"></InputLabel>
+                    <TextInput :placeholder="l.attendees.createAttendees.placeholder.subjectAssigned" type="text"
+                      v-model="form.subject_assigned" class="w-full mt-3 text-sm">
+                    </TextInput>
+                    <TextInputError :message="form.errors.subject_assigned"></TextInputError>
+                  </div>
+
+
                   <div class="w-1/3 ms-3">
                     <InputLabel :value="l.attendees.createAttendees.labels.attendeesAge"></InputLabel>
                     <TextInput :placeholder="l.attendees.createAttendees.placeholder.attendeesAge" type="number"
@@ -80,16 +222,17 @@ const updateAttendees = () => form.post(`/attendees/update/${user.id}`);
                     <TextInputError :message="form.errors.age"></TextInputError>
                   </div>
                   <div class="w-1/3 ms-3">
-                    <InputLabel :value="l.attendees.createAttendees.labels.attendeesSex"></InputLabel>
-                    <select placeholder="Gender" v-model="form.sex"
+                    <InputLabel :value="l.attendees.createAttendees.labels.attendeesGender"></InputLabel>
+                    <select v-model="form.gender"
                       class="py-2 px-4 pe-9 block w-full border-gray-200 dark:border-none rounded-lg text-sm focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none mt-3 dark:bg-gray-900">
-                      <option value="" selected="">Open this select Gender</option>
-                      <option value="0">Male</option>
-                      <option value="1">Female</option>
+                      <option value="">Open this select Gender</option>
+                      <option value="male">Male</option>
+                      <option value="female">Female</option>
                     </select>
                     <TextInputError :message="form.errors.name"></TextInputError>
                   </div>
                 </div>
+
 
                 <div class="w-full flex my-7">
                   <div class="w-1/3">

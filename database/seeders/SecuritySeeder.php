@@ -17,7 +17,7 @@ class SecuritySeeder extends Seeder
             User::create([
                 'name' => 'security0' . $i+1,
                 'age' => 30,
-                'sex' => rand(0, 1),
+                'gender' => 'male',
                 'phone_number' => fake()->phoneNumber(),
                 'nrc_number' => fake()->text(),
                 'edu_background' => fake()->text(),
@@ -26,7 +26,7 @@ class SecuritySeeder extends Seeder
                 'address' => fake()->address(),
                 'email' => 'security0' . $i+1 . "@gmail.com",
                 'password' => Hash::make('ILU@2024'),
-                'is_admin' => 2 // security
+                'role' => 'security' // security
             ]);
         }
     }

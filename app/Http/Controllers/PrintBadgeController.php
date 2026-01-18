@@ -45,7 +45,7 @@ class PrintBadgeController extends Controller
         $url = $nameBadgeData->qr_code;
         $qrCode = (string) QrCode::size(100)->generate($url);
 
-        $attendees = User::where('is_admin', 0)->get();
+        $attendees = User::where('role', 'admin')->get();
 
         return Inertia::render('PrintingPage/PrintBadge', [
             'nameBadgeData' => $nameBadgeData,

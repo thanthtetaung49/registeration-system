@@ -22,7 +22,7 @@ const user = props.user;
 const form = useForm({
   name: user.name,
   age: user.age,
-  sex: user.sex,
+  gender: user.gender,
   phone_number: user.phone_number,
   nrc_number: user.nrc_number,
   edu_background: user.edu_background,
@@ -128,12 +128,12 @@ const updateUsers = () => form.post(`/users/update/${user.id}`);
                     <TextInputError :message="form.errors.age"></TextInputError>
                   </div>
                   <div class="w-1/3 ms-3">
-                    <InputLabel :value="'Sex'"></InputLabel>
+                    <InputLabel :value="'Gender'"></InputLabel>
                     <select
-                      v-model="form.sex"
+                      v-model="form.gender"
                       class="py-3 px-4 pe-9 block w-full border-gray-200 dark:border-none rounded-lg text-sm focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none mt-3 dark:bg-gray-900"
                     >
-                      <option value="" selected="">Open this select sex</option>
+                      <option value="" selected="">Open this select gender</option>
                       <option value="0">Male</option>
                       <option value="1">Female</option>
                     </select>
@@ -213,8 +213,7 @@ const updateUsers = () => form.post(`/users/update/${user.id}`);
                     ></TextInput>
                     <TextInputError :message="form.errors.email"></TextInputError>
                   </div>
-                  <!-- {{ user.is_admin }} -->
-                  <div v-if="user.is_admin != 1 && user.is_admin != 4" class="w-1/3 ms-3">
+                  <div v-if="user.role != 'admin' && user.role != 'super_admin'" class="w-1/3 ms-3">
                     <InputLabel :value="'Attendees type'"></InputLabel>
                     <select
                       v-model="form.attendees_types_id"
@@ -230,7 +229,7 @@ const updateUsers = () => form.post(`/users/update/${user.id}`);
                       :message="form.errors.attendees_types_id"
                     ></TextInputError>
                   </div>
-                  <div v-if="user.is_admin != 1 && user.is_admin != 4" class="w-1/3 ms-3">
+                  <div v-if="user.role != 'admin' && user.role != 'super_admin'" class="w-1/3 ms-3">
                     <InputLabel :value="'Attendees group'"></InputLabel>
                     <select
                       v-model="form.attendees_groups_id"
@@ -248,7 +247,7 @@ const updateUsers = () => form.post(`/users/update/${user.id}`);
                   </div>
                 </div>
 
-                <div class="w-full flex my-3" v-if="user.is_admin == 3">
+                <div class="w-full flex my-3" v-if="user.role == 'self_checkin_user'">
                   <div class="w-1/2">
                     <InputLabel :value="'Password'"></InputLabel>
                     <TextInput

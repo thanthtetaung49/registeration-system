@@ -9,19 +9,43 @@ import TextInput from "@/Components/TextInput.vue";
 
 const props = defineProps({
   users: Object,
-  superAdmin: Number
+  role: String
 });
 
-let superAdmin = props.superAdmin;
-let users = props.users;
+let role = props.role;
+let users = ref(props.users);
 let user = ref(null);
 let baseUrl;
 let links = props.users.links;
 let showAlertStatus = ref(false);
 let input = ref(null);
 let query = ref(null);
+
 const page = usePage();
 const l = page.props.language;
+
+let roles = [
+  {
+    name: l.roles.attendees,
+    value: 'attendees'
+  },
+  {
+    name: l.roles.admin,
+    value: 'admin'
+  },
+  {
+    name: l.roles.security,
+    value: 'security'
+  },
+  {
+    name: l.roles.selfCheckinUser,
+    value: 'self_checkin_user'
+  },
+  {
+    name: l.roles.superAdmin,
+    value: 'super_admin'
+  }
+]
 
 const userView = (userId) => {
   axios
@@ -41,9 +65,8 @@ const updateUserRole = (userId, role) => {
   axios
     .post(`/users/role/update`, data)
     .then((response) => {
+      // users.value = response.data.users;
       user.value = response.data.user;
-
-      console.log(user.value);
 
       showAlertStatus.value = true;
 
@@ -199,15 +222,15 @@ onMounted(() => {
                             {{ user.email }}
                           </td>
                           <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">
-                            <span v-if="user.is_admin == 0"
+                            <span v-if="user.role == 'attendees'"
                               class="text-green-500 bg-green-100 px-3 py-1 rounded">Attendees</span>
-                            <span v-else-if="user.is_admin == 1"
+                            <span v-else-if="user.role == 'admin'"
                               class="text-gray-500 bg-gray-100 px-3 py-1 rounded">Admin</span>
-                            <span v-else-if="user.is_admin == 2"
+                            <span v-else-if="user.role == 'security'"
                               class="text-red-500 bg-red-100 px-3 py-1 rounded">Security</span>
-                            <span v-else-if="user.is_admin == 3"
+                            <span v-else-if="user.role == 'self_checkin_user'"
                               class="text-yellow-500 bg-yellow-100 px-3 py-1 rounded">Self-check in user</span>
-                            <span v-else class="text-indigo-500 bg-indigo-100 px-3 py-1 rounded">Super user</span>
+                            <span v-else class="text-indigo-500 bg-indigo-100 px-3 py-1 rounded">Super Admin user</span>
                           </td>
                           <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">
                             <span v-if="user.disable_status == 1"
@@ -251,18 +274,22 @@ onMounted(() => {
       </div>
 
       <!-- modal -->
-
       <div id="hs-large-modal"
         class="hs-overlay hs-overlay-open:opacity-100 hs-overlay-open:duration-500 hidden size-full fixed top-0 start-0 z-[80] opacity-0 overflow-x-hidden transition-all overflow-y-auto pointer-events-none"
         role="dialog" tabindex="-1" aria-labelledby="hs-large-modal-label">
         <!-- alert -->
-        <div v-if="showAlertStatus" id="alertContainer" class="w-72 absolute right-5 top-5 z-50">
-          <SuccessAlert v-if="user?.is_admin === 0" :message="`Role Change to Attendees.`"></SuccessAlert>
-          <SuccessAlert v-else-if="user?.is_admin === 1" :message="`Role Change to Admin.`"></SuccessAlert>
-          <SuccessAlert v-else-if="user?.is_admin === 2" :message="`Role Change to Security.`"></SuccessAlert>
-          <SuccessAlert v-else-if="user?.is_admin === 3" :message="`Role Change to Self Check-in User.`"></SuccessAlert>
-          <SuccessAlert v-else :message="`Role Change to Super Admin.`"></SuccessAlert>
-        </div>
+        <Transition name="fade">
+          <div v-if="showAlertStatus" id="alertContainer" class="w-72 absolute right-2 bottom-10 z-50">
+            <SuccessAlert v-if="user?.role === 'attendees'" :message="`Role Change to Attendees.`"></SuccessAlert>
+            <SuccessAlert v-else-if="user?.role === 'admin'" :message="`Role Change to Admin.`"></SuccessAlert>
+            <SuccessAlert v-else-if="user?.role === 'security'" :message="`Role Change to Security.`"></SuccessAlert>
+            <SuccessAlert v-else-if="user?.role === 'self_checkin_user'"
+              :message="`Role Change to Self Check-in User.`">
+            </SuccessAlert>
+            <SuccessAlert v-else :message="`Role Change to Super Admin.`"></SuccessAlert>
+          </div>
+        </Transition>
+
 
         <div class="sm:max-w-5xl sm:w-full m-3 sm:mx-auto">
           <div
@@ -287,7 +314,7 @@ onMounted(() => {
             </div>
 
             <div v-if="user" class="p-6 overflow-y-auto">
-              <div v-if="superAdmin == 4" class="flex justify-end gap-x-2 mb-6">
+              <div v-if="role == 'super_admin'" class="flex justify-end gap-x-2 mb-6">
 
                 <button v-on:click="accountDisabled" type="button"
                   class="p-2 rounded-xl bg-red-50 text-red-500 hover:bg-red-100 transition dark:bg-red-900/20 hs-tooltip-toggle flex items-center"><svg
@@ -327,10 +354,10 @@ onMounted(() => {
                       class="relative w-52 h-52 object-cover rounded-3xl border-4 border-white shadow-sm" alt="Profile">
                     <div
                       class="absolute -bottom-3 left-1/2 -translate-x-1/2 px-4 py-2 bg-indigo-600 text-white text-[10px] font-black uppercase rounded-full shadow-lg w-3/4 text-center">
-                      <span v-if="user?.is_admin == 0">{{ l.roles.attendees }}</span>
-                      <span v-else-if="user?.is_admin == 1">{{ l.roles.admin }}</span>
-                      <span v-else-if="user?.is_admin == 2">{{ l.roles.security }}</span>
-                      <span v-else-if="user?.is_admin == 3">{{ l.roles.selfCheckinUser }}</span>
+                      <span v-if="user?.role == 'attendees'">{{ l.roles.attendees }}</span>
+                      <span v-else-if="user?.role == 'admin'">{{ l.roles.admin }}</span>
+                      <span v-else-if="user?.role == 'security'">{{ l.roles.security }}</span>
+                      <span v-else-if="user?.role == 'self_checkin_user'">{{ l.roles.selfCheckinUser }}</span>
                       <span v-else>{{ l.roles.superAdmin }}</span>
                     </div>
                   </div>
@@ -338,13 +365,13 @@ onMounted(() => {
 
                 <div class="w-full md:w-2/3 space-y-6">
                   <div>
-                    <h2 class="text-2xl font-black text-gray-900 dark:text-white">{{ user?.name || 'Test 2' }}</h2>
+                    <h2 class="text-2xl font-black text-gray-900 dark:text-white">{{ user?.name }}</h2>
                     <p class="text-sm text-gray-400 font-medium">{{ user?.email }}</p>
                   </div>
 
                   <div class="grid grid-cols-2 gap-y-4 gap-x-6 border-t border-gray-50 pt-6 dark:border-neutral-800">
                     <div
-                      v-for="(val, label) in { 'Age': user?.age, 'Gender': user?.sex, 'Phone': user?.phone_number, 'NRC': user?.nrc_number, 'Dept': user?.department, 'Position': user?.position, 'Address': user?.address }"
+                      v-for="(val, label) in { 'Age': user?.age, 'Gender': user?.gender, 'Phone': user?.phone_number, 'NRC': user?.nrc_number, 'Department': user?.department, 'Position': user?.position, 'Address': user?.address }"
                       :key="label">
                       <p class="text-[10px] font-black uppercase text-gray-400 tracking-widest mb-0.5">{{ label }}</p>
                       <p class="text-sm font-bold text-gray-700 dark:text-neutral-300">{{ val || '-' }}</p>
@@ -354,14 +381,12 @@ onMounted(() => {
                   <div class="bg-gray-50 p-4 rounded-2xl dark:bg-neutral-800/50">
                     <p class="text-[10px] font-black uppercase text-gray-400 tracking-widest mb-1">Update Role</p>
                     <div class="flex flex-wrap gap-2 mt-2">
-                      <label
-                        v-for="(r, index) in [l.roles.attendees, l.roles.admin, l.roles.security, l.roles.selfCheckinUser, l.roles.superAdmin]"
-                        :key="r" class="cursor-pointer group">
-                        <input type="checkbox" class="peer hidden" :checked="user?.is_admin === index"
-                          @change="updateUserRole(user.id, index)">
+                      <label v-for="role in roles" :key="role.value" class="cursor-pointer group">
+                        <input type="checkbox" class="peer hidden" :checked="user?.role === role.value"
+                          @change="updateUserRole(user.id, role.value)">
                         <span
                           class="px-4 py-1.5 rounded-xl border border-gray-200 text-xs font-bold text-gray-500 peer-checked:bg-indigo-600 peer-checked:text-white peer-checked:border-indigo-600 transition-all hover:bg-gray-100">{{
-                            r }} </span>
+                            role.name }} </span>
                       </label>
                     </div>
                   </div>

@@ -33,7 +33,7 @@ const onDetect = async (detectedCodes) => {
   // await new Promise((resolve) => setTimeout(resolve, 3000));
 
   try {
-    auth.is_admin == 2 ? await securityScan() : await selfCheckinUserScan();
+    auth.role == 'security' ? await securityScan() : await selfCheckinUserScan();
   } catch (error) {
     console.error("Error during scan processing:", error);
   } finally {
@@ -41,9 +41,6 @@ const onDetect = async (detectedCodes) => {
       paused.value = false;
     }, 2000);
   }
-
-  // auth.is_admin == 2 ? securityScan() : selfCheckinUserScan();
-  // paused.value = false;
 };
 
 // security function
