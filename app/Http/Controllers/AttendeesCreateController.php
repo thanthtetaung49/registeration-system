@@ -7,7 +7,6 @@ use App\Models\AttendeesType;
 use App\Models\State;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
@@ -29,7 +28,6 @@ class AttendeesCreateController extends Controller
 
     public function submitAttendee(Request $request)
     {
-        // dd($request->all());
         $request->validate([
             "name"           => ['required'],
             "gender"            => ['required'],
@@ -150,7 +148,10 @@ class AttendeesCreateController extends Controller
         $oldFilename = $user->profile_path;
         $file = $request->file('avatar');
 
+        $profile_path = [];
+
         if (isset($file) && $oldFilename != $file->getClientOriginalName()) {
+
             $filename = uniqid() . time() . $file->getClientOriginalName();
             // new update photo
             if (Storage::exists('public/' . $oldFilename)) {
@@ -159,20 +160,19 @@ class AttendeesCreateController extends Controller
 
             $file->storeAs('public/profile', $filename);
 
-            $user->update([
+            $profile_path = [
                 'profile_path' => 'profile/' . $filename,
-            ]);
+            ];
         } else {
-            // not update photo
-            $user->update([
+            $profile_path = [
                 'profile_path' => $oldFilename,
-            ]);
+            ];
         }
 
         $data = [
             "name"           => $request->name,
             "age"            => $request->age,
-            "gender"            => $request->gender,
+            "gender"         => $request->gender,
             "phone_number"   => $request->phone_number,
             "nrc_number"     => $request->nrc_number,
             "edu_background" => $request->edu_background,
@@ -199,6 +199,8 @@ class AttendeesCreateController extends Controller
             "subject_assigned" => $request->subject_assigned,
         ];
 
+        $data = array_merge($data, $profile_path);
+
         $user->update($data);
 
         return to_route('attendees.list.index');
@@ -206,7 +208,10 @@ class AttendeesCreateController extends Controller
 
     public function view($id)
     {
-        $user = User::with('attendees_types', 'attendees_groups')->where('id', $id)->first();
+        $user = User::with('attendees_types', 'attendees_groups')
+                ->where('id', $id)
+                ->first();
+
         $types = AttendeesType::get();
         $groups = AttendeesGroup::get();
 

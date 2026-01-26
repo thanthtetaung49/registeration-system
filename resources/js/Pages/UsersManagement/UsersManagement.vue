@@ -350,7 +350,7 @@ onMounted(() => {
                     <div
                       class="absolute -inset-1 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-3xl blur opacity-25 group-hover:opacity-50 transition duration-1000">
                     </div>
-                    <img :src="user?.profile_path ? `${baseUrl}/storage/${user?.profile_path}` : defaultImage"
+                    <img :src="user?.profile_path ? `/storage/${user?.profile_path}` : defaultImage"
                       class="relative w-52 h-52 object-cover rounded-3xl border-4 border-white shadow-sm" alt="Profile">
                     <div
                       class="absolute -bottom-3 left-1/2 -translate-x-1/2 px-4 py-2 bg-indigo-600 text-white text-[10px] font-black uppercase rounded-full shadow-lg w-3/4 text-center">

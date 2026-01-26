@@ -34,7 +34,7 @@ Route::get('/', function () {
 Route::prefix('/attendess/business/card/public')->group(function () {
     Route::get('/', [AttendeesBusinessCardPublicController::class, 'index'])->name('businessCard.public.index');
     Route::get('/search', [AttendeesBusinessCardPublicController::class, 'search'])->name('businessCard.search');
-    Route::get('/view/{id}', [AttendeesBusinessCardController::class, 'viewPublic'])->name('businessCard.view.public');
+    Route::get('/view/{id}', [AttendeesBusinessCardPublicController::class, 'viewPublic'])->name('businessCard.view.public');
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -162,10 +162,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // attendees business card
     Route::prefix('/attendess/business/card')->group(function () {
-        Route::get('/', [AttendeesBusinessCardController::class, 'index'])->name('businessCard.index');
+        // Route::get('/', [AttendeesBusinessCardController::class, 'index'])->name('businessCard.index');
         Route::get('/view/{id}', [AttendeesBusinessCardController::class, 'view'])->name('businessCard.view');
-        Route::get('/change/url/status/{id}', [AttendeesBusinessCardController::class, 'changePublicStatus'])->name('businessCard.change.url.status');
-        Route::get('/search', [AttendeesBusinessCardController::class, 'search'])->name('businessCard.search');
+        // Route::get('/change/url/status/{id}', [AttendeesBusinessCardController::class, 'changePublicStatus'])->name('businessCard.change.url.status');
+        // Route::get('/search', [AttendeesBusinessCardController::class, 'search'])->name('businessCard.search');
     });
 
     // print badge

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -21,18 +22,16 @@ class AttendeesBusinessCardController extends Controller
     public function view($id)
     {
         $user = User::findOrFail($id);
+        $joinDate = Carbon::parse($user->join_date);
+        $currentDate = Carbon::now();
+        $diff = $joinDate->diff($currentDate);
+        $serviceYears = $diff->y . ' years, ' . $diff->m . ' months';
 
-        return Inertia::render('AttendeesBusinessCardPage/AttendeesBusinessCardView', ['user' => $user, 'baseUrl' => url('/')]);
+        return Inertia::render('AttendeesBusinessCardPage/AttendeesBusinessCardView', ['user' => $user, 'serviceYears' => $serviceYears, 'baseUrl' => url('/')]);
     }
 
-    public function viewPublic($id)
+    public function changePublicStatus($id)
     {
-        $user = User::findOrFail($id);
-
-        return Inertia::render('AttendeesBusinessCardPage/AttendeesBusinessCardViewPublic', ['user' => $user, 'baseUrl' => url('/')]);
-    }
-
-    public function changePublicStatus ($id) {
         $user = User::findOrFail($id);
 
         $user->is_public_url = !$user->is_public_url;

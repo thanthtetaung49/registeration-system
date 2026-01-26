@@ -9,9 +9,9 @@ return [
         "searchPlaceholder" => "Search by name",
         "userProfile" => "User Profile",
         "button" => [
-            "accountDisabled" => "Account Disabled",
-            "accountActive" => "Account Active",
-            "accountDeleted" => "Account Deleted",
+            "accountDisabled" => "Disable Account",
+            "accountActive" => "Activate Account",
+            "accountDeleted" => "Delete Account",
         ],
         "table" => [
             "no" => "No.",
@@ -340,8 +340,8 @@ return [
             ]
         ]
     ],
-    "businessCards" => [
-        "title" => "Business Cards",
+    "contactInformationCard" => [
+        "title" => "Contact Information Cards",
         "searchPlaceholder" => "Search by Name",
     ],
     "printBadge" => [

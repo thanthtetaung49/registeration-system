@@ -85,12 +85,16 @@ const updateAttendees = () => form.post(`/attendees/update/${user.id}`);
             <div class="mt-5">
               <form v-on:submit.prevent="updateAttendees">
                 <div class="w-1/3 my-3 flex items-end">
-                  <img v-if="imageUrl && imageUrl != null" :src="imageUrl" alt="preview image"
-                    class="w-20 rounded-md h-20" />
-                  <img v-else :src="defaultImage" alt="default image" class="w-20 rounded-md h-20" />
+                  <img v-if="imageUrl" :src="imageUrl" alt="preview image"
+                    class="w-32 rounded-md border shadow-lg" />
+
+                  <img v-else-if="user.profile_path"  class="w-32 rounded-md border shadow-lg" :src="`/storage/${user.profile_path}`" alt="Profile" />
+
+                  <img v-else :src="defaultImage" alt="default image" class="w-32 rounded-md border shadow-lg" />
+
                   <div class="ms-5">
                     <label for="file-input" class="mt-3 text-blue-700 underline text-sm font-medium">File upload</label>
-                    <input @input="previewImage" type="file" name="import_file" id="file-input"
+                    <input accept="image/*" @input="previewImage" type="file" name="import_file" id="file-input"
                       class="hidden w-full border border-gray-200 dark:border-none shadow-sm rounded-lg text-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 file:bg-gray-50 file:border-0 file:me-4 file:py-3 file:px-4 dark:file:bg-neutral-700 dark:file:text-neutral-400 mt-3" />
                     <TextInputError :message="form.errors.avatar"></TextInputError>
                   </div>

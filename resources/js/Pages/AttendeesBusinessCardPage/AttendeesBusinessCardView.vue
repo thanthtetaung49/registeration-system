@@ -1,11 +1,13 @@
 <script setup>
 import { ref } from 'vue';
 import defaultImage from "@/images/default_profile.png";
+import { Link } from '@inertiajs/vue3';
 
-const props = defineProps({ user: Object, baseUrl: String });
+const props = defineProps({ user: Object, baseUrl: String, serviceYears: String });
 
 const user = ref(props.user);
 const baseUrl = ref(props.baseUrl).value;
+const serviceYears = ref(props.serviceYears);
 
 </script>
 
@@ -25,18 +27,29 @@ const baseUrl = ref(props.baseUrl).value;
 
                     <div class="p-8 w-full">
                         <div class="text-end">
-                            <span v-if="user.disable_status == 0" class="bg-green-100 text-xs px-5 py-2 text-green-900 rounded-full">Active</span>
+                            <span v-if="user.disable_status == 0"
+                                class="bg-green-100 text-xs px-5 py-2 text-green-900 rounded-full">Active</span>
                             <span v-else class="bg-red-100 text-xs px-5 py-2 text-red-900 rounded-full">Disabled</span>
                         </div>
                         <div class="uppercase tracking-wide text-sm text-indigo-500 font-semibold mb-1">{{
                             user.department }}
                         </div>
                         <h1 class="block mt-1 text-2xl leading-tight font-bold text-black">{{ user.name }}</h1>
-                        <p class="text-slate-500 font-medium mb-4">{{ user.position }}</p>
+                        <div class="text-slate-500 font-medium mb-4 flex justify-between items-center w-full mt-1">
+                            <p>{{ user.position }}</p>
+                            <p class="text-xs bg-yellow-100 text-yellow-800 rounded-full px-3 py-1">{{ serviceYears }}
+                            </p>
+                        </div>
 
                         <hr class="mb-4">
 
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+                        <div v-if="user.disable_status === 1" class="mb-4">
+                            <div class="bg-red-100 text-red-800 px-5 py-2 rounded-lg">
+                                <p class="text-md">ဤအကောင့်ကို စီမံခန့်ခွဲသူ (Administrator) က ပိတ်ထားပါသည်။</p>
+                            </div>
+                        </div>
+
+                        <div v-else class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
                             <div>
                                 <span class="block text-gray-400 font-bold uppercase text-xs">Teacher ID no</span>
                                 <p class="text-gray-700">{{ user.teacher_id }}</p>
@@ -146,7 +159,13 @@ const baseUrl = ref(props.baseUrl).value;
                                 <p class="text-gray-700">{{ user.phone_number }}</p>
                             </div>
 
+                            <!-- <Link :href="route('calendar.index')" class="text-blue-600 underline text-sm">
+                            Go Back
+                            </Link> -->
+
                         </div>
+
+
                     </div>
                 </div>
             </div>
