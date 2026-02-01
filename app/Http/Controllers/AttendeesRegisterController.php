@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Maatwebsite\Excel\Facades\Excel;
 
-class RegisterAttendeesController extends Controller
+class AttendeesRegisterController extends Controller
 {
     public function index()
     {
@@ -26,7 +26,7 @@ class RegisterAttendeesController extends Controller
         $events = Event::get();
         $groups = AttendeesGroup::get();
 
-        return Inertia::render('AttendeesPage/RegisterAttendees', [
+        return Inertia::render('AttendeesPage/AttendeesRegister/AttendeesRegister', [
             'users' => $users,
             'events' => $events,
             'groups' => $groups,
@@ -82,7 +82,7 @@ class RegisterAttendeesController extends Controller
         $events = Event::get();
         $groups = AttendeesGroup::get();
 
-        return Inertia::render('AttendeesPage/RegisterAttendees', [
+        return Inertia::render('AttendeesPage/AttendeesRegister/AttendeesRegister', [
             'users' => $users,
             'events' => $events,
             'groups' => $groups,
@@ -100,13 +100,15 @@ class RegisterAttendeesController extends Controller
             ->whereNotNull('attendees_groups_id')
             ->whereIn('role', ['attendees', 'self_checkin_user'])
             ->whereDoesntHave('register_events')
-            ->when($query, fn($u) => $u->where('name', 'like', '%' . $query . '%'))
+            ->when($query, fn($u) => $u->where('name', 'like', '%' . $query . '%')
+                        ->orWhere('email', 'like', '%' . $query . '%')
+            )
             ->paginate(20);
 
         $events = Event::get();
         $groups = AttendeesGroup::get();
 
-        return Inertia::render('AttendeesPage/RegisterAttendees', [
+        return Inertia::render('AttendeesPage/AttendeesRegister/AttendeesRegister', [
             'users' => $users,
             'events' => $events,
             'groups' => $groups,

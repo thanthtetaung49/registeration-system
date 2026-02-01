@@ -11,16 +11,16 @@ import InputError from "@/Components/InputError.vue";
 import { useForm } from "@inertiajs/vue3";
 
 const form = useForm({
-    name: null,
+    teacher_type: null,
 });
 
-const saveAttendeesType = () =>
-    form.post("/attendees/attendeesType/create", {
-        onSuccess: () => form.reset("name"),
+const saveTeacherType = () =>
+    form.post("/attendees/teacherType/create", {
+        onSuccess: () => form.reset("teacher_type"),
     });
 
 const props = defineProps({
-    types: Object,
+    teacherTypes: Object,
 });
 
 const page = usePage();
@@ -33,7 +33,7 @@ const l = page.props.language;
         <AuthenticatedLayout>
             <div class="px-10 py-10">
                 <header class="mb-10">
-                    <h3 class="text-gray-800 text-2xl pb-1 bold dark:text-white">{{ l.attendees.attendeeType.title }}</h3>
+                    <h3 class="text-gray-800 text-2xl pb-1 bold dark:text-white">{{ l.attendees.teacherType.title }}</h3>
                     <div class="w-10 h-1 bg-blue-800"></div>
                 </header>
 
@@ -44,11 +44,11 @@ const l = page.props.language;
                         </div>
 
                         <div class="mt-5">
-                            <form v-on:submit.prevent="saveAttendeesType">
+                            <form v-on:submit.prevent="saveTeacherType">
                                 <div>
-                                    <InputLabel :value="l.attendees.attendeeType.labels.attendeeType"></InputLabel>
-                                    <TextInput :placeholder="l.attendees.attendeeType.placeholder.attendeeType" v-model="form.name" class="mt-3 w-[30%] text-sm"></TextInput>
-                                    <InputError :message="form.errors.name"></InputError>
+                                    <InputLabel :value="l.attendees.teacherType.labels.teacherType"></InputLabel>
+                                    <TextInput :placeholder="l.attendees.teacherType.placeholder.teacherType" v-model="form.teacher_type" class="mt-3 w-[30%] text-sm"></TextInput>
+                                    <InputError :message="form.errors.teacher_type"></InputError>
                                 </div>
                                 <div class="mt-5 w-full flex justify-end">
                                     <PrimaryButton type="submit" class="">{{ l.attendees.button.save }}</PrimaryButton>
@@ -65,45 +65,45 @@ const l = page.props.language;
                                                 <tr>
                                                     <th scope="col"
                                                         class="py-3 text-start text-xs font-medium text-gray-500 uppercase">
-                                                        {{ l.attendees.attendeeType.table.no }}
+                                                        {{ l.attendees.teacherType.table.no }}
                                                     </th>
                                                     <th scope="col"
                                                         class="py-3 text-start text-xs font-medium text-gray-500 uppercase">
-                                                        {{ l.attendees.attendeeType.table.attendeeType }}
+                                                        {{ l.attendees.teacherType.table.teacherType }}
                                                     </th>
                                                     <th scope="col"
                                                         class="py-3 text-start text-xs font-medium text-gray-500 uppercase">
-                                                        {{ l.attendees.attendeeType.table.createdAt }}
+                                                        {{ l.attendees.teacherType.table.createdAt }}
                                                     </th>
                                                     <th scope="col"
                                                         class="py-3 text-end text-xs font-medium text-gray-500 uppercase">
-                                                        {{ l.attendees.attendeeType.table.actions }}
+                                                        {{ l.attendees.teacherType.table.actions }}
                                                     </th>
                                                 </tr>
                                             </thead>
                                             <tbody class="divide-y divide-gray-200">
                                                 <tr v-for="(
-type, index
-                                                    ) in types.data" :key="type.id">
+teacherType, index
+                                                    ) in teacherTypes.data" :key="teacherTypes.id">
                                                     <td
                                                         class="py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white">
                                                         {{ index + 1 }}
                                                     </td>
                                                     <td
                                                         class="py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white">
-                                                        {{ type.name }}
+                                                        {{ teacherType.teacher_type }}
                                                     </td>
                                                     <td
                                                         class="py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white">
                                                         {{
-                                                            type.created_at.split(
+                                                            teacherType.created_at.split(
                                                                 "T"
                                                             )[0]
                                                         }}
                                                     </td>
                                                     <td
                                                         class="py-4 whitespace-nowrap text-end text-sm font-medium">
-                                                        <Link :href="`/attendees/attendeesType/view/${type.id}`"
+                                                        <Link :href="`/attendees/teacherType/view/${teacherType.id}`"
                                                             class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border text-gray-600 focus:outline-none focus:text-whitedisabled:opacity-50 disabled:pointer-events-none dark:text-gray-500 dark:hover:text-gray-400 dark:focus:text-gray-400 p-2 mr-3 hover:bg-green-700 hover:text-white"
                                                             aria-haspopup="dialog" aria-expanded="false"
                                                             aria-controls="hs-scale-animation-modal"
@@ -118,7 +118,7 @@ type, index
                                                             </svg>
                                                         </Link>
 
-                                                        <Link :href="`/attendees/attendeesType/edit/${type.id}`"
+                                                        <Link :href="`/attendees/teacherType/edit/${teacherType.id}`"
                                                             class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border text-gray-600 focus:outline-none focus:text-whitedisabled:opacity-50 disabled:pointer-events-none dark:text-gray-500 dark:hover:text-gray-400 dark:focus:text-gray-400 p-2 mr-3 hover:bg-gray-700 hover:text-white"
                                                             aria-haspopup="dialog" aria-expanded="false"
                                                             aria-controls="hs-scale-animation-modal"
@@ -131,7 +131,7 @@ type, index
                                                             </svg>
                                                         </Link>
 
-                                                        <Link :href="`/attendees/attendeesType/delete/${type.id}`"
+                                                        <Link :href="`/attendees/teacherType/delete/${teacherType.id}`"
                                                             class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border text-gray-600 focus:outline-none focus:text-whitedisabled:opacity-50 disabled:pointer-events-none dark:text-gray-500 dark:hover:text-gray-400 dark:focus:text-gray-400 p-2 mr-3 hover:bg-red-700 hover:text-white"
                                                             aria-haspopup="dialog" aria-expanded="false"
                                                             aria-controls="hs-scale-animation-modal"
@@ -154,7 +154,7 @@ type, index
 
                         <div class="flex justify-end w-full">
                             <div class="mb-10 my-5">
-                                <Link :href="link.url" v-for="(link, index) in types.links" :key="index"
+                                <Link :href="link.url" v-for="(link, index) in teacherTypes.links" :key="index"
                                     class="border py-2 px-3 text-sm dark:text-white" :class="{
                                         'bg-blue-500 text-white': link.active,
                                     }">

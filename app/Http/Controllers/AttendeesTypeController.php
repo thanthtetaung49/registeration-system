@@ -28,7 +28,6 @@ class AttendeesTypeController extends Controller
 
     public function edit(AttendeesType $attendeesType)
     {
-
         return Inertia::render('AttendeesPage/AttendeesType/AttendeesTypeEdit', ['type' => $attendeesType]);
     }
 

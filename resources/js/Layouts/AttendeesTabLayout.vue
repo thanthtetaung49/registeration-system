@@ -18,8 +18,7 @@ const l = props.l;
 
 <template>
   <div class="w-full">
-    <nav class="mx-2" aria-label="Tabs" role="tablist"
-      aria-orientation="horizontal">
+    <nav class="mx-2" aria-label="Tabs" role="tablist" aria-orientation="horizontal">
       <Link href="/attendees/attendeesLists"
         class="py-2 my-3 px-4 inline-flex items-center gap-x-2 border-b-2 border-transparent text-sm whitespace-nowrap  focus:outline-none disabled:opacity-50 disabled:pointer-events-none"
         role="tab" :class="{
@@ -36,6 +35,7 @@ const l = props.l;
         }">
         {{ l.attendees.tabs.attendeesType }}
       </Link>
+
       <Link href="/attendees/attendeesGroup"
         class="py-2 my-3 px-4 inline-flex items-center gap-x-2 border-b-2 border-transparent text-sm whitespace-nowrap  focus:outline-none disabled:opacity-50 disabled:pointer-events-none"
         role="tab" :class="{
@@ -44,13 +44,41 @@ const l = props.l;
         }">
         {{ l.attendees.tabs.attendeesGroup }}
       </Link>
+
+      <Link href="/attendees/trainingLists"
+        class="py-2 my-3 px-4 inline-flex items-center gap-x-2 border-b-2 border-transparent text-sm whitespace-nowrap  focus:outline-none disabled:opacity-50 disabled:pointer-events-none"
+        role="tab" :class="{
+          'text-white rounded-md font-bold bg-blue-700': route().current('attendees.trainingLists.index'),
+          'text-gray-500 ': !route().current('attendees.trainingLists.index'),
+        }">
+        {{ l.attendees.tabs.trainingLists }}
+      </Link>
+
+      <Link href="/attendees/teacherType"
+        class="py-2 my-3 px-4 inline-flex items-center gap-x-2 border-b-2 border-transparent text-sm whitespace-nowrap  focus:outline-none disabled:opacity-50 disabled:pointer-events-none"
+        role="tab" :class="{
+          'text-white rounded-md font-bold bg-blue-700': route().current('attendees.teacherType.index'),
+          'text-gray-500 ': !route().current('attendees.teacherType.index'),
+        }">
+        {{ l.attendees.tabs.teacherType }}
+      </Link>
+
+      <Link href="/attendees/course"
+        class="py-2 my-3 px-4 inline-flex items-center gap-x-2 border-b-2 border-transparent text-sm whitespace-nowrap  focus:outline-none disabled:opacity-50 disabled:pointer-events-none"
+        role="tab" :class="{
+          'text-white rounded-md font-bold bg-blue-700': route().current('attendees.course.index'),
+          'text-gray-500 ': !route().current('attendees.course.index'),
+        }">
+        {{ l.attendees.tabs.course }}
+      </Link>
+
       <Link href="/attendees"
         class="py-2 my-3 px-4 inline-flex items-center gap-x-2 border-b-2 border-transparent text-sm whitespace-nowrap  focus:outline-none disabled:opacity-50 disabled:pointer-events-none"
         role="tab" :class="{
           'text-white rounded-md font-bold bg-blue-700': route().current('attendees.index'),
           'text-gray-500 ': !route().current('attendees.index'),
         }">
-       {{ l.attendees.tabs.createAttendees }}
+        {{ l.attendees.tabs.createAttendees }}
       </Link>
 
       <Link href="/attendees/upload/file"

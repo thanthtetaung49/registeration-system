@@ -55,4 +55,16 @@ class User extends Authenticatable
     public function attendees_groups () {
         return $this->belongsTo(AttendeesGroup::class, 'attendees_groups_id', 'id');
     }
+
+    public function training_list () {
+        return $this->belongsTo(TrainingLists::class, 'training_list_id', 'id');
+    }
+
+    public function teacher_type () {
+        return $this->belongsTo(TeacherType::class, 'teacher_type_id', 'id');
+    }
+
+    public function course () {
+        return $this->belongsTo(Course::class, 'course_id', 'id');
+    }
 }

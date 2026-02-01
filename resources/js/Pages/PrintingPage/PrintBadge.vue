@@ -16,6 +16,8 @@ const props = defineProps({
     qrCode: String,
 });
 
+console.log(props);
+
 const page = usePage();
 const l = page.props.language;
 
@@ -60,12 +62,12 @@ const nameBadgeGenerate = () => {
                     <div class="w-10 h-1 bg-blue-800"></div>
                 </header>
 
-                <div class="w-full bg-white rounded-lg shadow-md dark:text-white dark:bg-gray-800">
-                    <div class="border-b border-gray-200 dark:border-none px-4 pb-10 pt-3 mb-10">
-                        <div class="mt-5">
-                            <form v-on:submit.prevent="nameBadgeGenerate">
-                                <div class="w-full flex">
-                                    <div class="w-1/2 mr-3">
+                <div class="w-full bg-white rounded-lg shadow-md dark:text-white dark:bg-gray-800 flex mb-20">
+                    <div :class="!nameBadgeData ? 'w-full py-5' : 'w-1/3 py-5'">
+                        <div class=" border-gray-200 dark:border-none px-4 pb-10 pt-3 mb-10">
+                            <div class="mt-5">
+                                <form v-on:submit.prevent="nameBadgeGenerate">
+                                    <div class="w-full mr-3">
                                         <InputLabel :value="l.printBadge.label.eventName" class="mb-3"></InputLabel>
                                         <select v-model="form.events_id"
                                             class="hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-3 ps-4 pe-9 flex gap-x-2 text-nowrap w-full cursor-pointer bg-white border border-gray-200 dark:border-none rounded-lg text-start text-sm focus:outline-none focus:ring-2 focus:ring-blue-200 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-neutral-600"
@@ -81,8 +83,9 @@ const nameBadgeGenerate = () => {
                                         <TextInputError :message="form.errors.events_id"></TextInputError>
                                     </div>
 
-                                    <div class="w-1/2">
-                                        <InputLabel :value="l.printBadge.label.registeredAttendees" class="mb-3"></InputLabel>
+                                    <div class="w-full mt-5">
+                                        <InputLabel :value="l.printBadge.label.registeredAttendees" class="mb-3">
+                                        </InputLabel>
                                         <select
                                             class="hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-3 ps-4 pe-9 flex gap-x-2 text-nowrap w-full cursor-pointer bg-white border border-gray-200 dark:border-none rounded-lg text-start text-sm focus:outline-none focus:ring-2 focus:ring-blue-200 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-neutral-600"
                                             v-model="form.users_id">
@@ -94,15 +97,17 @@ const nameBadgeGenerate = () => {
                                         </select>
                                         <TextInputError :message="form.errors.users_id"></TextInputError>
                                     </div>
-                                </div>
 
-                                <div class="w-full flex justify-end mt-5">
-                                    <PrimaryButton type="submit">{{ l.printBadge.button.generate }}</PrimaryButton>
-                                </div>
-                            </form>
+                                    <div class="w-full flex justify-end mt-5">
+                                        <PrimaryButton type="submit">{{ l.printBadge.button.generate }}</PrimaryButton>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
+                    </div>
 
-                        <div class="border-t mt-5 pt-5" v-if="nameBadgeData">
+                    <div v-if="nameBadgeData" class="w-2/3 border-l py-5 px-10" >
+                        <div class="mt-5 pt-5">
                             <header class="mb-5">
                                 <h3 class="text-gray-800 text-lg pb-1 bold dark:text-white">
                                     {{ l.printBadge.cardDesignPreview }}
@@ -121,13 +126,35 @@ const nameBadgeGenerate = () => {
                                 </a>
                             </div>
 
-                            <div class="w-[5in] h-[2.5in] border shadow-lg">
-                                <div class="flex justify-center items-center h-full w-full mt-[15px]">
-                                    <div v-html="qrCode"></div>
+                            <div
+                                class="w-[4.5in] border-2 border-gray-200 rounded-xl shadow-2xl bg-white overflow-hidden flex flex-col font-sans mt-10">
+
+                                <div class="h-4 bg-indigo-600 w-full"></div>
+
+                                <div class="flex flex-col items-center justify-between h-full p-4">
+                                    <div class="text-center">
+                                        <h1 class="text-lg font-bold tracking-tight text-gray-800 uppercase">{{ nameBadgeData ? nameBadgeData.events.event_name : 'Sample Event name' }}
+                                        </h1>
+                                        <p class="text-xs text-gray-500 font-medium">Start Date: {{ nameBadgeData.events.start_date }} | End Date: {{ nameBadgeData.events.end_date }}</p>
+                                    </div>
+
+                                    <div class="p-2 bg-gray-50 rounded-lg border border-gray-100 shadow-inner my-3">
+                                        <div v-html="qrCode" class="w-24 h-24"></div>
+                                    </div>
+
+                                    <div class="text-center">
+                                        <p class="text-xs text-gray-500 font-medium">Start Time: {{ nameBadgeData.events.start_time }} | End Time: {{ nameBadgeData.events.end_time }}</p>
+                                    </div>
+
+                                    <div class="text-center w-full border-t pt-2 mt-3">
+                                        <span class="text-[10px] uppercase font-semibold text-gray-400">Scan for
+                                            Verification</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+
                 </div>
             </div>
         </AuthenticatedLayout>

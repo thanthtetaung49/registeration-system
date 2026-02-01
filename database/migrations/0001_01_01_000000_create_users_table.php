@@ -20,10 +20,10 @@ return new class extends Migration
             $table->foreign('attendees_types_id')->references('id')->on('attendees_types')->cascadeOnDelete();
             $table->string('teacher_id')->nullable();
             $table->string('name');
+            $table->string('secondary_name')->nullable();
             $table->string('parent_name')->nullable();
             $table->integer('age')->nullable();
-            // $table->integer('gender')->nullable(); // 0 is male, 1 is female
-            $table->enum('gender', ['male', 'female'])->nullable();
+            $table->enum('gender', ['male', 'female', 'other'])->nullable();
             $table->date('birth_date')->nullable();
             $table->string('nation')->nullable();
             $table->string('join_date')->nullable();
@@ -35,16 +35,20 @@ return new class extends Migration
             $table->string('department')->nullable();
             $table->string('address')->nullable();
             $table->string('email')->unique();
-            // $table->integer('is_admin')->default(0); // 0 is attendees , 1 is admin, 2 security, 3 seftcheck-in user, 4 super  admin
             $table->enum('role', ['attendees', 'admin', 'security', 'self_checkin_user', 'super_admin']);
             $table->string('service_year')->nullable();
             $table->string('service_year_benefit')->nullable();
             $table->string('monthly_benefit')->nullable();
             $table->string('last_place_of_duty')->nullable();
             $table->string('current_address')->nullable();
-            $table->string('training_conference')->nullable();
-            $table->string('type_of_teacher')->nullable();
-            $table->string('grade_assigned')->nullable();
+
+            $table->foreignId('training_list_id')->nullable()->constrained()->cascadeOnDelete();
+            $table->foreignId('teacher_type_id')->nullable()->constrained()->cascadeOnDelete();
+            $table->foreignId('course_id')->nullable()->constrained()->cascadeOnDelete();
+
+            // $table->string('training_conference')->nullable();
+            // $table->string('type_of_teacher')->nullable();
+            // $table->string('grade_assigned')->nullable();
             $table->string('subject_assigned')->nullable();
             $table->foreignId('attendees_groups_id')->nullable()->constrained()->cascadeOnDelete();
             $table->timestamp('email_verified_at')->nullable();

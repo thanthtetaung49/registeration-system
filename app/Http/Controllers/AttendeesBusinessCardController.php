@@ -9,51 +9,23 @@ use Inertia\Inertia;
 
 class AttendeesBusinessCardController extends Controller
 {
-    public function index()
-    {
-        $users = User::with('attendees_types', 'attendees_groups', 'register_events')
-            ->orderBy('id', 'desc')
-            ->whereIn('role', ['attendees', 'self_checkin_user'])
-            ->paginate(20);
-
-        return Inertia::render('AttendeesBusinessCardPage/Attendees', ['users' => $users, 'baseUrl' => url('/')]);
-    }
-
     public function view($id)
     {
-        $user = User::findOrFail($id);
+        $user = User::with('attendees_types', 'attendees_groups', 'register_events', 'training_list', 'teacher_type', 'course')->where('id', $id)->first();
+
         $joinDate = Carbon::parse($user->join_date);
         $currentDate = Carbon::now();
         $diff = $joinDate->diff($currentDate);
-        $serviceYears = $diff->y . ' years, ' . $diff->m . ' months';
+        $serviceYears = $diff->y . ' years, ' . $diff->m . ' months, ' . $diff->d . ' days';
 
-        return Inertia::render('AttendeesBusinessCardPage/AttendeesBusinessCardView', ['user' => $user, 'serviceYears' => $serviceYears, 'baseUrl' => url('/')]);
-    }
+        $benefitsPeriodMonths = ["June", "July", "Auguest", "September", "October", "November", "December", "January", "February", "March", "April", "May"];
 
-    public function changePublicStatus($id)
-    {
-        $user = User::findOrFail($id);
+        $currentMonth = Carbon::now()->format("F");
 
-        $user->is_public_url = !$user->is_public_url;
+        $key = array_search($currentMonth, $benefitsPeriodMonths);
 
-        $user->save();
+        $benefitsValue = $key + 1;
 
-        return redirect()->back();
-    }
-
-    public function search(Request $request)
-    {
-        $search = $request->query('query');
-
-        $users = User::with('attendees_types', 'attendees_groups', 'register_events')
-            ->when($search != "null", function ($query) use ($search) {
-                return $query->where('name', 'LIKE', '%' . $search . '%');
-            })
-            ->whereIn('role', ['attendees', 'self_checkin_user'])
-            ->orderBy('id', 'desc')
-            ->paginate(20);
-
-
-        return Inertia::render('AttendeesBusinessCardPage/Attendees', ['users' => $users, 'baseUrl' => url('/')]);
+        return Inertia::render('AttendeesBusinessCardPage/AttendeesBusinessCardView', ['user' => $user, 'serviceYears' => $serviceYears, 'baseUrl' => url('/'), 'benefitsValue' => $benefitsValue]);
     }
 }

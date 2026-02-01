@@ -176,6 +176,9 @@ return [
             "importAttendees" => "Import Attendees",
             "registerAttendees" => "Register Attendees",
             "unregisterAttendees" => "Unregister Attendees",
+            "trainingLists" => "Training Lists",
+            "teacherType" => "Teacher Types",
+            "course" => "Courses"
         ],
         "button" => [
             "save" => "Save",
@@ -242,10 +245,62 @@ return [
                 "actions" => "Actions",
             ],
         ],
+        "trainingLists" => [
+            "title" => "Training Lists",
+            "trainingListsEditTitle" => "Training Lists Edit",
+            "trainingListsViewTitle" => "Training Lists View",
+            "table" => [
+                "no" => "No.",
+                "trainingName" => "Training Name",
+                "createdAt" => "Created At",
+                "actions" => "Actions",
+            ],
+            "labels" => [
+                "trainingName" => "Training Name"
+            ],
+            "placeholder" => [
+                "trainingName" => "Training Name"
+            ],
+        ],
+        "teacherType" => [
+            "title" => "Teacher Type",
+            "teacherTypeEditTitle" => "Teacher Type Edit",
+            "teacherTypeViewTitle" => "Teacher Type View",
+            "table" => [
+                "no" => "No.",
+                "teacherType" => "Teacher Type",
+                "createdAt" => "Created At",
+                "actions" => "Actions",
+            ],
+            "labels" => [
+                "teacherType" => "Teacher Type"
+            ],
+            "placeholder" => [
+                "teacherType" => "Teacher Type"
+            ],
+        ],
+        "course" => [
+            "title" => "Course",
+            "courseEditTitle" => "Course Edit",
+            "courseViewTitle" => "Course View",
+            "table" => [
+                "no" => "No.",
+                "course" => "Course",
+                "createdAt" => "Created At",
+                "actions" => "Actions",
+            ],
+            "labels" => [
+                "course" => "Course"
+            ],
+            "placeholder" => [
+                "course" => "Course"
+            ],
+        ],
         "createAttendees" => [
             "title" => "Attendee Create",
             "labels" => [
                 "attendeesName" => "Name",
+                "secondaryName" => "Secondary Name",
                 "attendeesAge" => "Age",
                 "attendeesGender" => "Gender",
                 "attendeesPhoneNumber" => "Phone Number",
@@ -276,6 +331,7 @@ return [
             ],
             "placeholder" => [
                 "attendeesName" => "Name",
+                "secondaryName" => "Secondary Name",
                 "attendeesAge" => "Age",
                 "attendeesGender" => "Gender",
                 "attendeesPhoneNumber" => "Phone Number",

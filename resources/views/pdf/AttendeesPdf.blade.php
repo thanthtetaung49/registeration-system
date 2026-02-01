@@ -1,47 +1,105 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-    <title>{{ $nameBadgeData['events']['event_name'] }}</title>
+    <meta charset="UTF-8">
     <style>
+        @page { margin: 0; }
         body {
-            font-family: sans-serif;
+            font-family: 'Helvetica', 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #ffffff;
         }
-
-        .badge-container {
+        .badge-table {
             width: 5in;
             height: 2.5in;
-            border: 1px solid #ccc;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            padding: 10px;
-            margin: 0 auto;
-            display: flex;
-            align-items: center;
+            border: 1px solid #e5e7eb;
+            border-collapse: collapse;
+            margin: 20px auto;
+            table-layout: fixed;
         }
-
-        .badge-header h3 {
-            color: black;
-            font-size: 1.7rem;
+        .accent-bar {
+            background-color: #4f46e5;
+            height: 8px;
+            font-size: 1px;
+            line-height: 8px;
         }
-
-        .badge-qr-container {
-            width: 100%;
-            margin-left: 40%;
-            height: 100px;
-            margin-top: 70px;
+        .event-name {
+            font-size: 20px;
+            font-weight: bold;
+            color: #111827;
+            text-transform: uppercase;
+        }
+        .event-details {
+            font-size: 10px;
+            color: #4b5563;
+        }
+        .qr-border {
+            border: 1px solid #f3f4f6;
+            background-color: #f9fafb;
+            padding: 8px;
+            border-radius: 4px;
+        }
+        .footer-text {
+            font-size: 9px;
+            text-transform: uppercase;
+            color: #9ca3af;
+            letter-spacing: 1px;
+            border-top: 1px solid #eeeeee;
+            padding-top: 5px;
         }
     </style>
 </head>
+<body>
+    <table class="badge-table" cellpadding="0" cellspacing="0">
+        <tr>
+            <td class="accent-bar" colspan="3"></td>
+        </tr>
 
-<body style="width: 100%; height: 100vh; display: flex; justify-content: center; align-items: center;">
-    <div class="badge-container">
-        <div class="badge-qr-container">
-            <div class="badge-qr">
-                {!! $qrCode !!}
-            </div>
-        </div>
+        <tr>
+            <td align="center" valign="middle" style="padding: 10px;">
 
-    </div>
+                <table width="100%" cellpadding="0" cellspacing="0">
+                    <tr>
+                        <td align="center" class="event-name">
+                            {{ $nameBadgeData['events']['event_name'] }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="center" class="event-details" style="padding-top: 5px;">
+                            DATE: {{ $nameBadgeData['events']['start_date'] }} to {{ $nameBadgeData['events']['end_date'] }}
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td align="center" style="padding: 12px 0;">
+                            <table cellpadding="0" cellspacing="0">
+                                <tr>
+                                    <td class="qr-border">
+                                        <div style="width: 90px; height: 90px;">
+                                            {!! $qrCode !!}
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td align="center" class="event-details">
+                            TIME: {{ $nameBadgeData['events']['start_time'] }} - {{ $nameBadgeData['events']['end_time'] }}
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td align="center" style="padding-top: 10px;">
+                            <div class="footer-text">SCAN FOR VERIFICATION</div>
+                        </td>
+                    </tr>
+                </table>
+
+            </td>
+        </tr>
+    </table>
 </body>
-
 </html>

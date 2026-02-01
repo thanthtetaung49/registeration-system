@@ -3,7 +3,7 @@ import { ref } from 'vue';
 import defaultImage from "@/images/default_profile.png";
 import { Link } from '@inertiajs/vue3';
 
-const props = defineProps({ user: Object, baseUrl: String, serviceYears: String });
+const props = defineProps({ user: Object, baseUrl: String, serviceYears: String, benefitsValue: Number });
 
 const user = ref(props.user);
 const baseUrl = ref(props.baseUrl).value;
@@ -93,13 +93,13 @@ const serviceYears = ref(props.serviceYears);
 
                             <div>
                                 <span class="block text-gray-400 font-bold uppercase text-xs">လုပ်သက်ခံစားခွင့်</span>
-                                <p class="text-gray-700">{{ user.service_year_benefit }}</p>
+                                <p class="text-gray-700">{{ user.service_year_benefit }} MMK</p>
                             </div>
 
                             <div>
                                 <span class="block text-gray-400 font-bold uppercase text-xs">လစဉ်
                                     အကျိုးခံစားခွင့်</span>
-                                <p class="text-gray-700">{{ user.monthly_benefit }}</p>
+                                <p class="text-gray-700">{{ user.monthly_benefit * benefitsValue }} MMK</p>
                             </div>
 
                             <div>
@@ -134,18 +134,18 @@ const serviceYears = ref(props.serviceYears);
                             <div>
                                 <span class="block text-gray-400 font-bold uppercase text-xs">ပညာရေးနှင့် ပတ်သက်၍
                                     တက်ရောက်ခဲ့သည့် သင်တန်းများနှင့် ဆွေးနွေးပွဲများ </span>
-                                <p class="text-gray-700">{{ user.traning_conference }}</p>
+                                <p class="text-gray-700">{{ user.training_list.training_name }}</p>
                             </div>
 
                             <div>
                                 <span class="block text-gray-400 font-bold uppercase text-xs">အမျိုးအစား (Type of
                                     teacher)</span>
-                                <p class="text-gray-700">{{ user.type_of_teacher }}</p>
+                                <p class="text-gray-700">{{ user.teacher_type.teacher_type }}</p>
                             </div>
 
                             <div>
                                 <span class="block text-gray-400 font-bold uppercase text-xs">သင်ကြားသည့်အတန်း</span>
-                                <p class="text-gray-700">{{ user.grade_assigned }}</p>
+                                <p class="text-gray-700">{{ user.course.course_name }}</p>
                             </div>
 
                             <div>

@@ -12,26 +12,24 @@ class QrcodePrintController extends Controller
 {
     public function attendeesQrcodeIndex($registerEventId)
     {
-        $nameBadgeData = RegisterEvent::with(['register_attendees', 'events', 'attendees_types'])->where('id', $registerEventId)->first();
+        $nameBadgeData = RegisterEvent::with(['register_attendees', 'events', 'attendees_types'])
+                    ->where('id', $registerEventId)
+                    ->first();
 
         $qrCode = $nameBadgeData->qr_code;
 
         $qrCode = QrCode::size(100)->generate($qrCode);
         $qrCode = preg_replace('/<\?xml.*?\?>/', '', $qrCode);
 
-        // $imagePath = base_path('public/img/car.png');
-        // $imageData = 'data:image/png;base64,' . base64_encode(file_get_contents($imagePath));
-
         $data = [
             'nameBadgeData' => $nameBadgeData,
-            'qrCode' => $qrCode,
-            'carImagePath' => public_path('img/car.png'),
+            'qrCode' => $qrCode
         ];
 
         $registerAttendeesId = $nameBadgeData->register_attendees->id;
         $mpdf = new Mpdf([
-            'format' => [210, 100],  // Size in millimeters: [width, height]
-            'orientation' => 'P'  // Portrait orientation
+            'format' => [210, 100],
+            'orientation' => 'P'
         ]);
 
         $html = View::make('pdf.AttendeesPdf', $data)->render();

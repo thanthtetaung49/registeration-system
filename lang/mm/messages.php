@@ -174,6 +174,7 @@ return [
                "importAttendees" => "တက်ရောက်သူများ စာရင်းသွင်းယူရန် (Import)",
                "registerAttendees" => "တက်ရောက်သူများ မှတ်ပုံတင်ရန်",
                "unregisterAttendees" => "တက်ရောက်သူများ မှတ်ပုံတင်ထားမှု ပယ်ဖျက်ရန်",
+               "trainingLists" => "သင်တန်းစာရင်းများ",
           ],
           "button" => [
                "save" => "သိမ်းဆည်းရန်",
@@ -206,21 +207,55 @@ return [
                "createdAt" => "ဖန်တီးသည့်အချိန်",
                "actions" => "ဆောင်ရွက်ချက်များ",
           ],
-          "attendeeType" => [
-               "title" => "တက်ရောက်သူ အမျိုးအစားများ",
-               "attendeeTypeViewTitle" => "တက်ရောက်သူ အမျိုးအစား အသေးစိတ်",
-               "attendeeTypeEditTitle" => "တက်ရောက်သူ အမျိုးအစား ပြင်ဆင်ရန်",
-               "labels" => [
-                    "attendeeType" => "တက်ရောက်သူ အမျိုးအစား"
-               ],
-               "placeholder" => [
-                    "attendeeType" => "တက်ရောက်သူ အမျိုးအစား"
-               ],
+          "trainingLists" => [
+               "title" => "သင်တန်းစာရင်းများ",
+               "trainingListsEditTitle" => "သင်တန်းစာရင်း ပြင်ဆင်ရန်",
+               "trainingListsViewTitle" => "သင်တန်းစာရင်း ကြည့်ရန်",
                "table" => [
                     "no" => "စဉ်",
-                    "attendeeType" => "တက်ရောက်သူ အမျိုးအစား",
-                    "createdAt" => "ဖန်တီးသည့်အချိန်",
-                    "actions" => "ဆောင်ရွက်ချက်များ",
+                    "trainingName" => "သင်တန်းအမည်",
+                    "createdAt" => "ဖန်တီးသည့်ရက်စွဲ",
+                    "actions" => "လုပ်ဆောင်ချက်များ",
+               ],
+               "labels" => [
+                    "trainingName" => "သင်တန်းအမည်"
+               ],
+               "placeholder" => [
+                    "trainingName" => "သင်တန်းအမည်"
+               ],
+          ],
+          "teacherType" => [
+               "title" => "ဆရာ အမျိုးအစား",
+               "teacherTypeEditTitle" => "ဆရာ အမျိုးအစား ပြင်ဆင်ရန်",
+               "teacherTypeViewTitle" => "ဆရာ အမျိုးအစား ကြည့်ရန်",
+               "table" => [
+                    "no" => "စဉ်",
+                    "teacherType" => "ဆရာ အမျိုးအစား",
+                    "createdAt" => "ဖန်တီးသည့်ရက်စွဲ",
+                    "actions" => "လုပ်ဆောင်ချက်များ",
+               ],
+               "labels" => [
+                    "teacherType" => "ဆရာ အမျိုးအစား"
+               ],
+               "placeholder" => [
+                    "teacherType" => "ဆရာ အမျိုးအစား"
+               ],
+          ],
+          "course" => [
+               "title" => "သင်တန်း",
+               "courseEditTitle" => "သင်တန်း ပြင်ဆင်ရန်",
+               "courseViewTitle" => "သင်တန်း ကြည့်ရန်",
+               "table" => [
+                    "no" => "စဉ်",
+                    "course" => "သင်တန်း",
+                    "createdAt" => "ဖန်တီးသည့်ရက်စွဲ",
+                    "actions" => "လုပ်ဆောင်ချက်များ",
+               ],
+               "labels" => [
+                    "course" => "သင်တန်း"
+               ],
+               "placeholder" => [
+                    "course" => "သင်တန်း"
                ],
           ],
           "attendeesGroup" => [
@@ -240,10 +275,28 @@ return [
                     "actions" => "ဆောင်ရွက်ချက်များ",
                ],
           ],
+          "trainingLists" => [
+               "title" => "သင်တန်းစာရင်းများ",
+               "trainingListsEditTitle" => "သင်တန်းစာရင်း ပြင်ဆင်ရန်",
+               "trainingListsViewTitle" => "သင်တန်းစာရင်း ကြည့်ရှုရန်",
+               "table" => [
+                    "no" => "စဉ်",
+                    "trainingName" => "သင်တန်းအမည်",
+                    "createdAt" => "ဖန်တီးသည့်အချိန်",
+                    "actions" => "ဆောင်ရွက်ချက်များ",
+               ],
+               "labels" => [
+                    "trainingName" => "သင်တန်းအမည်"
+               ],
+               "placeholder" => [
+                    "trainingName" => "သင်တန်းအမည် ရိုက်ထည့်ပါ"
+               ],
+          ],
           "createAttendees" => [
                "title" => "တက်ရောက်သူအသစ် ထည့်သွင်းရန်",
                "labels" => [
                     "attendeesName" => "အမည်",
+                    "secondaryName" => "အမည်ခွဲ (သို့မဟုတ်) ဒုတိယအမည်",
                     "attendeesAge" => "အသက်",
                     "attendeesSex" => "ကျား/မ",
                     "attendeesPhoneNumber" => "ဖုန်းနံပါတ်",
@@ -274,6 +327,7 @@ return [
                ],
                "placeholder" => [
                     "attendeesName" => "အမည်",
+                    "secondaryName" => "အမည်ခွဲ (သို့မဟုတ်) ဒုတိယအမည်",
                     "attendeesAge" => "အသက်",
                     "attendeesSex" => "ကျား/မ",
                     "attendeesPhoneNumber" => "ဖုန်းနံပါတ်",

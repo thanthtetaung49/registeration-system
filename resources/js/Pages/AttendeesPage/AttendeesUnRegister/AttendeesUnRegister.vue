@@ -88,6 +88,7 @@ const chooseEvent = () => {
 };
 
 const searchUser = () => {
+  console.log('test')
   router.visit(`/attendees/event/unregisterAttendees/search`, {
     method: "get",
     data: {

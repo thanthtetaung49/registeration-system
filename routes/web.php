@@ -25,7 +25,15 @@ use App\Http\Controllers\RegisterAttendeesController;
 use App\Http\Controllers\UnregisterAttendeesController;
 use App\Http\Controllers\AttendeesBusinessCardController;
 use App\Http\Controllers\AttendeesBusinessCardPublicController;
+use App\Http\Controllers\AttendeesController;
+use App\Http\Controllers\AttendeesImportController;
+use App\Http\Controllers\AttendeesRegisterController;
+use App\Http\Controllers\AttendeesUnRegisterController;
+use App\Http\Controllers\CourseController;
 use App\Http\Controllers\LangController;
+use App\Http\Controllers\TeacherTypeController;
+use App\Http\Controllers\TrainingListsController;
+use App\Imports\AttendeesImport;
 
 Route::get('/', function () {
     return Inertia::render('Auth/Login');
@@ -117,6 +125,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/excel/export', [AttendeesListController::class, 'excelExport'])->name('attendees.excel.export');
         Route::get('/csv/export', [AttendeesListController::class, 'csvExport'])->name('attendees.csv.export');
 
+        // attendees
+        Route::get('/', [AttendeesController::class, 'index'])->name('attendees.index');
+        Route::post('/create', [AttendeesController::class, 'submitAttendee'])->name('attendees.create');
+        Route::get('/edit/{user}', [AttendeesController::class, 'edit'])->name('attendees.edit');
+        Route::post('/update/{id}', [AttendeesController::class, 'update'])->name('attendees.update');
+        Route::get('/view/{id}', [AttendeesController::class, 'view'])->name('attendees.view');
+        Route::get('/delete/{id}', [AttendeesController::class, 'delete'])->name('attendees.delete');
+
+
         // attendees type
         Route::get('/attendeesType', [AttendeesTypeController::class, 'index'])->name('attendees.type.index');
         Route::post('/attendeesType/create', [AttendeesTypeController::class, 'create'])->name('attendees.type.create');
@@ -133,40 +150,51 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/attendeesGroup/view/{attendeesGroup}', [AttendeesGroupController::class, 'view'])->name('attendees.group.view');
         Route::get('/attendeesGroup/delete/{attendeesGroup}', [AttendeesGroupController::class, 'delete'])->name('attendees.group.delete');
 
-        // attendees create, edit, view, delete
-        Route::get('/', [AttendeesCreateController::class, 'index'])->name('attendees.index');
-        Route::post('/create', [AttendeesCreateController::class, 'submitAttendee'])->name('attendees.create');
-        Route::get('/edit/{user}', [AttendeesCreateController::class, 'edit'])->name('attendees.edit');
-        Route::post('/update/{id}', [AttendeesCreateController::class, 'update'])->name('attendees.update');
-        Route::get('/view/{id}', [AttendeesCreateController::class, 'view'])->name('attendees.view');
-        Route::get('/delete/{id}', [AttendeesCreateController::class, 'delete'])->name('attendees.delete');
+        // training lists
+        Route::get('/trainingLists', [TrainingListsController::class, 'index'])->name('attendees.trainingLists.index');
+        Route::post('/trainingLists/create', [TrainingListsController::class, 'create'])->name('attendees.trainingLists.create');
+        Route::get('/trainingLists/edit/{trainingLists}', [TrainingListsController::class, 'edit'])->name('attendees.trainingLists.edit');
+        Route::post('/trainingLists/update/{trainingLists}', [TrainingListsController::class, 'update'])->name('attendees.trainingLists.update');
+        Route::get('/trainingLists/view/{trainingLists}', [TrainingListsController::class, 'view'])->name('attendees.trainingLists.view');
+        Route::get('/trainingLists/delete/{trainingLists}', [TrainingListsController::class, 'delete'])->name('attendees.trainingLists.delete');
+
+        // teacher type
+        Route::get('/teacherType', [TeacherTypeController::class, 'index'])->name('attendees.teacherType.index');
+        Route::post('/teacherType/create', [TeacherTypeController::class, 'create'])->name('attendees.teacherType.create');
+        Route::get('/teacherType/edit/{teacherType}', [TeacherTypeController::class, 'edit'])->name('attendees.teacherType.edit');
+        Route::post('/teacherType/update/{teacherType}', [TeacherTypeController::class, 'update'])->name('attendees.teacherType.update');
+        Route::get('/teacherType/view/{teacherType}', [TeacherTypeController::class, 'view'])->name('attendees.teacherType.view');
+        Route::get('/teacherType/delete/{teacherType}', [TeacherTypeController::class, 'delete'])->name('attendees.teacherType.delete');
+
+        // course
+        Route::get('/course', [CourseController::class, 'index'])->name('attendees.course.index');
+        Route::post('/course/create', [CourseController::class, 'create'])->name('attendees.course.create');
+        Route::get('/course/edit/{course}', [CourseController::class, 'edit'])->name('attendees.course.edit');
+        Route::post('/course/update/{course}', [CourseController::class, 'update'])->name('attendees.course.update');
+        Route::get('/course/view/{course}', [CourseController::class, 'view'])->name('attendees.course.view');
+        Route::get('/course/delete/{course}', [CourseController::class, 'delete'])->name('attendees.course.delete');
 
         // attendees import
-        Route::get('/upload/file', [ImportAttendeesController::class, 'index'])->name('attendees.upload.index');
-        Route::post('/import', [ImportAttendeesController::class, 'importAttendee'])->name('attendees.import');
-        Route::get('/template/export', [ImportAttendeesController::class, 'export'])->name('attendees.template.export');
+        Route::get('/upload/file', [AttendeesImportController::class, 'index'])->name('attendees.upload.index');
+        Route::post('/import', [AttendeesImportController::class, 'importAttendee'])->name('attendees.import');
+        Route::get('/template/export', [AttendeesImportController::class, 'export'])->name('attendees.template.export');
 
         // register attendees
-        Route::get('/registerAttendees', [RegisterAttendeesController::class, 'index'])->name('attendees.registerAttendees.index');
-        Route::post('/event/registerAttendees/create', [RegisterAttendeesController::class, 'submitAttendeeEvent'])->name('attendees.registerAttendees.create');
-        Route::get('/event/registerAttendees/filter', [RegisterAttendeesController::class, 'filterAttendees'])->name('attendees.registerAttendees.filter');
-        Route::get('/event/registerAttendees/search', [RegisterAttendeesController::class, 'search'])->name('event.registerAttendees.search');
-        Route::get('/event/registerAttendees/Export', [RegisterAttendeesController::class, 'export'])->name('attendees.registerAttendees.export');
+        Route::get('/registerAttendees', [AttendeesRegisterController::class, 'index'])->name('attendees.registerAttendees.index');
+        Route::post('/event/registerAttendees/create', [AttendeesRegisterController::class, 'submitAttendeeEvent'])->name('attendees.registerAttendees.create');
+        Route::get('/event/registerAttendees/filter', [AttendeesRegisterController::class, 'filterAttendees'])->name('attendees.registerAttendees.filter');
+        Route::get('/event/registerAttendees/search', [AttendeesRegisterController::class, 'search'])->name('event.registerAttendees.search');
+        Route::get('/event/registerAttendees/Export', [AttendeesRegisterController::class, 'export'])->name('attendees.registerAttendees.export');
 
         // unregister attendees
-        Route::get('/unregisterAttendees', [UnregisterAttendeesController::class, 'index'])->name('attendees.unregisterAttendees.index');
-        Route::post('/event/unregisterAttendees', [UnregisterAttendeesController::class, 'unregisterEvent'])->name('attendees.unregisterAttendees.unregister');
-        Route::get('/event/unregisterAttendees/filter', [UnregisterAttendeesController::class, 'filterAttendees'])->name('attendees.unregisterAttendees.filter');
-        Route::get('/event/unregisterAttendees/search', [UnregisterAttendeesController::class, 'search'])->name('attendees.unregisterAttendees.search');
+        Route::get('/unregisterAttendees', [AttendeesUnRegisterController::class, 'index'])->name('attendees.unregisterAttendees.index');
+        Route::post('/event/unregisterAttendees', [AttendeesUnRegisterController::class, 'unregisterEvent'])->name('attendees.unregisterAttendees.unregister');
+        Route::get('/event/unregisterAttendees/filter', [AttendeesUnRegisterController::class, 'filterAttendees'])->name('attendees.unregisterAttendees.filter');
+        Route::get('/event/unregisterAttendees/search', [AttendeesUnRegisterController::class, 'search'])->name('attendees.unregisterAttendees.search');
     });
 
     // attendees business card
-    Route::prefix('/attendess/business/card')->group(function () {
-        // Route::get('/', [AttendeesBusinessCardController::class, 'index'])->name('businessCard.index');
-        Route::get('/view/{id}', [AttendeesBusinessCardController::class, 'view'])->name('businessCard.view');
-        // Route::get('/change/url/status/{id}', [AttendeesBusinessCardController::class, 'changePublicStatus'])->name('businessCard.change.url.status');
-        // Route::get('/search', [AttendeesBusinessCardController::class, 'search'])->name('businessCard.search');
-    });
+    Route::get('/attendess/business/card/view/{id}', [AttendeesBusinessCardController::class, 'view'])->name('businessCard.view');
 
     // print badge
     Route::prefix('/printBadge')->group(function () {

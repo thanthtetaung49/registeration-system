@@ -69,6 +69,7 @@ const toggle = () => {
 </script>
 
 <template>
+
   <Head title="Online Registration System" />
 
   <div class="h-screen overflow-hidden">
@@ -211,6 +212,7 @@ const toggle = () => {
             </svg>
             {{ $l.users.title }}
           </NavLink>
+
           <NavLink class="pb-2 block mt-5 dark:text-white" :href="route('event.list.index')" :active="isEventActive">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
               stroke="currentColor" class="size-4 mr-3">
@@ -219,6 +221,9 @@ const toggle = () => {
             </svg>
             {{ $l.events.title }}
           </NavLink>
+
+
+
           <NavLink class="pb-2 block mt-5 dark:text-white" :href="route('attendees.list.index')"
             :active="isAttendeesActive">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"

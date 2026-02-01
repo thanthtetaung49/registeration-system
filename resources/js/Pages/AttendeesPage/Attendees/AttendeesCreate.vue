@@ -11,8 +11,9 @@ import { defineComponent, onMounted, ref } from "vue";
 
 const form = useForm({
   name: null,
+  secondary_name: null,
   age: null,
-  gender: "",
+  gender: null,
   phone_number: null,
   nrc_number: null,
   edu_background: null,
@@ -34,15 +35,23 @@ const form = useForm({
   monthly_benefit: null,
   last_place_of_duty: null,
   current_address: null,
-  traning_conference: null,
-  type_of_teacher: null,
-  grade_assigned: null,
+  training_list_id: null,
+  teacher_type_id: null,
+  course_id: null,
   subject_assigned: null,
 });
 
 defineComponent({ defaultImage });
 
-const props = defineProps({ states: Object, types: Object, groups: Object });
+const props = defineProps({
+  states: Object,
+  types: Object,
+  groups: Object,
+  trainingLists: Object,
+  teacherTypes: Object,
+  courses: Object
+});
+
 const page = usePage();
 const l = page.props.language;
 const imageUrl = ref(null);
@@ -62,6 +71,7 @@ const saveAttendees = () =>
     onSuccess: () => {
       form.reset(
         "name",
+        "secondary_name",
         "age",
         "gender",
         "phone_number",
@@ -85,13 +95,30 @@ const saveAttendees = () =>
         "monthly_benefit",
         "last_place_of_duty",
         "current_address",
-        "traning_conference",
-        "type_of_teacher",
-        "grade_assigned",
+        "training_list_id",
+        "teacher_type_id",
+        "course_id",
         "subject_assigned",
       );
     },
   });
+
+const birthDateCalculation = () => {
+  const birthDateStr = form.birth_date;
+  const birthDate = new Date(birthDateStr);
+  const today = new Date();
+
+  if (!birthDateStr) {
+    form.age = null;
+  }
+
+  if (today.getFullYear() >= birthDate.getFullYear()) {
+    const age = today.getFullYear() - birthDate.getFullYear();
+
+    form.age = age;
+  }
+
+}
 </script>
 
 <template>
@@ -141,6 +168,14 @@ const saveAttendees = () =>
                   </div>
 
                   <div class="w-1/3 ms-3">
+                    <InputLabel :value="l.attendees.createAttendees.labels.secondaryName"></InputLabel>
+                    <TextInput :placeholder="l.attendees.createAttendees.placeholder.secondaryName" type="text"
+                      v-model="form.secondary_name" class="w-full mt-3 text-sm">
+                    </TextInput>
+                    <TextInputError :message="form.errors.secondary_name"></TextInputError>
+                  </div>
+
+                  <div class="w-1/3 ms-3">
                     <InputLabel :value="l.attendees.createAttendees.labels.parentName"></InputLabel>
                     <TextInput :placeholder="l.attendees.createAttendees.placeholder.parentName" type="text"
                       v-model="form.parent_name" class="w-full mt-3 text-sm">
@@ -152,7 +187,8 @@ const saveAttendees = () =>
                 <div class="w-full flex my-7">
                   <div class="w-1/3">
                     <InputLabel :value="l.attendees.createAttendees.labels.birthDate"></InputLabel>
-                    <TextInput type="date" v-model="form.birth_date" class="mt-3 w-full text-sm"></TextInput>
+                    <TextInput type="date" v-model="form.birth_date" class="mt-3 w-full text-sm"
+                      @change="birthDateCalculation"></TextInput>
                     <TextInputError :message="form.errors.birth_date"></TextInputError>
                   </div>
 
@@ -190,7 +226,7 @@ const saveAttendees = () =>
 
                   <div class="w-1/3 ms-3">
                     <InputLabel :value="l.attendees.createAttendees.labels.serviceYearBenefit"></InputLabel>
-                    <TextInput :placeholder="l.attendees.createAttendees.placeholder.serviceYearBenefit" type="text"
+                    <TextInput :placeholder="l.attendees.createAttendees.placeholder.serviceYearBenefit" type="number"
                       v-model="form.service_year_benefit" class="w-full mt-3 text-sm">
                     </TextInput>
                     <TextInputError :message="form.errors.service_year_benefit"></TextInputError>
@@ -200,7 +236,7 @@ const saveAttendees = () =>
                 <div class="w-full flex my-7">
                   <div class="w-1/3">
                     <InputLabel :value="l.attendees.createAttendees.labels.monthlyBenefit"></InputLabel>
-                    <TextInput :placeholder="l.attendees.createAttendees.placeholder.monthlyBenefit" type="text"
+                    <TextInput :placeholder="l.attendees.createAttendees.placeholder.monthlyBenefit" type="number"
                       v-model="form.monthly_benefit" class="w-full mt-3 text-sm">
                     </TextInput>
                     <TextInputError :message="form.errors.monthly_benefit"></TextInputError>
@@ -226,26 +262,49 @@ const saveAttendees = () =>
                 <div class="w-full flex my-7">
                   <div class="w-1/3">
                     <InputLabel :value="l.attendees.createAttendees.labels.trainingConference"></InputLabel>
-                    <TextInput :placeholder="l.attendees.createAttendees.placeholder.trainingConference" type="text"
-                      v-model="form.training_conference" class="w-full mt-3 text-sm">
-                    </TextInput>
-                    <TextInputError :message="form.errors.training_conference"></TextInputError>
+
+                    <select v-model="form.training_list_id"
+                      class="py-2 px-4 pe-9 block w-full border-gray-200 dark:border-none rounded-lg text-sm focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none mt-3 dark:bg-gray-900">
+                      <option :value="null">
+                        Open this Training Conferences
+                      </option>
+
+                      <option v-for="trainingList in trainingLists" :key="trainingList.id" :value="trainingList.id">
+                        {{ trainingList.training_name }}
+                      </option>
+                    </select>
+                    <TextInputError :message="form.errors.training_list_id"></TextInputError>
                   </div>
 
                   <div class="w-1/3 ms-3">
                     <InputLabel :value="l.attendees.createAttendees.labels.typeOfTeacher"></InputLabel>
-                    <TextInput :placeholder="l.attendees.createAttendees.placeholder.typeOfTeacher" type="text"
-                      v-model="form.type_of_teacher" class="w-full mt-3 text-sm">
-                    </TextInput>
-                    <TextInputError :message="form.errors.type_of_teacher"></TextInputError>
+                    <select v-model="form.teacher_type_id"
+                      class="py-2 px-4 pe-9 block w-full border-gray-200 dark:border-none rounded-lg text-sm focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none mt-3 dark:bg-gray-900">
+                      <option :value="null">
+                        Open this Teacher Types
+                      </option>
+
+                      <option v-for="teacherType in teacherTypes" :key="teacherType.id" :value="teacherType.id">
+                        {{ teacherType.teacher_type }}
+                      </option>
+                    </select>
+
+                    <TextInputError :message="form.errors.teacher_type_id"></TextInputError>
                   </div>
 
                   <div class="w-1/3 ms-3">
                     <InputLabel :value="l.attendees.createAttendees.labels.gradeAssigned"></InputLabel>
-                    <TextInput :placeholder="l.attendees.createAttendees.placeholder.gradeAssigned" type="text"
-                      v-model="form.grade_assigned" class="w-full mt-3 text-sm">
-                    </TextInput>
-                    <TextInputError :message="form.errors.grade_assigned"></TextInputError>
+                    <select v-model="form.course_id"
+                      class="py-2 px-4 pe-9 block w-full border-gray-200 dark:border-none rounded-lg text-sm focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none mt-3 dark:bg-gray-900">
+                      <option :value="null">
+                        Open this Courses
+                      </option>
+
+                      <option v-for="course in courses" :key="course.id" :value="course.id">
+                        {{ course.course_name }}
+                      </option>
+                    </select>
+                    <TextInputError :message="form.errors.course_id"></TextInputError>
                   </div>
                 </div>
 
@@ -262,7 +321,7 @@ const saveAttendees = () =>
                   <div class="w-1/3 ms-3">
                     <InputLabel :value="l.attendees.createAttendees.labels.attendeesAge"></InputLabel>
                     <TextInput :placeholder="l.attendees.createAttendees.placeholder.attendeesAge" type="number"
-                      v-model="form.age" class="w-full mt-3 text-sm">
+                      v-model="form.age" class="w-full mt-3 text-sm" readonly>
                     </TextInput>
                     <TextInputError :message="form.errors.age"></TextInputError>
                   </div>
@@ -270,11 +329,12 @@ const saveAttendees = () =>
                     <InputLabel :value="l.attendees.createAttendees.labels.attendeesGender"></InputLabel>
                     <select v-model="form.gender"
                       class="py-2 px-4 pe-9 block w-full border-gray-200 dark:border-none rounded-lg text-sm focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none mt-3 dark:bg-gray-900">
-                      <option value="">Open this select Gender</option>
+                      <option :value="null">Open this select Gender</option>
                       <option value="male">Male</option>
                       <option value="female">Female</option>
+                      <option value="other">Other</option>
                     </select>
-                    <TextInputError :message="form.errors.name"></TextInputError>
+                    <TextInputError :message="form.errors.gender"></TextInputError>
                   </div>
                 </div>
 

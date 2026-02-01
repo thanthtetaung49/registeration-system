@@ -4,25 +4,34 @@ namespace App\Http\Controllers;
 
 use App\Models\AttendeesGroup;
 use App\Models\AttendeesType;
+use App\Models\Course;
 use App\Models\State;
+use App\Models\TeacherType;
+use App\Models\TrainingLists;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 
-class AttendeesCreateController extends Controller
+class AttendeesController extends Controller
 {
     public function index()
     {
         $states = State::get();
         $types = AttendeesType::get();
         $groups = AttendeesGroup::get();
+        $trainingLists = TrainingLists::get();
+        $teacherTypes = TeacherType::get();
+        $courses = Course::get();
 
-        return Inertia::render('AttendeesPage/AttendeesCreate', [
+        return Inertia::render('AttendeesPage/Attendees/AttendeesCreate', [
             'states' => $states,
             'types' => $types,
             'groups' => $groups,
+            'trainingLists' => $trainingLists,
+            'teacherTypes' => $teacherTypes,
+            'courses' => $courses
         ]);
     }
 
@@ -30,6 +39,7 @@ class AttendeesCreateController extends Controller
     {
         $request->validate([
             "name"           => ['required'],
+            "secondary_name" => ['required'],
             "gender"            => ['required'],
             "phone_number"   => ['required'],
             "edu_background" => ['required'],
@@ -49,13 +59,14 @@ class AttendeesCreateController extends Controller
             "service_year_benefit" => ['required'],
             "monthly_benefit" => ['required'],
             "current_address" => ['required'],
-            "grade_assigned" => ['required'],
+            "training_list_id" => ['required'],
+            "teacher_type_id" => ['required'],
+            "course_id" => ['required'],
             "subject_assigned" => ['required'],
         ]);
 
         $file = $request->file('avatar');
         if (!empty($file)) {
-            // dd('file has');
             $filename = uniqid() . time() . $request->file('avatar')->getClientOriginalName();
             $file->storeAs('public/profile', $filename);
 
@@ -66,6 +77,7 @@ class AttendeesCreateController extends Controller
 
         $array = [
             "name"               => $request->name,
+            "secondary_name" => $request->secondary_name,
             "age"                => $request->age,
             "gender"                => $request->gender,
             "phone_number"       => $request->phone_number,
@@ -88,9 +100,9 @@ class AttendeesCreateController extends Controller
             "monthly_benefit" => $request->monthly_benefit,
             "last_place_of_duty" => $request->last_place_of_duty,
             "current_address" => $request->current_address,
-            "training_conference" => $request->training_conference,
-            "type_of_teacher" => $request->type_of_teacher,
-            "grade_assigned" => $request->grade_assigned,
+            "training_list_id" => $request->training_list_id,
+            "teacher_type_id" => $request->teacher_type_id,
+            "course_id" => $request->course_id,
             "subject_assigned" => $request->subject_assigned,
         ];
 
@@ -106,11 +118,17 @@ class AttendeesCreateController extends Controller
         $user = User::with('attendees_types', 'attendees_groups')->where('id', $id)->first();
         $types = AttendeesType::get();
         $groups = AttendeesGroup::get();
+        $trainingLists = TrainingLists::get();
+        $teacherTypes = TeacherType::get();
+        $courses = Course::get();
 
-        return Inertia::render('AttendeesPage/AttendeesEdit', [
+        return Inertia::render('AttendeesPage/Attendees/AttendeesEdit', [
             'user' => $user,
             'types' => $types,
             'groups' => $groups,
+            'trainingLists' => $trainingLists,
+            'teacherTypes' => $teacherTypes,
+            'courses' => $courses,
             'baseUrl' => env('APP_URL'),
         ]);
     }
@@ -122,6 +140,7 @@ class AttendeesCreateController extends Controller
 
         $request->validate([
             "name"           => ['required'],
+            "secondary_name" => ['required'],
             "gender"            => ['required'],
             "phone_number"   => ['required'],
             "edu_background" => ['required'],
@@ -141,7 +160,9 @@ class AttendeesCreateController extends Controller
             "service_year_benefit" => ['required'],
             "monthly_benefit" => ['required'],
             "current_address" => ['required'],
-            "grade_assigned" => ['required'],
+            "training_list_id" => ['required'],
+            "teacher_type_id" => ['required'],
+            "course_id" => ['required'],
             "subject_assigned" => ['required'],
         ]);
 
@@ -171,6 +192,7 @@ class AttendeesCreateController extends Controller
 
         $data = [
             "name"           => $request->name,
+            "secondary_name" => $request->secondary_name,
             "age"            => $request->age,
             "gender"         => $request->gender,
             "phone_number"   => $request->phone_number,
@@ -193,9 +215,9 @@ class AttendeesCreateController extends Controller
             "monthly_benefit" => $request->monthly_benefit,
             "last_place_of_duty" => $request->last_place_of_duty,
             "current_address" => $request->current_address,
-            "training_conference" => $request->training_conference,
-            "type_of_teacher" => $request->type_of_teacher,
-            "grade_assigned" => $request->grade_assigned,
+            "training_list_id" => $request->training_list_id,
+            "teacher_type_id" => $request->teacher_type_id,
+            "course_id" => $request->course_id,
             "subject_assigned" => $request->subject_assigned,
         ];
 
@@ -209,16 +231,22 @@ class AttendeesCreateController extends Controller
     public function view($id)
     {
         $user = User::with('attendees_types', 'attendees_groups')
-                ->where('id', $id)
-                ->first();
+            ->where('id', $id)
+            ->first();
 
         $types = AttendeesType::get();
         $groups = AttendeesGroup::get();
+        $trainingLists = TrainingLists::get();
+        $teacherTypes = TeacherType::get();
+        $courses = Course::get();
 
-        return Inertia::render('AttendeesPage/AttendeesView', [
+        return Inertia::render('AttendeesPage/Attendees/AttendeesView', [
             'user' => $user,
             'types' => $types,
             'groups' => $groups,
+            'trainingLists' => $trainingLists,
+            'teacherTypes' => $teacherTypes,
+            'courses' => $courses,
             'baseUrl' => env('APP_URL'),
         ]);
     }

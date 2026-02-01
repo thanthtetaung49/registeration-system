@@ -8,7 +8,7 @@ use App\Models\RegisterEvent;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
-class UnregisterAttendeesController extends Controller
+class AttendeesUnRegisterController extends Controller
 {
     public function index()
     {
@@ -19,7 +19,7 @@ class UnregisterAttendeesController extends Controller
         $events = Event::get();
         $groups = AttendeesGroup::get();
 
-        return Inertia::render('AttendeesPage/UnRegisterAttendees', [
+        return Inertia::render('AttendeesPage/AttendeesUnRegister/AttendeesUnRegister', [
             'registerEvents' => $registerEvents,
             'events' => $events,
             'groups' => $groups,
@@ -63,7 +63,6 @@ class UnregisterAttendeesController extends Controller
                 $registerEvents = RegisterEvent::with(['register_attendees', 'events'])
                     ->whereHas('register_attendees', function ($query) use ($search) {
                         $query->where('name', 'like', '%' . $search . '%')
-                            ->orWhere('phone_number', '%' . $search . '%')
                             ->orWhere('email', 'like', '%' . $search . '%');
                     })
                     ->where('events_id', $eventId)
@@ -74,14 +73,13 @@ class UnregisterAttendeesController extends Controller
             $registerEvents = RegisterEvent::with(['register_attendees', 'events'])
                 ->whereHas('register_attendees', function ($query) use ($search) {
                     $query->where('name', 'like', '%' . $search . '%')
-                        ->orWhere('phone_number', '%' . $search . '%')
                         ->orWhere('email', 'like', '%' . $search . '%');
                 })
                 ->orderBy('id', 'desc')
                 ->paginate(20);
         }
 
-        return Inertia::render('AttendeesPage/UnRegisterAttendees', [
+        return Inertia::render('AttendeesPage/AttendeesUnRegister/AttendeesUnRegister', [
             'registerEvents'  => $registerEvents,
             'events' => $events,
             'groups' => $groups,
@@ -107,7 +105,7 @@ class UnregisterAttendeesController extends Controller
         $events = Event::get();
         $groups = AttendeesGroup::get();
 
-        return Inertia::render('AttendeesPage/UnRegisterAttendees', [
+        return Inertia::render('AttendeesPage/AttendeesUnRegister/AttendeesUnRegister', [
             'registerEvents' => $registerEvents,
             'events' => $events,
             'groups' => $groups,

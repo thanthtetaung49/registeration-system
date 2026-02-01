@@ -21,7 +21,7 @@ class AttendeesListController extends Controller
             ->whereIn('role', ['attendees', 'self_checkin_user'])
             ->paginate(20);
 
-        return Inertia::render('AttendeesPage/AttendeesList', ['users' => $users]);
+        return Inertia::render('AttendeesPage/Attendees/AttendeesList', ['users' => $users]);
     }
 
     public function search(Request $request)
@@ -43,7 +43,7 @@ class AttendeesListController extends Controller
                 ->paginate(20);
         }
 
-        return Inertia::render('AttendeesPage/AttendeesList', ['users' => $users]);
+        return Inertia::render('AttendeesPage/Attendees/AttendeesList', ['users' => $users]);
     }
 
     public function excelExport()

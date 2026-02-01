@@ -7,11 +7,11 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Maatwebsite\Excel\Facades\Excel;
 
-class ImportAttendeesController extends Controller
+class AttendeesImportController extends Controller
 {
     public function index()
     {
-        return Inertia::render('AttendeesPage/AttendeesImport');
+        return Inertia::render('AttendeesPage/AttendeesImport/AttendeesImport');
     }
 
     public function importAttendee(Request $request) {
