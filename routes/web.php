@@ -1,11 +1,9 @@
 <?php
 
 use Inertia\Inertia;
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\EventController;
-use App\Http\Controllers\QRTestController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\CategoryController;
@@ -17,12 +15,8 @@ use App\Http\Controllers\QrcodePrintController;
 use App\Http\Controllers\AttendeesListController;
 use App\Http\Controllers\AttendeesTypeController;
 use App\Http\Controllers\AttendeesGroupController;
-use App\Http\Controllers\AttendeesCreateController;
-use App\Http\Controllers\ImportAttendeesController;
 use App\Http\Controllers\SelfCheckInUserController;
 use App\Http\Controllers\UsersManagementController;
-use App\Http\Controllers\RegisterAttendeesController;
-use App\Http\Controllers\UnregisterAttendeesController;
 use App\Http\Controllers\AttendeesBusinessCardController;
 use App\Http\Controllers\AttendeesBusinessCardPublicController;
 use App\Http\Controllers\AttendeesController;
@@ -33,7 +27,6 @@ use App\Http\Controllers\CourseController;
 use App\Http\Controllers\LangController;
 use App\Http\Controllers\TeacherTypeController;
 use App\Http\Controllers\TrainingListsController;
-use App\Imports\AttendeesImport;
 
 Route::get('/', function () {
     return Inertia::render('Auth/Login');
