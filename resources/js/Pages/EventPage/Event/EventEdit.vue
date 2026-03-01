@@ -124,7 +124,7 @@ const updateEvent = () => form.post(`/event/eventList/update/${event.id}`);
                     <InputError :message="form.errors.event_reference_id"></InputError>
                   </div>
                   <div class="w-1/3 ms-2">
-                    <InputLabel :value="l.events.labels.roomNumber"></InputLabel>
+                    <InputLabel :value="l.events.labels.eventRoomNumber"></InputLabel>
                     <select v-model="form.room_numbers_id"
                       class=" dark:text-white  py-2 px-4 pe-9 block w-full border-gray-200 dark:border-none rounded-lg text-sm focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none mt-3 dark:bg-gray-900">
                       <option value="" selected="">Open this select room number</option>
@@ -189,8 +189,8 @@ const updateEvent = () => form.post(`/event/eventList/update/${event.id}`);
                     <InputError :message="form.errors.late_attendance_min"></InputError>
                   </div>
                   <div class="w-1/3 ms-2">
-                    <InputLabel :value="l.events.labels.description"></InputLabel>
-                    <div class="max-w-sm space-y-3">
+                    <InputLabel :value="l.events.labels.eventDescription"></InputLabel>
+                    <div class="max-w-sm space-y-3 mt-3">
                       <textarea
                         class=" dark:text-white py-3 px-4 block w-full border-gray-200 dark:border-none rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-gray-900"
                         rows="3" :placeholder="l.events.placeholder.eventDescription" v-model="form.description"></textarea>

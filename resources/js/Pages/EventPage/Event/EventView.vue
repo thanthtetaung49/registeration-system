@@ -4,7 +4,7 @@ import TextInput from "@/Components/TextInput.vue";
 import { Link, useForm, usePage } from "@inertiajs/vue3";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 
-const props = defineProps({ event: Object });
+const props = defineProps({ event: Object, room : String });
 
 const event = props.event;
 
@@ -33,139 +33,137 @@ const form = useForm({
 </script>
 
 <template>
-  <div>
-    <AuthenticatedLayout>
-      <div class="px-10 py-10">
-        <header class="mb-10">
-          <h3 class="text-gray-800 text-2xl pb-1 bold dark:text-white ">{{ l.events.eventViewTitle }}</h3>
-          <div class="w-10 h-1 bg-blue-800"></div>
-        </header>
+  <AuthenticatedLayout>
+    <div class="min-h-screen bg-gray-50 dark:bg-neutral-900 py-10 px-4 sm:px-10 mb-16">
 
-        <div class="w-full bg-white rounded-lg shadow-md dark:text-white dark:bg-gray-800">
-          <div class="border-b border-gray-200 dark:border-none px-4 py-5 mb-10">
-            <div class="my-5">
-              <form>
-                <div class="w-full flex">
-                  <div class="w-1/3">
-                    <InputLabel :value="l.events.labels.eventName"></InputLabel>
-                    <TextInput v-model="form.event_name" class="mt-3 w-full text-sm" disabled></TextInput>
-                  </div>
-                  <div class="w-1/3 ms-2">
-                    <InputLabel :value="l.events.labels.location"></InputLabel>
-                    <TextInput v-model="form.location" class="mt-3 w-full text-sm" disabled></TextInput>
-                  </div>
-                  <div class="w-1/3 ms-2">
-                    <InputLabel :value="l.events.labels.credits"></InputLabel>
-                    <TextInput v-model="form.credits" class="mt-3 w-full text-sm" disabled></TextInput>
-                  </div>
-                </div>
+      <header class="max-w-6xl mx-auto mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-gray-200 dark:border-neutral-700 pb-6">
+        <div>
+          <h3 class="text-3xl font-extrabold text-gray-800 dark:text-white tracking-tight">
+            {{ l.events.eventViewTitle }}
+          </h3>
+          <p class="text-sm text-gray-500 dark:text-neutral-400 mt-1">Reviewing event details and logistics.</p>
+        </div>
+        <Link href="/event/eventList"
+          class="inline-flex items-center gap-2 px-5 py-2.5 bg-white dark:bg-neutral-800 border border-gray-200 dark:border-neutral-700 rounded-xl shadow-sm text-sm font-bold text-gray-700 dark:text-neutral-300 hover:bg-gray-50 transition-all">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+          {{ l.events.button.back }}
+        </Link>
+      </header>
 
-                <div class="w-full flex my-5">
-                  <div class="w-1/3">
-                    <InputLabel :value="l.events.labels.leadInstructor"></InputLabel>
-                    <TextInput v-model="form.lead_instructors_id" class="mt-3 w-full text-sm" disabled></TextInput>
-                  </div>
-                  <div class="w-1/3 ms-2">
-                    <InputLabel :value="l.events.labels.assistantInstructor"></InputLabel>
-                    <TextInput v-model="form.assist_instructors_id" class="mt-3 w-full text-sm" disabled></TextInput>
-                  </div>
-                  <div class="w-1/3 ms-2">
-                    <InputLabel :value="l.events.labels.category"></InputLabel>
-                    <TextInput v-model="form.categories_id" class="mt-3 w-full text-sm" disabled></TextInput>
-                  </div>
-                </div>
+      <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8">
 
-                <div class="w-full flex my-5">
-                  <div class="w-1/3">
-                    <InputLabel :value="l.events.labels.maxSeat"></InputLabel>
-                    <TextInput type="number" v-model="form.max_seats" class="mt-3 w-full text-sm" disabled></TextInput>
-                  </div>
-                  <div class="w-1/3 ms-2">
-                    <InputLabel :value="l.events.labels.eventReferenceID"></InputLabel>
-                    <TextInput type="number" v-model="form.event_reference_id" class="mt-3 w-full text-sm" disabled>
-                    </TextInput>
-                  </div>
-                  <div class="w-1/3 ms-2">
-                    <InputLabel :value="l.events.labels.eventRoomNumber"></InputLabel>
-                    <TextInput v-model="form.room_numbers_id" class="mt-3 w-full text-sm" disabled></TextInput>
-                  </div>
-                </div>
+        <div class="lg:col-span-2 space-y-8">
 
-                <div class="w-full flex my-5">
-                  <div class="w-1/4">
-                    <InputLabel :value="l.events.labels.startDate"></InputLabel>
-                    <TextInput type="date" v-model="form.start_date" class="mt-3 w-full text-sm" disabled></TextInput>
-                  </div>
-                  <div class="w-1/4 ms-2">
-                    <InputLabel :value="l.events.labels.endDate"></InputLabel>
-                    <TextInput type="date" v-model="form.end_date" class="mt-3 w-full text-sm" disabled></TextInput>
-                  </div>
-                  <div class="w-1/4 ms-2">
-                    <InputLabel :value="l.events.labels.startTime"></InputLabel>
-                    <TextInput type="time" v-model="form.start_time" class="mt-3 w-full text-sm" disabled></TextInput>
-                  </div>
-                  <div class="w-1/4 ms-2">
-                    <InputLabel :value="l.events.labels.endTime"></InputLabel>
-                    <TextInput type="time" v-model="form.end_time" class="mt-3 w-full text-sm" disabled></TextInput>
-                  </div>
-                </div>
+          <section class="bg-white dark:bg-neutral-800 rounded-3xl shadow-sm border border-gray-100 dark:border-neutral-700 overflow-hidden">
+            <div class="px-8 py-5 border-b border-gray-50 dark:border-neutral-700 bg-gray-50/50 dark:bg-neutral-800/50">
+              <h4 class="font-bold text-gray-800 dark:text-white text-xs uppercase tracking-widest">Event Overview</h4>
+            </div>
+            <div class="p-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div class="md:col-span-2">
+                <label class="text-xs font-bold text-gray-400 uppercase tracking-tight">{{ l.events.labels.eventName }}</label>
+                <p class="text-lg font-bold text-gray-800 dark:text-white mt-1">{{ form.event_name }}</p>
+              </div>
+              <div>
+                <label class="text-xs font-bold text-gray-400 uppercase tracking-tight">{{ l.events.labels.location }}</label>
+                <p class="text-sm font-semibold text-gray-700 dark:text-neutral-200 mt-1">{{ form.location }}</p>
+              </div>
+              <div>
+                <label class="text-xs font-bold text-gray-400 uppercase tracking-tight">{{ l.events.labels.category }}</label>
+                <p class="text-sm font-semibold text-gray-700 dark:text-neutral-200 mt-1">{{ form.categories_id }}</p>
+              </div>
+              <div>
+                <label class="text-xs font-bold text-gray-400 uppercase tracking-tight">{{ l.events.labels.leadInstructor }}</label>
+                <p class="text-sm font-semibold text-gray-700 dark:text-neutral-200 mt-1">{{ form.lead_instructors_id }}</p>
+              </div>
+              <div>
+                <label class="text-xs font-bold text-gray-400 uppercase tracking-tight">{{ l.events.labels.assistantInstructor }}</label>
+                <p class="text-sm font-semibold text-gray-700 dark:text-neutral-200 mt-1">{{ form.assist_instructors_id }}</p>
+              </div>
+              <div class="md:col-span-2">
+                <label class="text-xs font-bold text-gray-400 uppercase tracking-tight">{{ l.events.labels.eventDescription }}</label>
+                <p class="text-sm text-gray-600 dark:text-neutral-400 mt-2 leading-relaxed bg-gray-50 dark:bg-neutral-900/50 p-4 rounded-2xl italic">
+                  "{{ form.description || 'No description provided.' }}"
+                </p>
+              </div>
+            </div>
+          </section>
 
-                <div class="w-full flex my-5">
-                  <div class="w-1/3">
-                    <InputLabel :value="l.events.labels.earlyAttendanceMinutes"></InputLabel>
-                    <select v-model="form.early_attendance_min"
-                      class="py-3 px-4 pe-9 block w-full border-gray-200 dark:border-none rounded-lg text-sm focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none mt-3 dark:bg-gray-900  dark:text-white"
-                      disabled>
-                      <option value="" selected="">
-                        Open this select early attendance minutes
-                      </option>
-                      <option value="15">15</option>
-                      <option value="30">30</option>
-                      <option value="45">45</option>
-                      <option value="60">60</option>
-                    </select>
-                  </div>
-                  <div class="w-1/3 ms-2">
-                    <InputLabel :value="l.events.labels.lateAttendanceMinutes"></InputLabel>
-                    <select v-model="form.late_attendance_min"
-                      class="py-3 px-4 pe-9 block w-full border-gray-200 dark:border-none rounded-lg text-sm focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none mt-3 dark:bg-gray-900  dark:text-white"
-                      disabled>
-                      <option value="" selected="">
-                        Open this select late attendance minutes
-                      </option>
-                      <option value="15">15</option>
-                      <option value="30">30</option>
-                      <option value="45">45</option>
-                      <option value="60">60</option>
-                    </select>
-                  </div>
-                  <div class="w-1/3 ms-2">
-                    <InputLabel :value="l.events.labels.eventDescription"></InputLabel>
-                    <div class="max-w-sm space-y-3">
-                      <textarea
-                        class="py-3 px-4 block w-full border-gray-200 dark:border-none rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-gray-900 dark:text-white"
-                        rows="3"  v-model="form.description" disabled></textarea>
-                    </div>
-                  </div>
-                </div>
+          <section class="bg-white dark:bg-neutral-800 rounded-3xl shadow-sm border border-gray-100 dark:border-neutral-700 overflow-hidden">
+            <div class="px-8 py-5 border-b border-gray-50 dark:border-neutral-700 bg-gray-50/50 dark:bg-neutral-800/50 flex items-center gap-2">
+              <svg class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              <h4 class="font-bold text-gray-800 dark:text-white text-xs uppercase tracking-widest">Schedule & Logistics</h4>
+            </div>
+            <div class="p-8 grid grid-cols-2 md:grid-cols-4 gap-6">
+              <div class="flex flex-col">
+                <span class="text-xs font-bold text-gray-400 uppercase">{{ l.events.labels.startDate }}</span>
+                <span class="text-sm font-bold text-gray-700 dark:text-neutral-200 mt-1">{{ form.start_date }}</span>
+              </div>
+              <div class="flex flex-col">
+                <span class="text-xs font-bold text-gray-400 uppercase">{{ l.events.labels.endDate }}</span>
+                <span class="text-sm font-bold text-gray-700 dark:text-neutral-200 mt-1">{{ form.end_date }}</span>
+              </div>
+              <div class="flex flex-col">
+                <span class="text-xs font-bold text-gray-400 uppercase">{{ l.events.labels.startTime }}</span>
+                <span class="text-sm font-bold text-blue-600 dark:text-blue-400 mt-1">{{ form.start_time }}</span>
+              </div>
+              <div class="flex flex-col">
+                <span class="text-xs font-bold text-gray-400 uppercase">{{ l.events.labels.endTime }}</span>
+                <span class="text-sm font-bold text-blue-600 dark:text-blue-400 mt-1">{{ form.end_time }}</span>
+              </div>
+            </div>
+          </section>
+        </div>
 
-                <div class="w-full ms-2">
-                  <InputLabel :value="l.events.labels.selfCheckIn"></InputLabel>
-                  <input type="checkbox" id="hs-basic-usage" v-model="form.event_type" disabled
-                    class="mt-3 relative w-[3.25rem] h-7 p-px bg-gray-300 border-transparent text-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:ring-blue-600 disabled:opacity-50 disabled:pointer-events-none checked:bg-none checked:text-blue-600 checked:border-blue-600 focus:checked:border-blue-600 dark:bg-neutral-800 dark:border-neutral-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-600 before:inline-block before:size-6 before:bg-white checked:before:bg-blue-200 before:translate-x-0 checked:before:translate-x-full before:rounded-full before:shadow before:transform before:ring-0 before:transition before:ease-in-out before:duration-200 dark:before:bg-neutral-400 dark:checked:before:bg-blue-200" />
-                  <InputError :message="form.errors.event_type"></InputError>
-                </div>
+        <div class="lg:col-span-1 space-y-8">
 
-                <div class="mt-10 w-full flex justify-end">
-                  <Link href="/event/eventList"
-                    class="inline-flex items-center px-4 py-2 bg-slate-100 border border-transparent rounded-md font-semibold text-xs text-slate-800 uppercase tracking-widest hover:bg-slate-200 focus:bg-slate-200 active:bg-slate-200 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 transition ease-in-out duration-150 mr-3">
-                    {{ l.events.button.back }}</Link>
+          <div class="bg-blue-600 rounded-3xl p-8 text-white shadow-lg shadow-blue-200 dark:shadow-none">
+            <div class="flex justify-between items-start">
+              <div>
+                <p class="text-blue-100 text-xs font-bold uppercase tracking-widest">{{ l.events.labels.maxSeat }}</p>
+                <h4 class="text-4xl font-black mt-2">{{ form.max_seats }}</h4>
+              </div>
+              <div class="p-3 bg-white/20 rounded-2xl">
+                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+              </div>
+            </div>
+            <div class="mt-8 pt-6 border-t border-white/10 grid grid-cols-2 gap-4">
+              <div>
+                <p class="text-blue-100 text-[10px] font-bold uppercase">{{ l.events.labels.credits }}</p>
+                <p class="font-bold text-sm">{{ form.credits }}</p>
+              </div>
+              <div>
+                <p class="text-blue-100 text-[10px] font-bold uppercase">Room</p>
+                <p class="font-bold text-sm"># {{ room }}</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white dark:bg-neutral-800 rounded-3xl shadow-sm border border-gray-100 dark:border-neutral-700 p-8">
+            <h4 class="font-bold text-gray-800 dark:text-white text-xs uppercase tracking-widest mb-6">Configuration</h4>
+
+            <div class="space-y-6">
+              <div class="flex justify-between items-center">
+                <span class="text-sm font-medium text-gray-600 dark:text-neutral-400">{{ l.events.labels.earlyAttendanceMinutes }}</span>
+                <span class="px-3 py-1 bg-gray-100 dark:bg-neutral-700 rounded-lg text-xs font-bold">{{ form.early_attendance_min }}m</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-sm font-medium text-gray-600 dark:text-neutral-400">{{ l.events.labels.lateAttendanceMinutes }}</span>
+                <span class="px-3 py-1 bg-gray-100 dark:bg-neutral-700 rounded-lg text-xs font-bold">{{ form.late_attendance_min }}m</span>
+              </div>
+
+              <div class="pt-6 border-t border-gray-50 dark:border-neutral-700 flex items-center justify-between">
+                <div>
+                  <p class="text-sm font-bold text-gray-800 dark:text-white">{{ l.events.labels.selfCheckIn }}</p>
+                  <p class="text-xs text-gray-400 uppercase font-bold">{{ form.event_type ? 'Enabled' : 'Disabled' }}</p>
                 </div>
-              </form>
+                <div :class="form.event_type ? 'bg-blue-500' : 'bg-gray-300'" class="w-12 h-6 rounded-full relative transition-colors duration-300">
+                  <div :class="form.event_type ? 'translate-x-6' : 'translate-x-1'" class="absolute top-1 w-4 h-4 bg-white rounded-full transition-transform duration-300 shadow-sm"></div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </AuthenticatedLayout>
-  </div>
+    </div>
+  </AuthenticatedLayout>
 </template>

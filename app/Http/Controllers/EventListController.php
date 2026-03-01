@@ -40,7 +40,9 @@ class EventListController extends Controller
             ->where('id', $eventId)
             ->first();
 
-        return Inertia::render('EventPage/Event/EventView', ['event' => $event]);
+        $room = RoomNumber::findOrFail($event->room_numbers_id)->value('room_number');
+
+        return Inertia::render('EventPage/Event/EventView', ['event' => $event, 'room' => $room]);
     }
 
     public function edit($eventId)
