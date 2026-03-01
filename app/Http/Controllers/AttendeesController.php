@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
+use Nette\Utils\Json;
 
 class AttendeesController extends Controller
 {
@@ -37,6 +38,7 @@ class AttendeesController extends Controller
 
     public function submitAttendee(Request $request)
     {
+        // dd($request->all());
         $request->validate([
             "name"           => ['required'],
             "secondary_name" => ['required'],
@@ -55,7 +57,7 @@ class AttendeesController extends Controller
             "nation" => ['required'],
             "join_date" => ['required'],
             "place_of_duty" => ['required'],
-            "service_year" => ['required'],
+            // "service_year" => ['required'],
             "service_year_benefit" => ['required'],
             "monthly_benefit" => ['required'],
             "current_address" => ['required'],
@@ -78,7 +80,7 @@ class AttendeesController extends Controller
         $array = [
             "name"               => $request->name,
             "secondary_name" => $request->secondary_name,
-            "age"                => $request->age,
+            // "age"                => $request->age,
             "gender"                => $request->gender,
             "phone_number"       => $request->phone_number,
             "nrc_number"         => $request->nrc_number,
@@ -95,18 +97,20 @@ class AttendeesController extends Controller
             "nation" => $request->nation,
             "join_date" => $request->join_date,
             "place_of_duty" => $request->place_of_duty,
-            "service_year" => $request->service_year,
+            // "service_year" => $request->service_year,
             "service_year_benefit" => $request->service_year_benefit,
             "monthly_benefit" => $request->monthly_benefit,
             "last_place_of_duty" => $request->last_place_of_duty,
             "current_address" => $request->current_address,
-            "training_list_id" => $request->training_list_id,
+            "training_list_id" => json_encode($request->training_list_id),
             "teacher_type_id" => $request->teacher_type_id,
-            "course_id" => $request->course_id,
+            "course_id" => json_encode($request->course_id),
             "subject_assigned" => $request->subject_assigned,
         ];
 
         $mergeArray = array_merge($array, $imageArray);
+
+        // dd($mergeArray);
 
         User::create($mergeArray);
 
@@ -118,9 +122,11 @@ class AttendeesController extends Controller
         $user = User::with('attendees_types', 'attendees_groups')->where('id', $id)->first();
         $types = AttendeesType::get();
         $groups = AttendeesGroup::get();
-        $trainingLists = TrainingLists::get();
+
         $teacherTypes = TeacherType::get();
+        $trainingLists = TrainingLists::get();
         $courses = Course::get();
+
 
         return Inertia::render('AttendeesPage/Attendees/AttendeesEdit', [
             'user' => $user,
@@ -135,6 +141,7 @@ class AttendeesController extends Controller
 
     public function update($id, Request $request)
     {
+        // dd($request->all());
         $user = User::where('id', $id)->first();
         $role = $user->role;
 
@@ -156,7 +163,7 @@ class AttendeesController extends Controller
             "nation" => ['required'],
             "join_date" => ['required'],
             "place_of_duty" => ['required'],
-            "service_year" => ['required'],
+            // "service_year" => ['required'],
             "service_year_benefit" => ['required'],
             "monthly_benefit" => ['required'],
             "current_address" => ['required'],
@@ -193,7 +200,7 @@ class AttendeesController extends Controller
         $data = [
             "name"           => $request->name,
             "secondary_name" => $request->secondary_name,
-            "age"            => $request->age,
+            // "age"            => $request->age,
             "gender"         => $request->gender,
             "phone_number"   => $request->phone_number,
             "nrc_number"     => $request->nrc_number,
@@ -215,13 +222,15 @@ class AttendeesController extends Controller
             "monthly_benefit" => $request->monthly_benefit,
             "last_place_of_duty" => $request->last_place_of_duty,
             "current_address" => $request->current_address,
-            "training_list_id" => $request->training_list_id,
+            "training_list_id" => json_encode($request->training_list_id),
             "teacher_type_id" => $request->teacher_type_id,
-            "course_id" => $request->course_id,
+            "course_id" => json_encode($request->course_id),
             "subject_assigned" => $request->subject_assigned,
         ];
 
         $data = array_merge($data, $profile_path);
+
+        // dd($data);
 
         $user->update($data);
 
@@ -236,9 +245,9 @@ class AttendeesController extends Controller
 
         $types = AttendeesType::get();
         $groups = AttendeesGroup::get();
-        $trainingLists = TrainingLists::get();
+        $trainingLists = TrainingLists::whereIn('id', json_decode($user->training_list_id))->get();
         $teacherTypes = TeacherType::get();
-        $courses = Course::get();
+        $courses = Course::whereIn('id', json_decode($user->course_id))->get();
 
         return Inertia::render('AttendeesPage/Attendees/AttendeesView', [
             'user' => $user,

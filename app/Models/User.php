@@ -37,6 +37,8 @@ class User extends Authenticatable
     protected function casts(): array
     {
         return [
+            'training_list_id' => 'array',
+            'course_id' => 'array',
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
@@ -52,19 +54,23 @@ class User extends Authenticatable
         return $this->hasMany(RegisterEvent::class, 'users_id', 'id');
     }
 
-    public function attendees_groups () {
+    public function attendees_groups()
+    {
         return $this->belongsTo(AttendeesGroup::class, 'attendees_groups_id', 'id');
     }
 
-    public function training_list () {
+    public function training_list()
+    {
         return $this->belongsTo(TrainingLists::class, 'training_list_id', 'id');
     }
 
-    public function teacher_type () {
+    public function teacher_type()
+    {
         return $this->belongsTo(TeacherType::class, 'teacher_type_id', 'id');
     }
 
-    public function course () {
+    public function course()
+    {
         return $this->belongsTo(Course::class, 'course_id', 'id');
     }
 }

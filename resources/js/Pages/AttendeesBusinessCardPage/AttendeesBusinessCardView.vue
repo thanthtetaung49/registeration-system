@@ -3,7 +3,7 @@ import { ref } from 'vue';
 import defaultImage from "@/images/default_profile.png";
 import { Link } from '@inertiajs/vue3';
 
-const props = defineProps({ user: Object, baseUrl: String, serviceYears: String, benefitsValue: Number });
+const props = defineProps({ user: Object, baseUrl: String, serviceYears: String, benefitsValue: Number, trainingLists: Object, courses: Object });
 
 const user = ref(props.user);
 const baseUrl = ref(props.baseUrl).value;
@@ -88,7 +88,7 @@ const serviceYears = ref(props.serviceYears);
 
                             <div>
                                 <span class="block text-gray-400 font-bold uppercase text-xs">TLEC တွင် လုပ်သက်</span>
-                                <p class="text-gray-700">{{ user.service_year }}</p>
+                                <p class="text-gray-700">{{ serviceYears }}</p>
                             </div>
 
                             <div>
@@ -134,7 +134,16 @@ const serviceYears = ref(props.serviceYears);
                             <div>
                                 <span class="block text-gray-400 font-bold uppercase text-xs">ပညာရေးနှင့် ပတ်သက်၍
                                     တက်ရောက်ခဲ့သည့် သင်တန်းများနှင့် ဆွေးနွေးပွဲများ </span>
-                                <p class="text-gray-700">{{ user.training_list.training_name }}</p>
+                                <p class="text-gray-700 mt-2" v-for="trainingList in trainingLists">
+                                    <svg class="shrink-0 size-4 text-blue-600 me-2 inline"
+                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <path d="m9 11 3 3L22 4" />
+                                        <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
+                                    </svg>
+                                    {{ trainingList.training_name }}
+                                </p>
                             </div>
 
                             <div>
@@ -145,7 +154,16 @@ const serviceYears = ref(props.serviceYears);
 
                             <div>
                                 <span class="block text-gray-400 font-bold uppercase text-xs">သင်ကြားသည့်အတန်း</span>
-                                <p class="text-gray-700">{{ user.course.course_name }}</p>
+                                <p class="text-gray-700 mt-2" v-for="course in courses">
+                                    <svg class="shrink-0 size-4 text-purple-600 me-2 inline"
+                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <circle cx="12" cy="12" r="10" />
+                                        <path d="m9 12 2 2 4-4" />
+                                    </svg>
+                                    {{ course.course_name }}
+                                </p>
                             </div>
 
                             <div>

@@ -55,6 +55,7 @@ const props = defineProps({
 const page = usePage();
 const l = page.props.language;
 const imageUrl = ref(null);
+const age = ref(null);
 
 const previewImage = (event) => {
   form.avatar = event.target.files[0];
@@ -72,7 +73,6 @@ const saveAttendees = () =>
       form.reset(
         "name",
         "secondary_name",
-        "age",
         "gender",
         "phone_number",
         "nrc_number",
@@ -109,13 +109,11 @@ const birthDateCalculation = () => {
   const today = new Date();
 
   if (!birthDateStr) {
-    form.age = null;
+    age.value = null;
   }
 
   if (today.getFullYear() >= birthDate.getFullYear()) {
-    const age = today.getFullYear() - birthDate.getFullYear();
-
-    form.age = age;
+    age.value = today.getFullYear() - birthDate.getFullYear();
   }
 
 }
@@ -149,8 +147,8 @@ const birthDateCalculation = () => {
                     <TextInputError :message="form.errors.avatar"></TextInputError>
                   </div>
                 </div>
-                <div class="w-full flex my-7">
 
+                <div class="w-full flex my-7">
                   <div class="w-1/3">
                     <InputLabel :value="l.attendees.createAttendees.labels.teacherID"></InputLabel>
                     <TextInput :placeholder="l.attendees.createAttendees.placeholder.teacherID" type="text"
@@ -186,7 +184,11 @@ const birthDateCalculation = () => {
 
                 <div class="w-full flex my-7">
                   <div class="w-1/3">
-                    <InputLabel :value="l.attendees.createAttendees.labels.birthDate"></InputLabel>
+                    <InputLabel v-if="age != null"
+                      :value="l.attendees.createAttendees.labels.birthDate + ' (' + age + ' years old' + ')'">
+                    </InputLabel>
+                    <InputLabel v-else :value="l.attendees.createAttendees.labels.birthDate"></InputLabel>
+
                     <TextInput type="date" v-model="form.birth_date" class="mt-3 w-full text-sm"
                       @change="birthDateCalculation"></TextInput>
                     <TextInputError :message="form.errors.birth_date"></TextInputError>
@@ -217,32 +219,24 @@ const birthDateCalculation = () => {
                   </div>
 
                   <div class="w-1/3 ms-3">
-                    <InputLabel :value="l.attendees.createAttendees.labels.serviceYear"></InputLabel>
-                    <TextInput :placeholder="l.attendees.createAttendees.placeholder.serviceYear" type="text"
-                      v-model="form.service_year" class="w-full mt-3 text-sm">
-                    </TextInput>
-                    <TextInputError :message="form.errors.service_year"></TextInputError>
-                  </div>
-
-                  <div class="w-1/3 ms-3">
                     <InputLabel :value="l.attendees.createAttendees.labels.serviceYearBenefit"></InputLabel>
                     <TextInput :placeholder="l.attendees.createAttendees.placeholder.serviceYearBenefit" type="number"
                       v-model="form.service_year_benefit" class="w-full mt-3 text-sm">
                     </TextInput>
                     <TextInputError :message="form.errors.service_year_benefit"></TextInputError>
                   </div>
-                </div>
 
-                <div class="w-full flex my-7">
-                  <div class="w-1/3">
+                  <div class="w-1/3 ms-3">
                     <InputLabel :value="l.attendees.createAttendees.labels.monthlyBenefit"></InputLabel>
                     <TextInput :placeholder="l.attendees.createAttendees.placeholder.monthlyBenefit" type="number"
                       v-model="form.monthly_benefit" class="w-full mt-3 text-sm">
                     </TextInput>
                     <TextInputError :message="form.errors.monthly_benefit"></TextInputError>
                   </div>
+                </div>
 
-                  <div class="w-1/3 ms-3">
+                <div class="w-full flex my-7">
+                  <div class="w-1/3">
                     <InputLabel :value="l.attendees.createAttendees.labels.lastPlaceOfDuty"></InputLabel>
                     <TextInput :placeholder="l.attendees.createAttendees.placeholder.lastPlaceOfDuty" type="text"
                       v-model="form.last_place_of_duty" class="w-full mt-3 text-sm">
@@ -257,14 +251,24 @@ const birthDateCalculation = () => {
                     </TextInput>
                     <TextInputError :message="form.errors.current_address"></TextInputError>
                   </div>
-                </div>
 
-                <div class="w-full flex my-7">
-                  <div class="w-1/3">
-                    <InputLabel :value="l.attendees.createAttendees.labels.trainingConference"></InputLabel>
 
-                    <select v-model="form.training_list_id"
-                      class="py-2 px-4 pe-9 block w-full border-gray-200 dark:border-none rounded-lg text-sm focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none mt-3 dark:bg-gray-900">
+
+                  <div class="w-1/3 ms-3">
+                    <InputLabel class="mb-3" :value="l.attendees.createAttendees.labels.trainingConference">
+                    </InputLabel>
+
+                    <select v-model="form.training_list_id" id="hs-multiple-with-counter-and-option-template" multiple
+                      data-hs-select='{
+  "placeholder": "Select multiple options...",
+  "toggleTag": "<button type=\"button\" aria-expanded=\"false\"></button>",
+  "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-2 ps-4 pe-9 flex text-nowrap w-full cursor-pointer bg-layer border border-layer-line text-layer-foreground rounded-lg text-start text-sm hover:bg-layer-hover focus:outline-hidden focus:bg-layer-focus",
+  "toggleCountText": "selected",
+  "dropdownClasses": "mt-2 z-50 w-full max-h-70 p-0.5 space-y-0.5 bg-gray-100 border border-select-line rounded-lg shadow-xl overflow-hidden overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-none [&::-webkit-scrollbar-track]:bg-scrollbar-track [&::-webkit-scrollbar-thumb]:bg-scrollbar-thumb",
+  "optionClasses": "py-2 px-4 w-full text-sm text-select-item-foreground cursor-pointer hover:bg-select-item-hover rounded-lg focus:outline-hidden focus:bg-select-item-focus",
+  "optionTemplate": "<div class=\"flex items-center\"><div class=\"me-2\" data-icon></div><div><div class=\"hs-selected:font-semibold text-sm text-foreground\" data-title></div></div><div class=\"ms-auto\"><span class=\"hidden hs-selected:block\"><svg class=\"shrink-0 size-4 text-primary\" xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" viewBox=\"0 0 16 16\"><path d=\"M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z\"/></svg></span></div></div>",
+  "extraMarkup": "<div class=\"absolute top-1/2 end-3 -translate-y-1/2\"><svg class=\"shrink-0 size-3.5 text-muted-foreground-1\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m7 15 5 5 5-5\"/><path d=\"m7 9 5-5 5 5\"/></svg></div>"
+}' class="hidden">
                       <option :value="null">
                         Open this Training Conferences
                       </option>
@@ -275,8 +279,10 @@ const birthDateCalculation = () => {
                     </select>
                     <TextInputError :message="form.errors.training_list_id"></TextInputError>
                   </div>
+                </div>
 
-                  <div class="w-1/3 ms-3">
+                <div class="w-full flex my-7">
+                  <div class="w-1/3">
                     <InputLabel :value="l.attendees.createAttendees.labels.typeOfTeacher"></InputLabel>
                     <select v-model="form.teacher_type_id"
                       class="py-2 px-4 pe-9 block w-full border-gray-200 dark:border-none rounded-lg text-sm focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none mt-3 dark:bg-gray-900">
@@ -293,10 +299,20 @@ const birthDateCalculation = () => {
                   </div>
 
                   <div class="w-1/3 ms-3">
-                    <InputLabel :value="l.attendees.createAttendees.labels.gradeAssigned"></InputLabel>
-                    <select v-model="form.course_id"
-                      class="py-2 px-4 pe-9 block w-full border-gray-200 dark:border-none rounded-lg text-sm focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none mt-3 dark:bg-gray-900">
-                      <option :value="null">
+                    <InputLabel class="mb-3" :value="l.attendees.createAttendees.labels.gradeAssigned"></InputLabel>
+
+                    <select v-model="form.course_id" id="hs-multiple-with-counter-and-option-template" multiple
+                      data-hs-select='{
+  "placeholder": "Select multiple options...",
+  "toggleTag": "<button type=\"button\" aria-expanded=\"false\"></button>",
+  "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-2 ps-4 pe-9 flex text-nowrap w-full cursor-pointer bg-layer border border-layer-line text-layer-foreground rounded-lg text-start text-sm hover:bg-layer-hover focus:outline-hidden focus:bg-layer-focus",
+  "toggleCountText": "selected",
+  "dropdownClasses": "mt-2 z-50 w-full max-h-70 p-0.5 space-y-0.5 bg-gray-100 border border-select-line rounded-lg shadow-xl overflow-hidden overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-none [&::-webkit-scrollbar-track]:bg-scrollbar-track [&::-webkit-scrollbar-thumb]:bg-scrollbar-thumb",
+  "optionClasses": "py-2 px-4 w-full text-sm text-select-item-foreground cursor-pointer hover:bg-select-item-hover rounded-lg focus:outline-hidden focus:bg-select-item-focus",
+  "optionTemplate": "<div class=\"flex items-center\"><div class=\"me-2\" data-icon></div><div><div class=\"hs-selected:font-semibold text-sm text-foreground\" data-title></div></div><div class=\"ms-auto\"><span class=\"hidden hs-selected:block\"><svg class=\"shrink-0 size-4 text-primary\" xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" viewBox=\"0 0 16 16\"><path d=\"M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z\"/></svg></span></div></div>",
+  "extraMarkup": "<div class=\"absolute top-1/2 end-3 -translate-y-1/2\"><svg class=\"shrink-0 size-3.5 text-muted-foreground-1\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m7 15 5 5 5-5\"/><path d=\"m7 9 5-5 5 5\"/></svg></div>"
+}' class="hidden">
+                      <option :value="null" >
                         Open this Courses
                       </option>
 
@@ -306,10 +322,8 @@ const birthDateCalculation = () => {
                     </select>
                     <TextInputError :message="form.errors.course_id"></TextInputError>
                   </div>
-                </div>
 
-                <div class="w-full flex my-7">
-                  <div class="w-1/3">
+                  <div class="w-1/3 ms-3">
                     <InputLabel :value="l.attendees.createAttendees.labels.subjectAssigned"></InputLabel>
                     <TextInput :placeholder="l.attendees.createAttendees.placeholder.subjectAssigned" type="text"
                       v-model="form.subject_assigned" class="w-full mt-3 text-sm">
@@ -317,15 +331,10 @@ const birthDateCalculation = () => {
                     <TextInputError :message="form.errors.subject_assigned"></TextInputError>
                   </div>
 
+                </div>
 
-                  <div class="w-1/3 ms-3">
-                    <InputLabel :value="l.attendees.createAttendees.labels.attendeesAge"></InputLabel>
-                    <TextInput :placeholder="l.attendees.createAttendees.placeholder.attendeesAge" type="number"
-                      v-model="form.age" class="w-full mt-3 text-sm" readonly>
-                    </TextInput>
-                    <TextInputError :message="form.errors.age"></TextInputError>
-                  </div>
-                  <div class="w-1/3 ms-3">
+                <div class="w-full flex my-7">
+                  <div class="w-1/3">
                     <InputLabel :value="l.attendees.createAttendees.labels.attendeesGender"></InputLabel>
                     <select v-model="form.gender"
                       class="py-2 px-4 pe-9 block w-full border-gray-200 dark:border-none rounded-lg text-sm focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none mt-3 dark:bg-gray-900">
@@ -336,10 +345,8 @@ const birthDateCalculation = () => {
                     </select>
                     <TextInputError :message="form.errors.gender"></TextInputError>
                   </div>
-                </div>
 
-                <div class="w-full flex my-7">
-                  <div class="w-1/3">
+                  <div class="w-1/3 ms-3">
                     <InputLabel :value="l.attendees.createAttendees.labels.attendeesPhoneNumber"></InputLabel>
                     <TextInput :placeholder="l.attendees.createAttendees.placeholder.attendeesPhoneNumber" type="text"
                       v-model="form.phone_number" class="w-full mt-3 text-sm"></TextInput>
@@ -351,16 +358,18 @@ const birthDateCalculation = () => {
                       v-model="form.nrc_number" class="w-full mt-3 text-sm"></TextInput>
                     <TextInputError :message="form.errors.nrc_number"></TextInputError>
                   </div>
-                  <div class="w-1/3 ms-3">
+
+                </div>
+
+                <div class="w-full flex my-7">
+                  <div class="w-1/3">
                     <InputLabel :value="l.attendees.createAttendees.labels.attendeesEducationBackground"></InputLabel>
                     <TextInput :placeholder="l.attendees.createAttendees.placeholder.attendeesEducationBackground"
                       type="text" v-model="form.edu_background" class="w-full mt-3 text-sm"></TextInput>
                     <TextInputError :message="form.errors.edu_background"></TextInputError>
                   </div>
-                </div>
 
-                <div class="w-full flex my-7">
-                  <div class="w-1/3">
+                  <div class="w-1/3 ms-3">
                     <InputLabel :value="l.attendees.createAttendees.labels.attendeesPosition"></InputLabel>
                     <TextInput :placeholder="l.attendees.createAttendees.placeholder.attendeesPosition" type="text"
                       v-model="form.position" class="w-full mt-3 text-sm">
@@ -373,17 +382,19 @@ const birthDateCalculation = () => {
                       v-model="form.department" class="w-full mt-3 text-sm"></TextInput>
                     <TextInputError :message="form.errors.department"></TextInputError>
                   </div>
-                  <div class="w-1/3 ms-3">
+
+                </div>
+
+                <div class="w-full flex my-7">
+                  <div class="w-1/3">
                     <InputLabel :value="l.attendees.createAttendees.labels.attendeesAddress"></InputLabel>
                     <TextInput :placeholder="l.attendees.createAttendees.placeholder.attendeesAddress" type="text"
                       v-model="form.address" class="w-full mt-3 text-sm">
                     </TextInput>
                     <TextInputError :message="form.errors.address"></TextInputError>
                   </div>
-                </div>
 
-                <div class="w-full flex my-7">
-                  <div class="w-1/3">
+                  <div class="w-1/3 ms-3">
                     <InputLabel :value="l.attendees.createAttendees.labels.attendeesEmail"></InputLabel>
                     <TextInput :placeholder="l.attendees.createAttendees.placeholder.attendeesEmail" type="email"
                       v-model="form.email" class="w-full mt-3 text-sm">
@@ -405,7 +416,10 @@ const birthDateCalculation = () => {
                     <TextInputError :message="form.errors.attendees_types_id"></TextInputError>
                   </div>
 
-                  <div class="w-1/3 ms-3">
+                </div>
+
+                <div class="w-full flex my-7">
+                  <div class="w-1/3">
                     <InputLabel :value="l.attendees.createAttendees.labels.attendeesGroup"></InputLabel>
                     <select v-model="form.attendees_groups_id"
                       class="py-2 px-4 pe-9 block w-full border-gray-200 dark:border-none rounded-lg text-sm focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none mt-3 dark:bg-gray-900">

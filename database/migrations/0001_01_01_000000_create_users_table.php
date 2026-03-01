@@ -42,9 +42,11 @@ return new class extends Migration
             $table->string('last_place_of_duty')->nullable();
             $table->string('current_address')->nullable();
 
-            $table->foreignId('training_list_id')->nullable()->constrained()->cascadeOnDelete();
+            // $table->foreignId('training_list_id')->nullable()->constrained()->cascadeOnDelete();
+            $table->json('training_list_id')->nullable();
             $table->foreignId('teacher_type_id')->nullable()->constrained()->cascadeOnDelete();
-            $table->foreignId('course_id')->nullable()->constrained()->cascadeOnDelete();
+            $table->json('course_id')->nullable();
+            // $table->foreignId('course_id')->nullable()->constrained()->cascadeOnDelete();
 
             // $table->string('training_conference')->nullable();
             // $table->string('type_of_teacher')->nullable();

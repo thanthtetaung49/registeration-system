@@ -111,9 +111,7 @@ const csvExport = () => {
                             <th scope="col" class="px-5 py-3 text-start text-xs font-medium text-gray-500 uppercase">
                               {{ l.attendees.table.attendeesName }}
                             </th>
-                            <th scope="col" class="px-5 py-3 text-start text-xs font-medium text-gray-500 uppercase">
-                              {{ l.attendees.table.attendeesAge }}
-                            </th>
+
                             <th scope="col" class="px-5 py-3 text-start text-xs font-medium text-gray-500 uppercase">
                               {{ l.attendees.table.attendeesPhoneNumber }}
                             </th>
@@ -123,9 +121,7 @@ const csvExport = () => {
                             <th scope="col" class="px-5 py-3 text-start text-xs font-medium text-gray-500 uppercase">
                               {{ l.attendees.table.attendeesEducationBackground }}
                             </th>
-                            <th scope="col" class="px-5 py-3 text-start text-xs font-medium text-gray-500 uppercase">
-                              {{ l.attendees.table.attendeesAge }}
-                            </th>
+
                             <th scope="col" class="px-5 py-3 text-start text-xs font-medium text-gray-500 uppercase">
                               {{ l.attendees.table.attendeesDepartment }}
                             </th>
@@ -160,9 +156,7 @@ const csvExport = () => {
                             <td class="px-5 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white">
                               {{ user.name }}
                             </td>
-                            <td class="px-5 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white">
-                              {{ user.age }}
-                            </td>
+
                             <td class="px-5 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white">
                               {{ user.gender }}
                             </td>

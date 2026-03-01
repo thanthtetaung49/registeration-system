@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import defaultImage from "@/images/default_profile.png";
 import { Link } from '@inertiajs/vue3';
 
@@ -8,6 +8,26 @@ const props = defineProps({ user: Object, baseUrl: String, serviceYears: String 
 const user = ref(props.user);
 const baseUrl = ref(props.baseUrl).value;
 const serviceYears = ref(props.serviceYears);
+const age = ref(null);
+
+onMounted(() => {
+  birthDateCalculation();
+});
+
+
+const birthDateCalculation = () => {
+  const birthDateStr = user.value.birth_date;
+  const birthDate = new Date(birthDateStr);
+  const today = new Date();
+
+  if (!birthDateStr) {
+    age.value = null;
+  }
+
+  if (today.getFullYear() >= birthDate.getFullYear()) {
+    age.value = today.getFullYear() - birthDate.getFullYear();
+  }
+}
 
 </script>
 
@@ -66,7 +86,7 @@ const serviceYears = ref(props.serviceYears);
                             </div>
 
                             <div>
-                                <span class="block text-gray-400 font-bold uppercase text-xs">မွေးသက္ကရာဇ်</span>
+                                <span class="block text-gray-400 font-bold uppercase text-xs">မွေးသက္ကရာဇ် <span>({{ age }} နှစ်)</span></span>
                                 <p class="text-gray-700">{{ user.birth_date }}</p>
                             </div>
 

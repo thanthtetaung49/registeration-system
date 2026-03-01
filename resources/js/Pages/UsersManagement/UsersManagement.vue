@@ -12,19 +12,18 @@ const props = defineProps({
   role: String
 });
 
-let role = props.role;
-let users = ref(props.users);
-let user = ref(null);
-let baseUrl;
-let links = props.users.links;
-let showAlertStatus = ref(false);
-let input = ref(null);
-let query = ref(null);
+const authUserRole = props.role;
+const users = ref(props.users);
+const user = ref(null);
+const links = props.users.links;
+const showAlertStatus = ref(false);
+const input = ref(null);
+const query = ref(null);
 
 const page = usePage();
 const l = page.props.language;
 
-let roles = [
+const roles = [
   {
     name: l.roles.attendees,
     value: 'attendees'
@@ -121,7 +120,7 @@ const searchUser = () => {
     data: {
       query: query.value,
     },
-    onSuccess: (page) => {
+    onSuccess: () => {
       console.log("Success");
     },
   });
@@ -314,8 +313,7 @@ onMounted(() => {
             </div>
 
             <div v-if="user" class="p-6 overflow-y-auto">
-              <div v-if="role == 'super_admin'" class="flex justify-end gap-x-2 mb-6">
-
+              <div v-if="authUserRole == 'super_admin'" class="flex justify-end gap-x-2 mb-6">
                 <button v-on:click="accountDisabled" type="button"
                   class="p-2 rounded-xl bg-red-50 text-red-500 hover:bg-red-100 transition dark:bg-red-900/20 hs-tooltip-toggle flex items-center"><svg
                     class="size-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
@@ -381,12 +379,16 @@ onMounted(() => {
                   <div class="bg-gray-50 p-4 rounded-2xl dark:bg-neutral-800/50">
                     <p class="text-[10px] font-black uppercase text-gray-400 tracking-widest mb-1">Update Role</p>
                     <div class="flex flex-wrap gap-2 mt-2">
-                      <label v-for="role in roles" :key="role.value" class="cursor-pointer group">
+                      <label v-for="role in roles.filter(r => !(authUserRole === 'admin' && r.value === 'super_admin'))"
+                        :key="role.value" class="cursor-pointer group">
                         <input type="checkbox" class="peer hidden" :checked="user?.role === role.value"
                           @change="updateUserRole(user.id, role.value)">
-                        <span
-                          class="px-4 py-1.5 rounded-xl border border-gray-200 text-xs font-bold text-gray-500 peer-checked:bg-indigo-600 peer-checked:text-white peer-checked:border-indigo-600 transition-all hover:bg-gray-100">{{
-                            role.name }} </span>
+
+                        <span class="px-4 py-1.5 rounded-xl border border-gray-200 text-xs font-bold text-gray-500
+           peer-checked:bg-indigo-600 peer-checked:text-white
+           peer-checked:border-indigo-600 transition-all hover:bg-gray-100">
+                          {{ role.name }}
+                        </span>
                       </label>
                     </div>
                   </div>
